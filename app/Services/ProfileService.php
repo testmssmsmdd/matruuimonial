@@ -1,0 +1,246 @@
+<?php
+
+namespace App\Services;
+use Auth;
+use DB;
+use App\Repositories\ProfileRepositoryInterface;
+
+class ProfileService
+{
+    protected $profileRepository;
+
+
+    public function __construct(ProfileRepositoryInterface $profileRepository)
+    {
+        $this->profileRepository = $profileRepository;
+    }
+
+    public function getProfileList($request)
+    {
+        $userId = Auth::id();
+
+        $profilelist = $this->profileRepository->getProfiles($request, $userId);
+        $cityList = $this->profileRepository->getCityList($userId);
+
+        return compact('profilelist', 'cityList');
+    }
+
+    public function getCreateData()
+    {
+        $countries = $this->profileRepository->getCountries();
+
+        return compact('countries');
+    }
+
+    public function createProfile($request)
+    {
+        $validated = $request->validated();
+
+        return DB::transaction(function () use ($validated, $request) {
+
+            // Extract mosals
+            $mosals = $validated['mosal'] ?? [];
+            unset($validated['mosal']);
+
+            // Prepare height
+            $validated['height'] = $request->height_ft . '.' . $request->height_in;
+            unset($validated['height_ft'], $validated['height_in']);
+
+            // Create profile
+            $profile = $this->profileRepository->create($validated);
+
+            // Save mosals
+            if (!empty($mosals)) {
+                $this->profileRepository->storeMosals($profile, $mosals);
+            }
+
+            // Handle images
+            $this->handleImages($request, $profile);
+
+            return $profile;
+        });
+    }
+
+    private function handleImages($request, $profile)
+    {
+        // Profile photo
+        if ($request->hasFile('profile_photo')) {
+
+            $imageName = time().'_'.rand(1,1000).'.'.$request->profile_photo->extension();
+
+            $request->profile_photo->move(public_path('profile_photos'), $imageName);
+
+            $this->profileRepository->storeGallery($profile, [
+                'image' => $imageName,
+                'is_profile_photo' => 1,
+            ]);
+        }
+
+        // Gallery photos
+        if ($request->hasFile('gallery_photo')) {
+            foreach ($request->file('gallery_photo') as $image) {
+
+                $imageName = time().'_'.rand(1,1000).'.'.$image->extension();
+
+                $image->move(public_path('gallery_photo'), $imageName);
+
+                $this->profileRepository->storeGallery($profile, [
+                    'image' => $imageName,
+                    'is_profile_photo' => 0,
+                ]);
+            }
+        }
+    }
+
+    public function getEditData($id)
+    {
+        $profile = $this->profileRepository->findProfileWithRelations($id);
+        $countries = $this->profileRepository->getAllCountries();
+
+        return compact('profile', 'countries');
+    }
+
+    public function updateProfile($request)
+    {
+        $id = $request->profile_id;
+        $validated = $request->validated();
+
+        return DB::transaction(function () use ($validated, $request, $id) {
+
+            $profile = $this->profileRepository->findById($id);
+
+            // Extract mosals
+            $mosals = $validated['mosal'] ?? [];
+            unset($validated['mosal']);
+
+            // Prepare height
+            $validated['height'] = $request->height_ft . '.' . $request->height_in;
+            unset($validated['height_ft'], $validated['height_in']);
+
+            // Update profile
+            $this->profileRepository->update($profile, $validated);
+
+            // Update mosals
+            if (!empty($mosals)) {
+                $this->profileRepository->replaceMosals($profile, $mosals);
+            }
+
+            // Handle images
+            $this->handleProfileImage($request, $profile);
+            $this->handleGalleryImages($request, $profile);
+
+            return $profile;
+        });
+    }
+
+    private function handleProfileImage($request, $profile)
+    {
+        if ($request->hasFile('profile_photo')) {
+
+            $oldImage = $this->profileRepository->getProfileImage($profile->id);
+
+            if ($oldImage && file_exists(public_path('profile_photos/'.$oldImage->image))) {
+                unlink(public_path('profile_photos/'.$oldImage->image));
+            }
+
+            $imageName = time().'_'.rand(1,1000).'.'.$request->profile_photo->extension();
+
+            $request->profile_photo->move(public_path('profile_photos'), $imageName);
+
+            $this->profileRepository->updateProfileImage($profile, $imageName);
+        }
+    }
+
+    private function handleGalleryImages($request, $profile)
+    {
+        if ($request->hasFile('gallery_photo')) {
+
+            foreach ($request->file('gallery_photo') as $image) {
+
+                $imageName = time().'_'.rand(1,1000).'.'.$image->extension();
+
+                $image->move(public_path('gallery_photo'), $imageName);
+
+                $this->profileRepository->storeGallery($profile, [
+                    'image' => $imageName,
+                    'is_profile_photo' => 0,
+                ]);
+            }
+        }
+    }
+
+    public function deleteProfile($id)
+    {
+        return DB::transaction(function () use ($id) {
+
+            $profile = $this->profileRepository->findByIdWithRelations($id);
+
+            // Delete profile image
+            $this->deleteProfileImage($profile);
+
+            // Delete gallery images
+            $this->deleteGalleryImages($profile);
+
+            // Delete DB records
+            $this->profileRepository->deleteProfile($profile);
+
+            return true;
+        });
+    }
+
+    private function deleteProfileImage($profile)
+    {
+        $image = $profile->profile_photo;
+
+        if ($image && file_exists(public_path('profile_photos/'.$image->image))) {
+            unlink(public_path('profile_photos/'.$image->image));
+        }
+    }
+
+    private function deleteGalleryImages($profile)
+    {
+        foreach ($profile->gallery_photo as $gallery) {
+
+            if ($gallery && file_exists(public_path('gallery_photo/'.$gallery->image))) {
+                unlink(public_path('gallery_photo/'.$gallery->image));
+            }
+        }
+    }
+
+
+    public function getProfileDetails($id)
+    {
+        return $this->profileRepository->findDetailsById($id);
+    }
+
+    public function getStates($countryId)
+    {
+        return $this->profileRepository->getStatesByCountry($countryId);
+    }
+
+    public function getCities($stateId)
+    {
+        return $this->profileRepository->getCitiesByState($stateId);
+    }
+
+    public function getMosals($profileId)
+    {
+        return $this->profileRepository->getMosalsByProfile($profileId);
+    }
+
+    public function deleteGalleryImage($id)
+    {
+        return DB::transaction(function () use ($id) {
+
+            $image = $this->profileRepository->findGalleryById($id);
+
+            // Delete file
+            if ($image && file_exists(public_path('gallery_photo/'.$image->image))) {
+                unlink(public_path('gallery_photo/'.$image->image));
+            }
+
+            // Delete DB record
+            return $this->profileRepository->deleteGallery($image);
+        });
+    }
+}

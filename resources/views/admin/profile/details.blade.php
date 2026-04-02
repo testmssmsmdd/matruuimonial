@@ -53,7 +53,7 @@
                 <div class="card-body">
                     <div class="row g-3">
                       <!--begin::Col-->
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
                                 <button
@@ -67,88 +67,89 @@
                                     Basic Information
                                 </button>
                             </h2>
-                            <div class="accordion" id="accordionExample">
-                                <div
-                                  id="basic_information"
-                                  class="accordion-collapse collapse show"
-                                  data-bs-parent="#accordionExample">
+                            
+                        </div>
+                    </div>
+                    <div class="accordion">
+                        <div
+                          id="basic_information"
+                          class="accordion-collapse collapse show"
+                          data-bs-parent="#accordionExample">
 
-                                   <div class="row h5">
-                                        <p class="fs-3">{{ $profile->first_name }} {{ $profile->middle_name }} {{ $profile->last_name }}</p>
-                                    
-                                       <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Gender:</strong>
-                                            <span>{{ $profile->gender }}</span>
-                                        </div>
+                               <div class="row h5">
+                                    <p class="fs-3">{{ $profile->first_name }} {{ $profile->middle_name }} {{ $profile->last_name }}</p>
+                                
+                                   <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Gender:</strong>
+                                        <span>{{ $profile->gender }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Birth Date:</strong>
-                                            <span>{{ $profile->date_of_birth }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Birth Date:</strong>
+                                        <span>{{ $profile->date_of_birth }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Age:</strong>
-                                            <span>{{ $profile->age }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Age:</strong>
+                                        <span>{{ $profile->age }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Birth Time:</strong>
-                                            <span>{{ $profile->birth_time }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Birth Time:</strong>
+                                        <span>{{ $profile->birth_time }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Birth Place:</strong>
-                                            <span>{{ $profile->birth_place }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Birth Place:</strong>
+                                        <span>{{ $profile->birth_place }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Height:</strong>
-                                            <span>{{ $profile->height }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Height:</strong>
+                                        <span>{{ $profile->height }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Weight:</strong>
-                                            <span>{{ $profile->Weight }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Weight:</strong>
+                                        <span>{{ $profile->Weight }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Marital Status:</strong>
-                                            <span>{{ $profile->marital_status }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Marital Status:</strong>
+                                        <span>{{ $profile->marital_status }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Mother Tongue:</strong>
-                                            <span>{{ $profile->mother_tounge }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Mother Tongue:</strong>
+                                        <span>{{ $profile->mother_tounge }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Rashi:</strong>
-                                            <span>{{ $profile->rashi }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Rashi:</strong>
+                                        <span>{{ $profile->rashi }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Caste:</strong>
-                                            <span>{{ $profile->caste }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Caste:</strong>
+                                        <span>{{ $profile->caste }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Gotra:</strong>
-                                            <span>{{ $profile->gotra }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Gotra:</strong>
+                                        <span>{{ $profile->gotra }}</span>
+                                    </div>
 
-                                        <div class="col-md-6 d-flex justify-content-between">
-                                            <strong>Manglik:</strong>
-                                            <span>{{ $profile->manglik }}</span>
-                                        </div>
+                                    <div class="col-md-6 d-flex justify-content-between">
+                                        <strong>Manglik:</strong>
+                                        <span>{{ $profile->manglik }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    </div>
 
                     <div class="row g-3 mt-1">
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
                                     <button
@@ -179,7 +180,7 @@
                     </div>
 
                     <div class="row g-3 mt-1">
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
                                     <button
@@ -221,7 +222,7 @@
                     </div>
 
                     <div class="row g-3 mt-1">
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
                                     <button
@@ -272,7 +273,7 @@
                     </div>
 
                     <div class="row g-3 mt-1">
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
                                     <button
@@ -310,7 +311,7 @@
 
 
                     <div class="row g-3 mt-1">
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
                                     <button
@@ -342,7 +343,7 @@
                     </div>
 
                     <div class="row g-3 mt-1">
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
                                     <button
@@ -368,7 +369,7 @@
                     </div>
                 </div>
                     <div class="row g-3 mt-1">
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion">
                           <div class="accordion-item">
                             <h2 class="accordion-header">
                                     <button

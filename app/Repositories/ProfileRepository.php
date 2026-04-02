@@ -34,7 +34,7 @@ class ProfileRepository implements ProfileRepositoryInterface
             });
         }
 
-        return $query->paginate(10);
+        return $query->orderBy('id','DESC')->paginate(10);
     }
 
     public function getCityList($userId)

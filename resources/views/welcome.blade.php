@@ -5,7 +5,6 @@
   <div class="container-fluid">
         <form method="get" id="search_profile" name="search_profile" action= "{{ route('/') }}">
           <div class="row">
-
               <div class="col-md-3">
                 <label for="gender" class="form-label">Gender</label>
                     <select class="form-select" id="gender" name="gender">
@@ -28,7 +27,6 @@
                 <label for="marital_status" class="form-label">Marital Status</label>
 
                 <select class="form-select" id="marital_status" name="marital_status">
-                  
                   <option selected value="">Choose...</option>
                   <option value="Never_Married" <?php if(isset($_GET['marital_status']) && $_GET['marital_status'] == 'Never_Married') echo 'selected'; ?>>Never Married</option>
                   <option value="Divorced" <?php if(isset($_GET['marital_status']) && $_GET['marital_status'] == 'Divorced') echo 'selected'; ?>>Divorced</option>
@@ -118,8 +116,6 @@
       </div>
   </div>
 @endsection
-
-
 @section('js')
 <script type="text/javascript">
 document.getElementById('search_profile').addEventListener('submit', function(e) {

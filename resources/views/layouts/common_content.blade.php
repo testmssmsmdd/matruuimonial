@@ -195,6 +195,36 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.js"></script>
 
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+        document.querySelectorAll('.logout-btn').forEach(function(button) {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Are you sure you want to logout?',
+                    text: "",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, logout!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('logout-form').submit();
+                    }
+                });
+            });
+        });
+
+    });
+
+    </script>
+
+
+
     <!-- jsvectormap -->
       @yield('js')
     <!--end::Script-->

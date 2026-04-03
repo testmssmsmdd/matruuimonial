@@ -76,6 +76,26 @@ class Profile extends Model
         return (int)substr(strrchr($this->height, "."), 1); 
     }
 
+    public function getBirthTimePartsAttribute()
+    {
+        if (!$this->birth_time) {
+            return [
+                'hours' => null,
+                'minutes' => null,
+                'format' => null,
+            ];
+        }
+
+        [$time, $format] = explode(' ', $this->birth_time);
+        [$hours, $minutes] = explode(':', $time);
+
+        return [
+            'hours' => (int) $hours,
+            'minutes' => (int) $minutes,
+            'format' => $format,
+        ];
+    }
+
     public function profile_photo()
     {
         return $this->hasOne(Gallery_photos::class)->where('is_profile_photo',1);

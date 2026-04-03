@@ -87,7 +87,7 @@
           <p class="mb-1">
             @if (Route::has('password.request'))
                 <a class="btn btn-link" href="{{ route('login') }}">
-                    {{ __('login?') }}
+                    {{ __('Login?') }}
                 </a>
             @endif
           </p>

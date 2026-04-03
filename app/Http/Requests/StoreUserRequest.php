@@ -28,7 +28,7 @@ class StoreUserRequest extends FormRequest
             'middle_name' => 'nullable',
             'email' => 'required|email|unique:users',
             'username' => 'nullable',
-            'phone_number' => 'required|numeric|unique:users',
+            'phone_number' => 'required|digits:10|unique:users',
             'password'=>'required|confirmed'
         ];
     }

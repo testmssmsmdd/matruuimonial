@@ -13,11 +13,12 @@ class UserRepository implements UserRepositoryInterface
                 $query->where(function ($q) use ($s) {
                     $q->where('first_name', 'LIKE', "%$s%")
                         ->orWhere('last_name', 'LIKE', "%$s%")
+                        ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$s}%"])
                         ->orWhere('email', 'LIKE', "%$s%")
                         ->orWhere('phone_number', 'LIKE', "%$s%");
                 });
             })
-            ->orderBy('id','Desc')->paginate(10);
+            ->where('profile_status',1)->orderBy('id','Desc')->paginate(12);
     }
 
 

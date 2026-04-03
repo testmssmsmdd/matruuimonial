@@ -35,26 +35,27 @@ class ProfileService
     public function createProfile($request)
     {
         $validated = $request->validated();
-
         return DB::transaction(function () use ($validated, $request) {
 
-            // Extract mosals
             $mosals = $validated['mosal'] ?? [];
             unset($validated['mosal']);
 
-            // Prepare height
+            $mosals = array_filter($mosals, function ($mosal) {
+                return !empty($mosal['person_name']) || !empty($mosal['contact_number']);
+            });
+
             $validated['height'] = $request->height_ft . '.' . $request->height_in;
             unset($validated['height_ft'], $validated['height_in']);
 
-            // Create profile
+            $validated['birth_time'] = $request->birth_hours.':'.$request->birth_minutes.' '.$request->birth_format;
+            unset($validated['birth_hours'], $validated['birth_minutes'], $validated['birth_format']);
+
             $profile = $this->profileRepository->create($validated);
 
-            // Save mosals
             if (!empty($mosals)) {
                 $this->profileRepository->storeMosals($profile, $mosals);
             }
 
-            // Handle images
             $this->handleImages($request, $profile);
 
             return $profile;
@@ -63,7 +64,6 @@ class ProfileService
 
     private function handleImages($request, $profile)
     {
-        // Profile photo
         if ($request->hasFile('profile_photo')) {
 
             $imageName = time().'_'.rand(1,1000).'.'.$request->profile_photo->extension();
@@ -109,20 +109,25 @@ class ProfileService
 
             $profile = $this->profileRepository->findById($id);
 
-            // Extract mosals
             $mosals = $validated['mosal'] ?? [];
             unset($validated['mosal']);
 
-            // Prepare height
+            $mosals = array_filter($mosals, function ($mosal) {
+                return !empty($mosal['person_name']) || !empty($mosal['contact_number']);
+            });
+
+            $validated['birth_time'] = $request->birth_hours.':'.$request->birth_minutes.' '.$request->birth_format;
+            unset($validated['birth_hours'], $validated['birth_minutes'], $validated['birth_format']);
+
             $validated['height'] = $request->height_ft . '.' . $request->height_in;
             unset($validated['height_ft'], $validated['height_in']);
 
-            // Update profile
             $this->profileRepository->update($profile, $validated);
 
-            // Update mosals
             if (!empty($mosals)) {
                 $this->profileRepository->replaceMosals($profile, $mosals);
+            } else {
+                $profile->mosals()->delete();
             }
 
             // Handle images
@@ -242,5 +247,10 @@ class ProfileService
             // Delete DB record
             return $this->profileRepository->deleteGallery($image);
         });
+    }
+
+    public function changeStatus($id)
+    {
+        return $this->profileRepository->toggleStatus($id);
     }
 }

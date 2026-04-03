@@ -63,7 +63,7 @@ class HomeController extends Controller
                         ->orWhere('occupation', 'LIKE', '%' . $s . '%');
         }
 
-        $profilelist =  $query->orderBy('id','desc')->paginate(10);
+        $profilelist =  $query->where('profile_status',1)->orderBy('id','desc')->paginate(12);
         $cityList = DB::table('cities')
                 ->join('profiles','cities.id','=','profiles.city_id')
                 ->select('cities.name','cities.id','profiles.city_id')
@@ -113,7 +113,7 @@ class HomeController extends Controller
                         ->orWhere('occupation', 'LIKE', '%' . $s . '%');
         }
 
-        $profilelist = $query->orderBy('id','desc')->where('created_by',$user->id)->paginate(10);
+        $profilelist = $query->orderBy('id','desc')->where('created_by',$user->id)->paginate(12);
         $cityList = DB::table('cities')
                 ->join('profiles','cities.id','=','profiles.city_id')
                 ->select('cities.name','cities.id','profiles.city_id')

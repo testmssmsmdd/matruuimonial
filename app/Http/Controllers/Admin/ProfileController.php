@@ -91,4 +91,11 @@ class ProfileController extends Controller
         return response()->json(['message' => 'image deleted successfully','success'=> true]);
     }
 
+    public function changeStatus($id)
+    {
+        $this->profileservice->changeStatus($id);
+
+        return redirect()->back();
+    }
+
 }

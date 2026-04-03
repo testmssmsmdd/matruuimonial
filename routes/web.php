@@ -40,6 +40,7 @@ Route::middleware([CheckAdmin::class,'auth'])->group(function () {
     Route::put('admin/profile/edit/{id}',[AdminProfileController::class, 'update'])->name('admin.profile.update');
     Route::delete('admin/profile/delete_gallery_img/{id}',[AdminProfileController::class, 'deleteGalleryImg'])->name('admin.profile.delete_gallery_img');
     Route::delete('admin/profile/delete/{id}',[AdminProfileController::class, 'deleteProfile'])->name('admin.profile.delete_profile');
+    Route::post('admin/profile/change_status/{id}',[AdminProfileController::class, 'changeStatus'])->name('admin.profile.change_status');
 });
 
 

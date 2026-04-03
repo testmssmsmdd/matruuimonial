@@ -21,18 +21,12 @@
 <div class="col-md-10">
 
   <div class="card card-info card-outline mb-4">
-    <!--begin::Header-->
-    <div class="card-header">
-      <div class="card-title">Add New</div>
-    </div>
-    <!--end::Header-->
+   
     <!--begin::Form-->
     <form action="{{ route('admin.profile.store') }}" class="needs-validation" id="profile_form">
       @csrf
 
-      <div class="alert alert-danger print-error-msg" style="display:none">
-          <ul></ul>
-      </div>
+
 
       <!--begin::Body-->
       <div class="card-body">
@@ -146,15 +140,42 @@
           </div>
           <!--end::Col-->
           <!--begin::Col-->
-          <div class="col-md-6">
-            <label for="birth_time" class="form-label">Birth time</label>
-            <input type="text" class="form-control" id="birth_time" name="birth_time" >
+          <div class="col-md-6 row me-2 mt-3">
+            <label for="birth_time" class="form-label">Birth time<span class="text-danger">*</span></label>
+            <div class="col-md-3">
+              <select class="form-select" id="birth_hours" name="birth_hours">
+                  <option selected disabled value="">Hours...</option>
+                  @for ($i = 1; $i <= 12; $i++)
+                    <option  value="{{ $i }}">{{ $i }}</option>
+                  @endfor
+              </select>
+              <span class="help-block"><strong></strong></span>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="birth_minutes" name="birth_minutes">
+                    <option selected disabled value="">Minutes...</option>
+                    <option  value="00">00</option>
+                    @for ($i = 1; $i <= 60; $i++)
+                      <option  value="{{ $i }}">{{ $i }}</option>
+                    @endfor
+                </select>
+                <span class="help-block"><strong></strong></span>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="birth_format" name="birth_format">
+                    <option selected disabled value="">Select AM/PM</option>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+                <span class="help-block"><strong></strong></span>
+            </div>
+            {{-- <input type="text" class="form-control" id="birth_time" name="birth_time" >
             <span class="help-block"><strong></strong></span>
             @error('birth_time')
               <span class="text-danger" role="alert">
                   <strong>{{ $message }}</strong>
               </span>
-            @enderror
+            @enderror --}}
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -181,7 +202,7 @@
             <div class="col-md-3">
               <select class="form-select" id="height_ft" name="height_ft">
                   <option selected disabled value="">feet...</option>
-                  @for ($i = 0; $i < 13; $i++)
+                  @for ($i = 1; $i < 11; $i++)
                     <option  value="{{ $i }}">{{ $i }}</option>
                   @endfor
               </select>
@@ -190,7 +211,7 @@
             <div class="col-md-3">
               <select class="form-select" id="height_in" name="height_in">
                   <option selected disabled value="">inch...</option>
-                  @for ($i = 0; $i < 13; $i++)
+                  @for ($i = 0; $i < 11; $i++)
                     <option  value="{{ $i }}">{{ $i }}</option>
                   @endfor
               </select>
@@ -374,7 +395,7 @@
           </div>
 
           <div class="col-md-6">
-              <label for="current_location" class="form-label">Current Location<span class="text-danger">*</span></label>
+              <label for="current_location" class="form-label">Address<span class="text-danger">*</span></label>
               <textarea class="form-control" aria-label="With textarea" name="current_address"></textarea>
               <span class="help-block"><strong></strong></span>
             @error('current_location')
@@ -443,7 +464,7 @@
           </div>
 
           <div class="col-md-6">
-            <label for="Annual_income" class="form-label">Annual income<span class="text-danger">*</span></label>
+            <label for="Annual_income" class="form-label">Annual income</label>
             <input
               type="text"
               class="form-control"
@@ -612,7 +633,7 @@
           </h3>
           <div id="mosal_details" class="row">
             <div class="col-md-6">
-              <label for="location" class="form-label">Location*</label>
+              <label for="location" class="form-label">Location</label>
               <input
                 type="text"
                 class="form-control"
@@ -633,12 +654,10 @@
 
             <div class="col-md-5">
 
-
               <label for="person_name" class="form-label">Person Name</label>
               <input
                 type="text"
                 class="form-control"
-                id="person_name"
                 name="mosal[0][person_name]"
                 value = "{{ old('mosal[$i][person_name]') }}"
               />
@@ -655,16 +674,11 @@
               <input
                 type="text"
                 class="form-control"
-                id="contact_number"
                 name="mosal[0][contact_number]"
-                value = "{{ old('mosal[0][contact_number]') }}"
+                value="{{ old('mosal.0.contact_number') }}"
               />
               <span class="help-block"><strong></strong></span>
-              @error('contact_number')
-                <span class="text-danger" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-              @enderror
+              
             </div>
 
 
@@ -743,7 +757,7 @@
 
 
           <div class="col-md-6">
-            <label for="whatsapp_number" class="form-label">Whatsapp Number<span class="text-danger">*</span></label>
+            <label for="whatsapp_number" class="form-label">Whatsapp Number</label>
             <input
               type="text"
               class="form-control"
@@ -763,7 +777,7 @@
           <div class="col-md-6">
             <label for="contact_person_email" class="form-label">Email</label>
             <input
-              type="email"
+              type="name"
               class="form-control"
               id="contact_person_email"
               name="contact_person_email"
@@ -779,7 +793,7 @@
           <!--end::Col-->
 
           <div class="col-md-6">
-            <label for="email" class="form-label">Show Contact Publicly<span class="text-danger">*</span></label>
+            <label for="email" class="form-label">Show Contact Publicly</label>
             <input type="checkbox" id="show_contact_publicly" name="show_contact_publicly">
             <label for="show_contact"> Yes</label><br>         
 
@@ -790,7 +804,7 @@
           </h3>
 
           <div class="col-md-6">
-            <label for="upload_profile_photo" class="form-label">upload Profile Photo<span class="text-danger">*</span></label>
+            <label for="upload_profile_photo" class="form-label">Upload Profile Photo</label>
             <input
               type="file"
               class="form-control"
@@ -808,7 +822,7 @@
 
 
           <div class="col-md-6">
-            <label for="upload_gallery_photo" class="form-label">upload Gallery Photo<span class="text-danger">*</span></label>
+            <label for="upload_gallery_photo" class="form-label">Upload Gallery Photo</label>
             <input
               type="file"
               class="form-control"
@@ -848,7 +862,10 @@
       <!--end::Body-->
       <!--begin::Footer-->
       <div class="card-footer">
-        <button class="btn btn-info" type="submit">Submit</button>
+        <button class="btn btn-info mx-2" type="submit">Submit</button>
+        <a href="{{ url()->previous() }}" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
       </div>
       <!--end::Footer-->
     </form>
@@ -861,14 +878,15 @@
 @section('js')
 <script type="text/javascript">
 
-  $("#country_id").on("click", function(){
+  $("#country_id").on("click change", function(){
+      $('#state_id').empty();
       let id = $(this).val();
       $.ajax({
         url : "{{ route('admin.profile.states') }}",
         data:{'id':id},
         success: function(result){
-          $('#state').empty();
-          $('#state').append('<option value="">Select Option</select>');
+          $('#state_id').empty();
+          $('#state_id').append('<option value="">Select Option</select>');
           $.each(result.states,function(index, data){
             $('#state_id').append($('<option>',{
                 value:data.id
@@ -879,7 +897,8 @@
       });
   });
 
-  $("#state_id").on("click", function(){
+  $("#state_id").on("change", function(){
+     $('#city_id').empty();
       let id = $(this).val();
       $.ajax({
         url : "{{ route('admin.profile.cities') }}",
@@ -901,11 +920,26 @@
   var i = 0;
   $("#add_mosal").on("click",function(){
     ++i;
-    var html = '<div class="mosal_details  row mosal_'+i+'" data-attr="mosal_'+i+'">';
-    html += '<div class="col-md-5"><label for="name" class="form-label">Person Name<span class="text-danger">*</span></label><input type="text" class="form-control" id="name" name="mosal['+i+'][person_name]" /></div>';
-    html += '<div class="col-md-5" ><label for="contact_number" class="form-label">Contact Number<span class="text-danger">*</span></label> <input type="text" class="form-control" id="contact_number" name="mosal['+i+'][contact_number]"/></div>'
-    html += '<div class="col-md-2 mt-4"><button type="button" data-attr="mosal_'+i+' "id="remove_mosal_'+i+'" class="btn btn-danger remove_mosal"> <i class="nav-icon bi bi-file-minus"></i> </button></div>';
-    html+= '</div>'
+    var html = '<div class="mosal_details row mosal_'+i+'" data-attr="mosal_'+i+'">';
+
+    html += '<div class="col-md-5">';
+    html += '<label class="form-label">Person Name</label>';
+    html += '<input type="text" class="form-control" name="mosal['+i+'][person_name]" />';
+    html += '<span class="help-block"><strong></strong></span>';
+    html += '</div>';
+
+    html += '<div class="col-md-5">';
+    html += '<label class="form-label">Contact Number</label>';
+    html += '<input type="text" class="form-control" name="mosal['+i+'][contact_number]" />';
+    html += '<span class="help-block"><strong></strong></span>';
+    html += '</div>';
+
+    html += '<div class="col-md-2 mt-4">';
+    html += '<button type="button" data-attr="mosal_'+i+'" class="btn btn-danger remove_mosal">';
+    html += '<i class="nav-icon bi bi-file-minus"></i></button>';
+    html += '</div>';
+
+    html += '</div>';
 
     $("#mosal_details").append(html);
   });
@@ -918,6 +952,12 @@
 
   $('#profile_form').submit(function(e){
     e.preventDefault();
+
+  $('#profile_form .is-invalid').removeClass('is-invalid');
+
+  // Clear all error messages
+  $('#profile_form .help-block strong').text('');
+
     var url = $(this).attr("action");
     let formData = new FormData(this);
 
@@ -931,25 +971,91 @@
               window.location.href = '/admin/profile';                      
           },
           error: function(response){
-              
-
               $.each(response.responseJSON.errors, function (key, value) {
 
-                  var input = '#profile_form input[name=' + key + ']';
-                  var input2 = '#profile_form select[name=' + key + ']';
-                  var input3 = '#profile_form textarea[name=' + key + ']';
-                  $(input + '+span>strong').text(value);
-                  $(input2 + '+span>strong').text(value);
-                  $(input3 + '+span>strong').text(value);
-                  $(input).parent().parent().addClass('has-error');
-                  $(input2).parent().parent().addClass('has-error');
-                  $(input3).parent().parent().addClass('has-error');
-              });
+    let errorText = value[0];
+    let input;
+
+    // ✅ Keep gallery safe
+    if (key.startsWith('gallery_photo')) {
+
+        input = $('#profile_form').find('[name="gallery_photo[]"]');
+
+        input.addClass('is-invalid');
+        input.closest('[class*="col-md"]')
+             .find('.help-block strong')
+             .text(errorText);
+
+        return;
+    }
+
+    // ✅ Convert safely (NO regex issue)
+    let parts = key.split('.');
+    let inputName = parts[0];
+
+    for (let i = 1; i < parts.length; i++) {
+        inputName += `[${parts[i]}]`;
+    }
+
+    // 🔥 Debug (IMPORTANT — check this in console)
+    console.log("Looking for:", inputName);
+
+    input = $('#profile_form').find('[name="' + inputName + '"]');
+
+    // 🔥 If still not found → this will tell you
+    if (!input.length) {
+        console.warn("Not found:", inputName);
+    }
+
+    if (input.length) {
+        input.addClass('is-invalid');
+
+        input.closest('[class*="col-md"]')
+             .find('.help-block strong')
+             .text(errorText);
+    }
+
+});
+          }
+
+              // $.each(response.responseJSON.errors, function (key, value) {
+
+              //     var input = '#profile_form input[name=' + key + ']';
+              //     var input2 = '#profile_form select[name=' + key + ']';
+              //     var input3 = '#profile_form textarea[name=' + key + ']';
+              //     var input4 = '#profile_form file[name=' + key + ']';
+
+              //     $(input + '+span>strong').text(value);
+              //     $(input2 + '+span>strong').text(value);
+              //     $(input3 + '+span>strong').text(value);
+              //     $(input4 + '+span>strong').text(value);
+                  
+              //     $(input).parent().parent().addClass('has-error');
+              //     $(input2).parent().parent().addClass('has-error');
+              //     $(input3).parent().parent().addClass('has-error');
+              //     $(input4).parent().parent().addClass('has-error');
+              // });
   
           
-          }
+          
      });
   })
+
+  function calculateAge(dateString) {
+      var currentDate = new Date();
+      var selectedDate = new Date(dateString);
+
+      if (isNaN(selectedDate)) return; // invalid date safety
+
+      var age = currentDate.getFullYear() - selectedDate.getFullYear();
+      var m = currentDate.getMonth() - selectedDate.getMonth();
+
+      if (m < 0 || (m === 0 && currentDate.getDate() < selectedDate.getDate())) {
+          age--;
+      }
+
+      $('#age').val(age);
+  }
 
   $('#birth_date').datepicker({
       format: 'yyyy-mm-dd',
@@ -957,31 +1063,13 @@
       todayHighlight: true,
       endDate: "today",
   }).on('changeDate', function(e) {
-      var currentDate = new Date();
-      var selectedDate = new Date(e.date.toString());
-      var age = currentDate.getFullYear() - selectedDate.getFullYear();
-      var m = currentDate.getMonth() - selectedDate.getMonth();
-
-      if (m < 0 || (m === 0 && currentDate.getDate() < selectedDate.getDate())) {
-          age--;
-      }
-      $('#age').val(age);
+       calculateAge(e.format('yyyy-mm-dd'));
   });
 
-
-
-
-  $("#birth_time").timepicker({
-    timeFormat: 'h:mm p',
-    interval: 1,
-    minTime: '12:00 am',
-    maxTime: '11:59 pm',
-    // defaultTime: '11',
-    startTime: '00:00',
-    dynamic: false,
-    dropdown: true,
-    scrollbar: true
+  $('#birth_date').on('input change', function () {
+    calculateAge($(this).val());
   });
+
 
 //   function calculateAndDisplayAge(birthDate) {
 //     const today = new Date();

@@ -38,13 +38,14 @@ class HomeRepository implements HomeRepositoryInterface
             $query->where(function ($q) use ($s) {
                 $q->where('first_name', 'LIKE', "%$s%")
                   ->orWhere('last_name', 'LIKE', "%$s%")
+                  ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$s}%"])
                   ->orWhere('education', 'LIKE', "%$s%")
                   ->orWhere('caste', 'LIKE', "%$s%")
                   ->orWhere('occupation', 'LIKE', "%$s%");
             });
         }
 
-        return $query->orderBy('id', 'desc')->paginate(10);
+        return $query->where('profile_status',1)->orderBy('id', 'desc')->paginate(12);
     }
 
     public function getCityList()
@@ -86,7 +87,7 @@ class HomeRepository implements HomeRepositoryInterface
     {
         return Profile::where('created_by', $userId)
             ->latest()
-            ->paginate(10);
+            ->paginate(12);
     }
 
     public function getProfilesByUserWithFilters($request, $userId)
@@ -121,12 +122,13 @@ class HomeRepository implements HomeRepositoryInterface
             $query->where(function ($q) use ($s) {
                 $q->where('first_name', 'LIKE', "%$s%")
                   ->orWhere('last_name', 'LIKE', "%$s%")
+                  ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$s}%"])
                   ->orWhere('education', 'LIKE', "%$s%")
                   ->orWhere('caste', 'LIKE', "%$s%")
                   ->orWhere('occupation', 'LIKE', "%$s%");
             });
         }
 
-        return $query->orderBy('id', 'desc')->paginate(10);
+        return $query->where('profile_status',1)->orderBy('id', 'desc')->paginate(12);
     }
 }

@@ -61,20 +61,28 @@
                       <div class="card-body pb-0">
                         <div class="row">
                           @if(count($profilelist) > 0)
-                          @foreach($profilelist as $profile)                          
+                          @foreach($profilelist as $profile)
+                            @php
+                                $fullAddress = $profile->current_address . ', ' . $profile->city->name . ', ' . $profile->state->name;
+                                $shortAddress = \Illuminate\Support\Str::limit($fullAddress, 100);
+                            @endphp
                             <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column p-3">
                               <div class="card bg-light d-flex flex-fill">
-                                <div class="card-header text-muted border-bottom-0">
-                                  {{ $profile->gender }}
-                                </div>
-                                <div class="card-body pt-0">
+                                <div class="card-body pt-2">
                                   <div class="row">
                                     <div class="col-7">
                                       <a href="{{ route('user.profile',$profile->id) }}"><h2 class="lead"><b>{{ $profile->first_name }} {{ $profile->last_name }}</b></h2></a>
-                                      <p class="text-muted text-sm"><b>Current Address: </b> {{ $profile->current_address }} </p>
+                                      <p class="text-muted text-sm"><b>Address: </b>
+                                        <span class="short-text">{{ $shortAddress }}</span>
+                                        <span class="full-text d-none">{{ $fullAddress }}</span>
+                                        @if(strlen($fullAddress) > 100)
+                                            <a href="javascript:void(0);" class="read-more text-primary">Read more</a>
+                                        @endif
+                                      </p>
                                       <ul class="ml-4 mb-0 fa-ul text-muted">
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> {{ $profile->caste }}</</li>
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {{ str_replace('_' , ' ', $profile->marital_status) }}</li>
+                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> {{ $profile->age }}</</li>
                                       </ul>
                                     </div>
                                     <div class="col-5 text-center">
@@ -104,13 +112,13 @@
                     </div>
                 </section>
 
-              <div class="card-footer">
-                <nav aria-label="Contacts Page Navigation">
-                  <ul class="pagination justify-content-center m-0">
-                      {{ $profilelist->links() }}
-                  </ul>
-                </nav>
-              </div>
+                <div class="card-footer">
+                    <nav aria-label="Contacts Page Navigation">
+                        <ul class="pagination justify-content-end m-0">
+                            {{ $profilelist->links() }}
+                        </ul>
+                    </nav>
+                </div>
               <!--end::Container-->
         </div>
       </div>
@@ -128,6 +136,22 @@ document.getElementById('search_profile').addEventListener('submit', function(e)
     if (minAge !== null && maxAge !== null && minAge > maxAge) {
         alert('Minimum age cannot be greater than maximum age');
         e.preventDefault(); // stops GET request
+    }
+});
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('read-more')) {
+        e.preventDefault();
+
+        const parent = e.target.closest('p');
+
+        const shortText = parent.querySelector('.short-text');
+        const fullText = parent.querySelector('.full-text');
+
+        shortText.classList.toggle('d-none');
+        fullText.classList.toggle('d-none');
+
+        e.target.textContent =
+            e.target.textContent === 'Read more' ? 'Show less' : 'Read more';
     }
 });
 </script>

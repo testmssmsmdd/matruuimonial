@@ -66,17 +66,16 @@
                           @foreach($profilelist as $profile)                          
                             <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column p-3">
                               <div class="card bg-light d-flex flex-fill">
-                                <div class="card-header text-muted border-bottom-0">
-                                  {{ $profile->gender }}
-                                </div>
-                                <div class="card-body pt-0">
+                                
+                                <div class="card-body pt-2">
                                   <div class="row">
                                     <div class="col-7">
                                       <a href="{{ route('user.profile',$profile->id) }}"><h2 class="lead"><b>{{ $profile->first_name }} {{ $profile->last_name }}</b></h2></a>
-                                      <p class="text-muted text-sm"><b>Current Address: </b> {{ $profile->current_address }} </p>
+                                      <p class="text-muted text-sm"><b>Address: </b> {{ $profile->current_address }}, {{ $profile->city->name }}, {{ $profile->state->name }} </p>
                                       <ul class="ml-4 mb-0 fa-ul text-muted">
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> {{ $profile->caste }}</</li>
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {{ str_replace('_' , ' ', $profile->marital_status) }}</li>
+                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {{ $profile->age }} Years</li>
                                       </ul>
                                     </div>
                                     <div class="col-5 text-center">
@@ -94,7 +93,6 @@
                                 </div>
                               </div>
                             </div>
-                            
                           <!-- /.card -->
                           @endforeach
                           @else
@@ -107,11 +105,11 @@
                 </section>
 
               <div class="card-footer">
-                <nav aria-label="Contacts Page Navigation">
-                  <ul class="pagination justify-content-center m-0">
-                      {{ $profilelist->links() }}
-                  </ul>
-                </nav>
+                  <nav aria-label="Contacts Page Navigation">
+                      <ul class="pagination justify-content-end m-0">
+                          {{ $profilelist->links() }}
+                      </ul>
+                  </nav>
               </div>
               <!--end::Container-->
         </div>

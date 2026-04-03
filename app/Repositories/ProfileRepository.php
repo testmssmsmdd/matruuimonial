@@ -5,6 +5,7 @@ use App\Models\Profile;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
+use App\Models\Gallery_photos;
 use Illuminate\Support\Facades\DB;
 
 
@@ -29,12 +30,13 @@ class ProfileRepository implements ProfileRepositoryInterface
             $query->where(function ($q) use ($s) {
                 $q->where('first_name', 'LIKE', "%$s%")
                   ->orWhere('last_name', 'LIKE', "%$s%")
+                  ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$s}%"])
                   ->orWhere('caste', 'LIKE', "%$s%")
                   ->orWhere('gotra', 'LIKE', "%$s%");
             });
         }
 
-        return $query->orderBy('id','DESC')->paginate(10);
+        return $query->orderBy('id','DESC')->paginate(12);
     }
 
     public function getCityList($userId)
@@ -163,6 +165,17 @@ class ProfileRepository implements ProfileRepositoryInterface
     public function deleteGallery($image)
     {
         return $image->delete();
+    }
+
+    public function toggleStatus($id)
+    {
+        $profile = Profile::findOrFail($id);
+
+        $profile->profile_status = $profile->profile_status == 1 ? 0 : 1;
+
+        $profile->save();
+
+        return $profile;
     }
 }
 

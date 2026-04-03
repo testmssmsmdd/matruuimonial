@@ -38,6 +38,7 @@ class UpdateUserRequest extends FormRequest
             'phone_number' => [
                 'required',
                 'numeric',
+                'digits:10',
                 Rule::unique('users')->ignore($userId)
             ],
             'password'=>'sometimes|nullable|confirmed'

@@ -29,22 +29,31 @@
         data-accordion="false"
         id="navigation"
       >
-        @if(Auth::user()->role === "Super_Admin")
+      <li class="nav-item">
+        <a href="{{ route('admin.dashboard.index') }}" 
+          class="nav-link {{ request()->routeIs('admin.dashboard.index') ? 'active' : '' }}">
+          <i class="nav-icon bi bi-speedometer2"></i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+      @if(Auth::user()->role === "Super_Admin")
         <li class="nav-item">
-          <a href="{{ route('admin.list') }}" class="nav-link">
-            <i class="nav-icon bi bi-palette"></i>
+          <a href="{{ route('admin.list') }}" 
+          class="nav-link {{ request()->routeIs('admin.list') ? 'active' : '' }}">
+            <i class="nav-icon bi bi-person-circle"></i>
             <p>Admin</p>
           </a>
         </li>
-        @endif
-        @if(Auth::user()->role === "Admin")
+      @endif
+      @if(Auth::user()->role === "Admin")
         <li class="nav-item">
-          <a href="{{ route('admin.profile.list') }}" class="nav-link">
-            <i class="nav-icon bi bi-palette"></i>
+          <a href="{{ route('admin.profile.list') }}" 
+          class="nav-link {{ request()->routeIs('admin.profile.list') ? 'active' : '' }}">
+            <i class="nav-icon bi bi-people-fill"></i>
             <p>Profile</p>
           </a>
         </li>
-        @endif
+      @endif
 
       </ul>
       <!--end::Sidebar Menu-->

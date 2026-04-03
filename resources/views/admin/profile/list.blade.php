@@ -60,20 +60,31 @@
                       <div class="card-body pb-0">
                         <div class="row">
                           @if(count($profilelist) > 0)
-                          @foreach($profilelist as $profile)                          
+                          @foreach($profilelist as $profile)
+                          @php
+                              $fullAddress = $profile->current_address . ', ' . $profile->city->name . ', ' . $profile->state->name;
+                              $shortAddress = \Illuminate\Support\Str::limit($fullAddress, 100);
+                          @endphp                       
                             <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column p-3">
                               <div class="card bg-light d-flex flex-fill">
-                                <div class="card-header text-muted border-bottom-0">
-                                  {{ $profile->gender }}
+                                <div class="card-header border-bottom-0 {{ $profile->profile_status == 1 ? 'text-success' : 'text-danger' }}">
+                                  {{ $profile->profile_status == 1 ? 'Active' : 'Inactive' }}
                                 </div>
-                                <div class="card-body pt-0">
+                                <div class="card-body pt-2">
                                   <div class="row">
                                     <div class="col-7">
                                       <h2 class="lead"><b>{{ $profile->first_name }} {{ $profile->last_name }}</b></h2>
-                                      <p class="text-muted text-sm"><b>Current Address: </b> {{ $profile->current_address }} </p>
+                                      <p class="text-muted text-sm"><b>Address: </b>
+                                        <span class="short-text">{{ $shortAddress }}</span>
+                                        <span class="full-text d-none">{{ $fullAddress }}</span>
+                                        @if(strlen($fullAddress) > 100)
+                                            <a href="javascript:void(0);" class="read-more text-primary">Read more</a>
+                                        @endif
+                                      </p>
                                       <ul class="ml-4 mb-0 fa-ul text-muted">
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> {{ $profile->caste }}</</li>
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {{ str_replace('_', ' ',$profile->marital_status) }}</li>
+                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {{ $profile->age }} Years</li>
                                       </ul>
                                     </div>
                                     <div class="col-5 text-center">
@@ -102,7 +113,11 @@
                                       @method('DELETE')
                                       <button type="submit" class="btn btn-danger btn-delete"><i class="nav-icon bi bi-trash"></i></button>
                                     </form>
-                                    </a>
+
+                                    <form method="POST" action="{{ route('admin.profile.change_status', $profile->id) }}" class="btn btn-danger" style="background:none;border:none;">
+                                      @csrf
+                                      <button class="btn btn-secondary btn-status">{{ $profile->profile_status ? 'Inactive':'active' }}</button>
+                                    </form>
                                   </div>
                                 </div>
                               </div>
@@ -119,11 +134,11 @@
                 </section>
 
               <div class="card-footer">
-                <nav aria-label="Contacts Page Navigation">
-                  <ul class="pagination justify-content-center m-0">
-                      {{ $profilelist->links() }}
-                  </ul>
-                </nav>
+                  <nav aria-label="Contacts Page Navigation">
+                      <ul class="pagination justify-content-end m-0">
+                          {{ $profilelist->links() }}
+                      </ul>
+                  </nav>
               </div>
               <!--end::Container-->
         </div>
@@ -141,8 +156,8 @@
     var form = $(this).parents("form");
 
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Are you sure you want to delete",
+      text: "",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -153,6 +168,34 @@
         form.submit();
       }
     });
-});
+  });
+
+    $(".btn-status").click(function(e){
+      e.preventDefault();
+      var form = $(this).parents("form");
+
+      Swal.fire({
+        title: "Are you sure you want to change profile Staus",
+        text: "",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.submit();
+        }
+      });
+    });
+
+    $('.read-more').click(function (e) {
+      e.preventDefault();
+      let parent = $(this).closest('p');
+      parent.find('.short-text').toggleClass('d-none');
+      parent.find('.full-text').toggleClass('d-none');
+
+      $(this).text($(this).text() === 'Read more' ? 'Show less' : 'Read more');
+    });
 </script>
 @endsection

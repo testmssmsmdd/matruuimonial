@@ -21,11 +21,7 @@
 <div class="col-md-10">
 
   <div class="card card-info card-outline mb-4">
-    <!--begin::Header-->
-    <div class="card-header">
-      <div class="card-title">Edit</div>
-    </div>
-    <!--end::Header-->
+    
     <!--begin::Form-->
     <form action="{{ route('admin.profile.update',$profile->id) }}" class="needs-validation" id="profile_form">
       @csrf
@@ -87,7 +83,6 @@
               id="last_name"
               name="last_name"
               value = "{{ $profile->last_name }}"
-
             />
             <span class="help-block"><strong></strong></span>
             @error('last_name')
@@ -145,16 +140,41 @@
           </div>
           <!--end::Col-->
           <!--begin::Col-->
-          <div class="col-md-6">
-            <label for="birth_time" class="form-label">Birth time</label>
-            <input type="text" class="form-control" id="birth_time" name="birth_time" value="{{ $profile->birth_time }}" >
-            <span class="help-block"><strong></strong></span>
-            @error('birth_time')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+          <div class="col-md-6 row me-2 mt-3">
+            <label for="birth_time" class="form-label">Birth time<span class="text-danger">*</span></label>
+            <div class="col-md-3">
+              <select class="form-select" id="birth_hours" name="birth_hours">
+                  <option selected disabled value="">Hours...</option>
+                  @for ($i = 1; $i <= 12; $i++)
+                    <option value="{{ $i }}" {{ ($profile->birth_time_parts['hours'] ?? '') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                  @endfor
+              </select>
+              <span class="help-block"><strong></strong></span>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="birth_minutes" name="birth_minutes">
+                    <option selected disabled value="">Minutes...</option>
+                    @for ($i = 0; $i <= 60; $i++)
+                      <option value="{{ $i }}" {{ ($profile->birth_time_parts['minutes'] ?? '') == $i ? 'selected' : '' }}>{{ $i }}</option>
+                    @endfor
+                </select>
+                <span class="help-block"><strong></strong></span>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="birth_format" name="birth_format">
+                    <option selected disabled value="">Select AM/PM</option>
+                    <option value="AM" {{ ($profile->birth_time_parts['format'] ?? '') == 'AM' ? 'selected' : '' }}>
+                        AM
+                    </option>
+
+                    <option value="PM" {{ ($profile->birth_time_parts['format'] ?? '') == 'PM' ? 'selected' : '' }}>
+                        PM
+                    </option>
+                </select>
+                <span class="help-block"><strong></strong></span>
+            </div>
           </div>
+
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-md-6">
@@ -180,7 +200,7 @@
             <div class="col-md-3">
               <select class="form-select" id="height_ft" name="height_ft">
                   <option selected disabled value="">feet...</option>
-                  @for ($i = 0; $i < 13; $i++)
+                  @for ($i = 1; $i < 11; $i++)
                     <option value="{{ $i }}" {{ $profile->height_ft == $i ? 'selected' : '' }}>{{ $i }}</option>
                   @endfor
               </select>
@@ -188,7 +208,7 @@
             <div class="col-md-3">
               <select class="form-select" id="height_in" name="height_in">
                   <option selected disabled value="">inch...</option>
-                  @for ($i = 0; $i < 13; $i++)
+                  @for ($i = 0; $i < 11; $i++)
                     <option value="{{ $i }}" {{ $profile->height_in == $i ? 'selected' : '' }}>{{ $i }}</option>
                   @endfor
               </select>
@@ -308,7 +328,6 @@
             @enderror
           </div>
 
-
           <div class="col-md-6">
               <label for="manglik" class="form-label">Manglik<span class="text-danger">*</span></label>
               <select class="form-select" id="manglik" name="manglik">
@@ -373,7 +392,7 @@
           </div>
 
           <div class="col-md-6">
-              <label for="current_location" class="form-label">Current Location<span class="text-danger">*</span></label>
+              <label for="current_location" class="form-label">Address<span class="text-danger">*</span></label>
               <textarea class="form-control" aria-label="With textarea" name="current_address">{{ $profile->current_address }}</textarea>
               <span class="help-block"><strong></strong></span>
             @error('current_location')
@@ -442,7 +461,7 @@
           </div>
 
           <div class="col-md-6">
-            <label for="Annual_income" class="form-label">Annual income<span class="text-danger">*</span></label>
+            <label for="Annual_income" class="form-label">Annual income</label>
             <input
               type="text"
               class="form-control"
@@ -706,7 +725,6 @@
               <input
                 type="text"
                 class="form-control"
-                id="contact_number"
                 name="mosal[[0]][contact_number]"
                 value = "{{ $mosal->contact_number }}"
               />
@@ -793,7 +811,7 @@
 
 
           <div class="col-md-6">
-            <label for="whatsapp_number" class="form-label">Whatsapp Number<span class="text-danger">*</span></label>
+            <label for="whatsapp_number" class="form-label">Whatsapp Number</label>
             <input
               type="text"
               class="form-control"
@@ -813,7 +831,7 @@
           <div class="col-md-6">
             <label for="contact_person_email" class="form-label">Email</label>
             <input
-              type="email"
+              type="name"
               class="form-control"
               id="contact_person_email"
               name="contact_person_email"
@@ -829,11 +847,17 @@
           <!--end::Col-->
 
           <div class="col-md-6">
-            <label for="email" class="form-label">Show Contact Publicly<span class="text-danger">*</span></label>
-            
-            <input type="checkbox" id="show_contact_publicly" name="show_contact_publicly" value="1" <?php if($profile->show_contact_publicly == 1) echo 'checked'; ?>>
-            <label for="show_contact"> Yes</label><br>         
+            <label for="email" class="form-label">Show Contact Publicly</label>
 
+            <input type="hidden" name="show_contact_publicly" value="0">
+
+            <input type="checkbox"
+                   id="show_contact_publicly"
+                   name="show_contact_publicly"
+                   value="1"
+                   {{ $profile->show_contact_publicly == 1 ? 'checked' : '' }}>
+
+            <label for="show_contact_publicly">Yes</label>
           </div>
 
           <h3 class="fw-bold">
@@ -841,7 +865,7 @@
           </h3>
 
           <div class="col-md-6">
-            <label for="profile_photo" class="form-label">Upload Profile Photo<span class="text-danger">*</span></label>
+            <label for="profile_photo" class="form-label">Upload Profile Photo</label>
             <input
               type="file"
               class="form-control"
@@ -862,7 +886,7 @@
 
 
           <div class="col-md-6">
-            <label for="gallery_photo" class="form-label">Upload Gallery Photo<span class="text-danger">*</span></label>
+            <label for="gallery_photo" class="form-label">Upload Gallery Photo</label>
             <input
               type="file"
               class="form-control"
@@ -878,13 +902,19 @@
               </span>
             @enderror
             @if($profile?->gallery_photo)
-            <div>
-            @foreach($profile->gallery_photo as $gallery_photo)
-                <button class="gallery_img_del" id="gallery_img_del" data-attr="{{ $gallery_photo->id }}" style="position:absolute;background:cadetblue;"><i class="bi bi-x mt-4"></i></button>
-                <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}" class="img-thumbnail w-25"  />
-
-            @endforeach
-          </div>
+              <div>
+                @foreach($profile->gallery_photo as $gallery_photo)
+                    <button 
+                        type="button"
+                        class="gallery_img_del" 
+                        data-attr="{{ $gallery_photo->id }}" 
+                        style="position:absolute;background:cadetblue;">
+                        
+                        <i class="bi bi-x mt-4"></i>
+                    </button>
+                    <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}" class="img-thumbnail w-25"  />
+                @endforeach
+              </div>
             @endif
           </div>
 
@@ -910,7 +940,10 @@
       <!--end::Body-->
       <!--begin::Footer-->
       <div class="card-footer">
-        <button class="btn btn-info" type="submit">Submit</button>
+        <button class="btn btn-info mx-2" type="submit">Submit</button>
+        <a href="{{ url()->previous() }}" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
       </div>
       <!--end::Footer-->
     </form>
@@ -1017,46 +1050,29 @@
       });
   });
 
-  
-  // function loadMosals(profile_id){
-  //   $.ajax({
-  //       url : "{{ route('admin.profile.mosals') }}",
-  //       data:{'id':profile_id},
-  //       success: function(result){
-  //         console.log(result);
-  //         console.log(result.mosals);
-  //         $.each(result.mosals,function(index, data){
-  //           if(index == 0){
-  //             var html = '<div class="mosal_details  row mosal_'+index+'" data-attr="mosal_'+index+'">';
-  //               html += '<div class="col-md-5"><label for="name" class="form-label">Person Name<span class="text-danger">*</span></label><input type="text" class="form-control" id="person_name" name="mosal['+index+'][person_name]" value="'+data.person_name+'" /></div>';
-  //               html += '<div class="col-md-5" ><label for="contact_number" class="form-label">Contact Number<span class="text-danger">*</span></label> <input type="text" class="form-control" id="contact_number" name="mosal['+index+'][contact_number]" value="'+data.contact_number+'"/></div>'
-  //               html += '<div class="col-md-2 mt-4"><button type="button" id="add_mosal" class="btn btn-primary add_mosal"> <i class="nav-icon bi bi-plus"></i> </button></div>';
-  //               html+= '</div>'
-  //               $("#mosal_details").append(html);
-  //           }else{
-  //             var html = '<div class="mosal_details  row mosal_'+index+'" data-attr="mosal_'+index+'">';
-  //               html += '<div class="col-md-5"><label for="name" class="form-label">Person Name<span class="text-danger">*</span></label><input type="text" class="form-control" id="person_name" name="mosal['+index+'][person_name]" value="'+data.person_name+'" /></div>';
-  //               html += '<div class="col-md-5" ><label for="contact_number" class="form-label">Contact Number<span class="text-danger">*</span></label> <input type="text" class="form-control" id="contact_number" name="mosal['+index+'][contact_number]" value="'+data.contact_number+'"/></div>'
-  //               html += '<div class="col-md-2 mt-4"><button type="button" data-attr="mosal_'+index+' "id="remove_mosal_'+index+'" class="btn btn-danger remove_mosal"> <i class="nav-icon bi bi-file-minus"></i> </button></div>';
-  //               html+= '</div>'
-  //               $("#mosal_details").append(html);
-  //           }
-          
-  //         })
-
-  //       }
-
-  //     });
-
-  // }
   var i = $('#mosal_count_value').val() || 0;
   $("#add_mosal").on("click",function(){
     ++i;
-    var html = '<div class="mosal_details  row mosal_'+i+'" data-attr="mosal_'+i+'">';
-    html += '<div class="col-md-5"><label for="name" class="form-label">Person Name<span class="text-danger">*</span></label><input type="text" class="form-control" id="person_name" name="mosal['+i+'][name]" /></div>';
-    html += '<div class="col-md-5" ><label for="contact_number" class="form-label">Contact Number<span class="text-danger">*</span></label> <input type="text" class="form-control" id="contact_number" name="mosal['+i+'][contact_number]"/></div>'
-    html += '<div class="col-md-2 mt-4"><button type="button" data-attr="mosal_'+i+' "id="remove_mosal_'+i+'" class="btn btn-danger remove_mosal"> <i class="nav-icon bi bi-file-minus"></i> </button></div>';
-    html+= '</div>'
+    var html = '<div class="mosal_details row mosal_'+i+'" data-attr="mosal_'+i+'">';
+
+    html += '<div class="col-md-5">';
+    html += '<label class="form-label">Person Name</label>';
+    html += '<input type="text" class="form-control" name="mosal['+i+'][person_name]" />';
+    html += '<span class="help-block"><strong></strong></span>';
+    html += '</div>';
+
+    html += '<div class="col-md-5">';
+    html += '<label class="form-label">Contact Number</label>';
+    html += '<input type="text" class="form-control" name="mosal['+i+'][contact_number]" />';
+    html += '<span class="help-block"><strong></strong></span>';
+    html += '</div>';
+
+    html += '<div class="col-md-2 mt-4">';
+    html += '<button type="button" data-attr="mosal_'+i+'" class="btn btn-danger remove_mosal">';
+    html += '<i class="nav-icon bi bi-file-minus"></i></button>';
+    html += '</div>';
+
+    html += '</div>';
 
     $("#mosal_details").append(html);
   });
@@ -1069,6 +1085,13 @@
 
   $('#profile_form').submit(function(e){
     e.preventDefault();
+
+   $('#profile_form .is-invalid').removeClass('is-invalid');
+
+// Clear all error messages
+$('#profile_form .help-block strong').text('');
+
+    
     var url = $(this).attr("action");
     let formData = new FormData(this);
 
@@ -1079,29 +1102,90 @@
           contentType: false,
           processData: false,
           success: (response) => {
-              // info('Form submitted successfully'); 
               window.location.href = '/admin/profile';                           
           },
           error: function(response){
-              
-
               $.each(response.responseJSON.errors, function (key, value) {
 
-                  var input = '#profile_form input[name=' + key + ']';
-                  var input2 = '#profile_form select[name=' + key + ']';
-                  var input3 = '#profile_form textarea[name=' + key + ']';
-                  $(input + '+span>strong').text(value);
-                  $(input2 + '+span>strong').text(value);
-                  $(input3 + '+span>strong').text(value);
-                  $(input).parent().parent().addClass('has-error');
-                  $(input2).parent().parent().addClass('has-error');
-                  $(input3).parent().parent().addClass('has-error');
+                  let errorText = value[0];
+                  let input;
+
+                  if (key.startsWith('gallery_photo')) {
+
+                      input = $('#profile_form').find('[name="gallery_photo[]"]');
+
+                      input.addClass('is-invalid');
+
+                      input.closest('[class*="col-md"]')
+                           .find('.help-block strong')
+                           .text(errorText);
+
+                      return;
+                  }
+
+                  if (key.includes('.')) {
+
+                      let inputName = key.replace(/\.(\w+)/g, '[$1]');
+                      let safeName = inputName.replace(/([:\[\]])/g, "\\$1");
+
+                      input = $('#profile_form').find('[name="' + safeName + '"]');
+
+                  } else {
+                      input = $('#profile_form').find('[name="' + key + '"]');
+                  }
+
+                  if (input.length) {
+
+                      input.addClass('is-invalid');
+
+                      input.closest('[class*="col-md"]')
+                           .find('.help-block strong')
+                           .text(errorText);
+                  }
+
               });
-  
-          
           }
+                  
+
+              // $.each(response.responseJSON.errors, function (key, value) {
+
+              //     var input = '#profile_form input[name=' + key + ']';
+              //     var input2 = '#profile_form select[name=' + key + ']';
+              //     var input3 = '#profile_form textarea[name=' + key + ']';
+              //     var input4 = '#profile_form file[name=' + key + ']';
+              //     console.log(input4);
+
+              //     $(input + '+span>strong').text(value);
+              //     $(input2 + '+span>strong').text(value);
+              //     $(input3 + '+span>strong').text(value);
+              //     $(input4 + '+span>strong').text(value);
+              //     console.log(value)
+              //     $(input).parent().parent().addClass('has-error');
+              //     $(input2).parent().parent().addClass('has-error');
+              //     $(input3).parent().parent().addClass('has-error');
+              //     $(input4).parent().parent().addClass('has-error');
+
+
+              // });
      });
-  })
+  });
+
+
+  function calculateAge(dateString) {
+      var currentDate = new Date();
+      var selectedDate = new Date(dateString);
+
+      if (isNaN(selectedDate)) return; // invalid date safety
+
+      var age = currentDate.getFullYear() - selectedDate.getFullYear();
+      var m = currentDate.getMonth() - selectedDate.getMonth();
+
+      if (m < 0 || (m === 0 && currentDate.getDate() < selectedDate.getDate())) {
+          age--;
+      }
+
+      $('#age').val(age);
+  }
 
   $('#birth_date').datepicker({
       format: 'yyyy-mm-dd',
@@ -1109,68 +1193,54 @@
       todayHighlight: true,
       endDate: "today",
   }).on('changeDate', function(e) {
-       var currentDate = new Date();
-      var selectedDate = new Date(e.date.toString());
-      var age = currentDate.getFullYear() - selectedDate.getFullYear();
-      var m = currentDate.getMonth() - selectedDate.getMonth();
-
-      if (m < 0 || (m === 0 && currentDate.getDate() < selectedDate.getDate())) {
-          age--;
-      }
-      $('#age').val(age);
+       calculateAge(e.format('yyyy-mm-dd'));
   });
 
-  $("#birth_time").timepicker({
-    timeFormat: 'h:mm p',
-    interval: 1,
-    minTime: '12:00 am',
-    maxTime: '11:59 pm',
-    // startTime: '00:00',
-    dynamic: true,
-    dropdown: true,
-    scrollbar: true
+  $('#birth_date').on('input change', function () {
+    calculateAge($(this).val());
   });
 
-  $(".gallery_img_del").click(function(e){
+
+$(document).on('click', '.gallery_img_del', function(e){
     e.preventDefault();
-    var id = $(this).data("attr");
+
+    let button = $(this);
+    let id = button.data("attr");
 
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then(function (e) {
-      if (e.value === true) {
+        title: "Are you sure you want to delete?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes"
+    }).then(function (result) {
 
-          $.ajaxSetup({
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-          });
+        if (result.isConfirmed) {
 
-          $.ajax({
-            type: 'delete',
-            url: "{{url('/admin/profile/delete_gallery_img')}}/" + id,
-            data: {id:id},
-            dataType: 'JSON',
-            success: function (results) {
-                if (results.success === true) {
-                    swal.fire("Done!", results.message, "success");
-                    location.reload();
-                } else {
-                    swal.fire("Error!", results.message, "error");
+            $.ajax({
+                type: 'POST',
+                url: "/admin/profile/delete_gallery_img/" + id,
+                data: {
+                    _method: 'DELETE',
+                    id: id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Accept': 'application/json'
+                },
+                success: function (results) {
+                    if (results.success) {
+                        Swal.fire("Deleted!", results.message, "success");
+                        location.reload();
+
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
                 }
-            }
-        });
-      } else {
-          e.dismiss;
-      }
+            });
+
+        }
     });
 });
-
 </script>
 @endsection

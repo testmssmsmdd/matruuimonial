@@ -51,8 +51,8 @@ class Profile extends Model
         'contact_person_wp_number',
         'contact_person_email',
         'show_contact_publicly',
-        'mosal_name'
-
+        'mosal_name',
+        'user_id'
     ];
 
 
@@ -119,6 +119,31 @@ class Profile extends Model
     public function country()
     {
         return $this->hasOne(Country::class,'id','country_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function favouritedBy()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'favourite_profiles',
+            'profile_id',
+            'user_id'
+        )->withTimestamps()->withPivot('deleted_at');
+    }
+
+    public function favourites()
+    {
+        return $this->hasMany(FavouriteProfile::class, 'profile_id');
     }
 
 }

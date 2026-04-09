@@ -25,9 +25,6 @@
     <!--begin::Form-->
     <form action="{{ route('admin.profile.store') }}" class="needs-validation" id="profile_form">
       @csrf
-
-
-
       <!--begin::Body-->
       <div class="card-body">
         <!--begin::Row-->
@@ -839,7 +836,6 @@
             @enderror
           </div>
 
-
           <div class="col-md-6">
               <label for="account_status" class="form-label">Account Status<span class="text-danger">*</span></label>
               <select class="form-select" id="account_status" name="profile_status">
@@ -973,71 +969,44 @@
           error: function(response){
               $.each(response.responseJSON.errors, function (key, value) {
 
-    let errorText = value[0];
-    let input;
+                let errorText = value[0];
+                let input;
 
-    // ✅ Keep gallery safe
-    if (key.startsWith('gallery_photo')) {
+                if (key.startsWith('gallery_photo')) {
 
-        input = $('#profile_form').find('[name="gallery_photo[]"]');
+                    input = $('#profile_form').find('[name="gallery_photo[]"]');
 
-        input.addClass('is-invalid');
-        input.closest('[class*="col-md"]')
-             .find('.help-block strong')
-             .text(errorText);
+                    input.addClass('is-invalid');
+                    input.closest('[class*="col-md"]')
+                         .find('.help-block strong')
+                         .text(errorText);
 
-        return;
-    }
+                    return;
+                }
 
-    // ✅ Convert safely (NO regex issue)
-    let parts = key.split('.');
-    let inputName = parts[0];
+                let parts = key.split('.');
+                let inputName = parts[0];
 
-    for (let i = 1; i < parts.length; i++) {
-        inputName += `[${parts[i]}]`;
-    }
+                for (let i = 1; i < parts.length; i++) {
+                    inputName += `[${parts[i]}]`;
+                }
 
-    // 🔥 Debug (IMPORTANT — check this in console)
-    console.log("Looking for:", inputName);
+                input = $('#profile_form').find('[name="' + inputName + '"]');
 
-    input = $('#profile_form').find('[name="' + inputName + '"]');
+                if (!input.length) {
+                    console.warn("Not found:", inputName);
+                }
 
-    // 🔥 If still not found → this will tell you
-    if (!input.length) {
-        console.warn("Not found:", inputName);
-    }
+                if (input.length) {
+                    input.addClass('is-invalid');
 
-    if (input.length) {
-        input.addClass('is-invalid');
+                    input.closest('[class*="col-md"]')
+                         .find('.help-block strong')
+                         .text(errorText);
+                }
 
-        input.closest('[class*="col-md"]')
-             .find('.help-block strong')
-             .text(errorText);
-    }
-
-});
+            });
           }
-
-              // $.each(response.responseJSON.errors, function (key, value) {
-
-              //     var input = '#profile_form input[name=' + key + ']';
-              //     var input2 = '#profile_form select[name=' + key + ']';
-              //     var input3 = '#profile_form textarea[name=' + key + ']';
-              //     var input4 = '#profile_form file[name=' + key + ']';
-
-              //     $(input + '+span>strong').text(value);
-              //     $(input2 + '+span>strong').text(value);
-              //     $(input3 + '+span>strong').text(value);
-              //     $(input4 + '+span>strong').text(value);
-                  
-              //     $(input).parent().parent().addClass('has-error');
-              //     $(input2).parent().parent().addClass('has-error');
-              //     $(input3).parent().parent().addClass('has-error');
-              //     $(input4).parent().parent().addClass('has-error');
-              // });
-  
-          
-          
      });
   })
 
@@ -1069,26 +1038,6 @@
   $('#birth_date').on('input change', function () {
     calculateAge($(this).val());
   });
-
-
-//   function calculateAndDisplayAge(birthDate) {
-//     const today = new Date();
-//     let years = today.getFullYear() - birthDate.getFullYear();
-//     let months = today.getMonth() - birthDate.getMonth();
-//     let days = today.getDate() - birthDate.getDate();
-
-//     // Adjust negative months/days
-//     if (days < 0) {
-//         months--;
-//         days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-//     }
-//     if (months < 0) {
-//         years--;
-//         months += 12;
-//     }
-
-//     $('#age_display').text(`${years} Years, ${months} Months, ${days} Days`);
-// }
 
   $(document).on('change','#show_contact_publicly',function(){
     if($(this).is(':checked')){

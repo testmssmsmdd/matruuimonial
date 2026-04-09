@@ -3,6 +3,7 @@
 namespace App\Services;
 use Auth;
 use DB;
+use App\Models\Profile;
 use App\Repositories\ProfileRepositoryInterface;
 
 class ProfileService
@@ -43,6 +44,12 @@ class ProfileService
             $mosals = array_filter($mosals, function ($mosal) {
                 return !empty($mosal['person_name']) || !empty($mosal['contact_number']);
             });
+
+            $validated['user_id'] = auth()->user()->role === 'Admin'
+                ? $request->user_id
+                : auth()->id();
+
+            $validated['created_by'] = auth()->id();
 
             $validated['height'] = $request->height_ft . '.' . $request->height_in;
             unset($validated['height_ft'], $validated['height_in']);
@@ -252,5 +259,10 @@ class ProfileService
     public function changeStatus($id)
     {
         return $this->profileRepository->toggleStatus($id);
+    }
+
+    public function getProfileByUserId($userId)
+    {
+        return Profile::where('user_id', $userId)->first();
     }
 }

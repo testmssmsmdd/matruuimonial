@@ -6,41 +6,55 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\User\ProfileController as UserProfileController;
 use App\Http\Middleware\CheckSuperAdmin;
 use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\CheckAdminRole;
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
+Route::get('/profiles',[HomeController::class, 'profiles'])->name('user.profiles');
+Route::get('/profiles/{id}',[HomeController::class, 'getProfile'])->name('user.getprofile');
 Route::get('/profile/{id}',[HomeController::class, 'profile'])->name('user.profile');
+Route::get('/user/favourite-profile', [UserProfileController::class, 'favourite_profile_list'])->name('user.favourite_profile')->middleware('auth');
+
 Route::get('/user/{username}',[HomeController::class, 'userlist'])->name('user');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
-Route::get('/change-password', [ChangePasswordController::class, 'changePassword'])->name('change-password');
-Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('update-password');
-Route::get('/admin/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard.index')->middleware('auth');
-
-Route::middleware([CheckSuperAdmin::class,'auth'])->group(function () {
-    Route::get('/admin/list',[AdminHomeController::class,'list'])->name('admin.list');
-    Route::get('/admin/add', [AdminHomeController::class, 'add'])->name('admin.add');
-    Route::post('/admin/store', [AdminHomeController::class, 'store'])->name('admin.store');
-    Route::get('/admin/edit/{id}',[AdminHomeController::class, 'edit'])->name('admin.edit');
-    Route::put('/admin/update/{id}', [AdminHomeController::class, 'update'])->name('admin.update');
-    Route::delete('/admin/destroy/{id}',[AdminHomeController::class, 'destroy'])->name('admin.destroy');
-    Route::post('/admin/change_status/{id}',[AdminHomeController::class,'change_status'])->name('admin.change_status');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
+    Route::get('/create_profie', [UserProfileController::class, 'create_profie'])->name('users.create_profile');
+    Route::post('/store_profie', [UserProfileController::class, 'store_profile'])->name('users.store_profile');
+    Route::post('/update_profile/{id}', [UserProfileController::class, 'update_profile'])->name('users.update_profile');
+    Route::delete('user/profile/delete_gallery_img/{id}',[UserProfileController::class, 'deleteGalleryImg'])->name('user.profile.delete_gallery_img');
+    Route::post('/user/profile/favourite', [UserProfileController::class, 'favourite_profile'])->name('user.profile.favourite');
 });
 
+Route::get('/change-password', [ChangePasswordController::class, 'changePassword'])->name('change-password')->middleware('auth');
+Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('update-password')->middleware('auth');
+Route::get('/admin/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard.index')->middleware([CheckAdminRole::class,'auth']);
 
-Route::middleware([CheckAdmin::class,'auth'])->group(function () {
-    Route::get('/admin/profile',[AdminProfileController::class,'list'])->name('admin.profile.list');
-    Route::get('/admin/profile/create', [AdminProfileController::class, 'create'])->name('admin.profile.create');
-    Route::get('/admin/profile/{id}',[AdminProfileController::class,'details'])->name('admin.profile.details');
-    Route::post('/admin/profile/store',[AdminProfileController::class, 'store'])->name('admin.profile.store');
-    Route::get('admin/profile/edit/{id}',[AdminProfileController::class, 'edit'])->name('admin.profile.edit');
-    Route::put('admin/profile/edit/{id}',[AdminProfileController::class, 'update'])->name('admin.profile.update');
-    Route::delete('admin/profile/delete_gallery_img/{id}',[AdminProfileController::class, 'deleteGalleryImg'])->name('admin.profile.delete_gallery_img');
-    Route::delete('admin/profile/delete/{id}',[AdminProfileController::class, 'deleteProfile'])->name('admin.profile.delete_profile');
-    Route::post('admin/profile/change_status/{id}',[AdminProfileController::class, 'changeStatus'])->name('admin.profile.change_status');
+Route::middleware(['auth', CheckSuperAdmin::class])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/list', [AdminHomeController::class,'list'])->name('list');
+    Route::get('/add', [AdminHomeController::class, 'add'])->name('add');
+    Route::post('/store', [AdminHomeController::class, 'store'])->name('store');
+    Route::get('/edit/{id}', [AdminHomeController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [AdminHomeController::class, 'update'])->name('update');
+    Route::delete('/destroy/{id}', [AdminHomeController::class, 'destroy'])->name('destroy');
+    Route::post('/change_status/{id}', [AdminHomeController::class,'change_status'])->name('change_status');
+});
+
+Route::middleware(['auth', CheckAdmin::class])->prefix('admin/profile')->name('admin.profile.')->controller(AdminProfileController::class)->group(function () {
+    Route::get('/', 'list')->name('list');
+    Route::get('/create', 'create')->name('create');
+    Route::get('/{id}', 'details')->name('details');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::put('/edit/{id}', 'update')->name('update');
+    Route::delete('/delete_gallery_img/{id}', 'deleteGalleryImg')->name('delete_gallery_img');
+    Route::delete('/delete/{id}', 'deleteProfile')->name('delete_profile');
+    Route::post('/change_status/{id}', 'changeStatus')->name('change_status');
+
 });
 
 

@@ -44,7 +44,6 @@ class ProfileRepository implements ProfileRepositoryInterface
         return DB::table('cities')
             ->join('profiles', 'cities.id', '=', 'profiles.city_id')
             ->select('cities.name', 'cities.id')
-            ->where('profiles.created_by', $userId)
             ->distinct()
             ->get();
     }
@@ -110,11 +109,6 @@ class ProfileRepository implements ProfileRepositoryInterface
             ['image' => $imageName, 'is_profile_photo' => 1]
         );
     }
-
-    // public function storeGallery($profile, $data)
-    // {
-    //     return $profile->gallery_photo()->create($data);
-    // }
 
     public function findByIdWithRelations($id)
     {

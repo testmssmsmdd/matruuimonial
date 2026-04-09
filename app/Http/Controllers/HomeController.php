@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\HomeService;
+use App\Models\FavouriteProfile;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -31,4 +33,19 @@ class HomeController extends Controller
         $data = $this->homeService->getUserProfiles($request, $username);
         return view('user.profile_list', $data);
     }
+
+    public function profiles(Request $request){
+        $data = $this->homeService->getHomeData($request);
+        return view('profiles', $data);
+    }
+
+    public function getProfile($id)
+    {
+        $profile = $this->homeService->getProfileDetails($id);
+
+        $is_favourite = FavouriteProfile::where('user_id',Auth::user()?->id)->where('profile_id',$id)->first();
+        return view('user_profile', compact('profile','is_favourite'));
+    }
+
+    
 }

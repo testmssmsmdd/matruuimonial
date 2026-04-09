@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'super_admin' => CheckSuperAdmin::class,
             'admin' => CheckAdmin::class,
+            'CheckAdminRole' => CheckAdminRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

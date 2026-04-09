@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreProfileRequest extends FormRequest
 {
@@ -62,9 +63,19 @@ class StoreProfileRequest extends FormRequest
             'profile_completed' => 'nullable',
             'gotra' => 'nullable|max:100',
             'contact_person_name' => 'required|max:200',
-            'contact_person_number' => 'required|digits:10',
+            'contact_person_number' => [
+                Rule::requiredIf(auth()->user()->role !== 'admin'),
+                'digits:10',
+                Rule::unique('profiles', 'contact_person_number')->ignore($this->user_id, 'user_id')
+            ],
             'contact_person_wp_number' => 'nullable|digits:10',
-            'contact_person_email' => 'nullable|email|max:200',
+            'contact_person_email' => [
+                Rule::requiredIf(auth()->user()->role !== 'Admin'),
+                'nullable',
+                'email',
+                'max:200',
+                'unique:profiles,contact_person_email'
+            ],
             'mosal_name' => 'nullable|max:200',
             'birth_hours' => 'required',
             'birth_minutes' => 'required',
@@ -76,6 +87,10 @@ class StoreProfileRequest extends FormRequest
             'profile_photo'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'gallery_photo.*'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'show_contact_publicly' => 'boolean',
+            'user_id' => [
+                Rule::requiredIf(auth()->user()->role === 'admin'),
+                Rule::unique('profiles', 'user_id')->ignore($this->user_id, 'user_id')
+            ],
         ];
     }
 

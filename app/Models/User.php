@@ -7,9 +7,10 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -29,6 +30,8 @@ class User extends Authenticatable
         'password',
         'is_active',
         'username',
+        'role',
+        'is_active',
     ];
 
     /**
@@ -54,6 +57,13 @@ class User extends Authenticatable
         ];
     }
 
+    public function sendEmailVerificationNotification()
+    {
+        if ($this->role === 'User') {
+            $this->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
+        }
+    }
+
     public function getFullNameAttribute()
     {
         return $this->first_name. ' '. $this->last_name;
@@ -62,6 +72,11 @@ class User extends Authenticatable
     public function createdBy()
     {
         return $this->belongsTo(Profile::class,'id','created_by');
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
     }
 
 }

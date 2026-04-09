@@ -3,13 +3,21 @@ namespace App\Repositories;
 
 use App\Models\Profile;
 use App\Models\User;
+use App\Models\FavouriteProfile;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class HomeRepository implements HomeRepositoryInterface
 {
     public function getProfiles($request)
     {
-        $query = Profile::with('mosals');
+        $userId = Auth::id();
+        $query = Profile::with('mosals')
+        ->withCount([
+            'favourites as is_favourite' => function ($q) use ($userId) {
+                $q->where('user_id', $userId);
+            }
+        ]);
 
         // Filters
         if (!empty($request->gender)) {
@@ -32,6 +40,14 @@ class HomeRepository implements HomeRepositoryInterface
             $query->where('marital_status', $request->marital_status);
         }
 
+        if (!empty($request->education)) {
+            $query->where('education', $request->education);
+        }
+
+        if (!empty($request->profession)) {
+            $query->where('occupation', $request->profession);
+        }
+
         if (!empty($request->name)) {
             $s = $request->name;
 
@@ -45,7 +61,28 @@ class HomeRepository implements HomeRepositoryInterface
             });
         }
 
-        return $query->where('profile_status',1)->orderBy('id', 'desc')->paginate(12);
+        if (!empty($request->sort_by)) {
+
+            if ($request->sort_by == "age") {
+                $query->orderBy('age', 'asc');
+            }
+
+            elseif ($request->sort_by == "location") {
+                $query->orderBy('current_address', 'asc');
+            }
+
+            elseif ($request->sort_by == "latest") {
+                $query->latest();
+            }
+
+        } else {
+            $query->latest();
+        }
+
+        return $query->where('profile_status',1)->where(function ($query) use ($userId) {
+        $query->where('user_id', '!=', $userId)
+              ->orWhereNull('user_id');
+        })->orderBy('id', 'desc')->paginate(12)->appends($request->all());
     }
 
     public function getCityList()
@@ -53,6 +90,7 @@ class HomeRepository implements HomeRepositoryInterface
         return DB::table('cities')
             ->join('profiles', 'cities.id', '=', 'profiles.city_id')
             ->select('cities.name', 'cities.id')
+            ->where('profiles.profile_status',1)
             ->groupBy('profiles.city_id', 'cities.name', 'cities.id')
             ->get();
     }
@@ -130,5 +168,12 @@ class HomeRepository implements HomeRepositoryInterface
         }
 
         return $query->where('profile_status',1)->orderBy('id', 'desc')->paginate(12);
+    }
+
+
+    public function getFavouriteProfiles()
+    {
+        return FavouriteProfile::where('user_id',Auth::user()->id)->select('profile_id')->get();
+
     }
 }

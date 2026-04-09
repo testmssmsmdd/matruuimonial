@@ -1,159 +1,136 @@
-@extends('layouts.app')
+@extends('layouts.user.app')
+
+@section('title')
+Home Page
+@endsection
 
 @section('content')
-  <!--begin::Container-->
-  <div class="container-fluid">
-        <form method="get" id="search_profile" name="search_profile" action= "{{ route('/') }}">
-          <div class="row">
-              <div class="col-md-3">
-                <label for="gender" class="form-label">Gender</label>
-                    <select class="form-select" id="gender" name="gender">
-                      <option selected  value="">All</option>
-                      <option value="Male" <?php if(isset($_GET['gender']) && $_GET['gender'] == 'Male') echo 'selected'; ?>>Male</option>
-                      <option value="Female" <?php if(isset($_GET['gender']) && $_GET['gender'] == 'Female') echo 'selected'; ?>>Female</option>
-                    </select>
-              </div>
+  @include('layouts.user.search')
 
-              <div class="col-md-3">
-                <label for="city" class="form-label">City</label>
-                  <select class="form-select" id="city" name="city">
-                      <option selected value="">Select</option>
-                      @foreach($cityList as $city)
-                        <option value="{{ $city->id }}" <?php echo (isset($_GET['city']) && $_GET['city'] == $city->id) ? 'selected' : ''; ?>>{{ $city->name }}</option>
-                      @endforeach
-                  </select>
-              </div>
-              <div class ="col-md-3">
-                <label for="marital_status" class="form-label">Marital Status</label>
+  <section class="py-5">
+      <div class="container">
 
-                <select class="form-select" id="marital_status" name="marital_status">
-                  <option selected value="">Choose...</option>
-                  <option value="Never_Married" <?php if(isset($_GET['marital_status']) && $_GET['marital_status'] == 'Never_Married') echo 'selected'; ?>>Never Married</option>
-                  <option value="Divorced" <?php if(isset($_GET['marital_status']) && $_GET['marital_status'] == 'Divorced') echo 'selected'; ?>>Divorced</option>
-                  <option value="Widowed" <?php if(isset($_GET['marital_status']) && $_GET['marital_status'] == 'Widowed') echo 'selected'; ?>>Widowed</option>
-                  <option value="Mithi_Jibh_Cancel" <?php if(isset($_GET['marital_status']) && $_GET['marital_status'] == 'Mithi_Jibh_Cancel') echo 'selected'; ?>>Mithi Jibh Cancel</option>
-                  <option value="Broken_Engagement" <?php if(isset($_GET['marital_status']) && $_GET['marital_status'] == 'Broken_Engagement') echo 'selected'; ?>>Broken Engagement</option>
-                </select>
-              </div>
-              <div class="col-md-3 row">
-                <label for="name" class="form-label">Age range</label>
-                <input type="number" id="min_age" name="min_age" class="form-control" style="width: 150px;" placeholder="minimum age" min="0" value="<?php if (isset($_GET['min_age']) && $_GET['min_age'])  echo $_GET['min_age'] ?>" />
-                <input type="number" id="max_age" name="max_age" class="form-control mx-2" style="width: 150px;" placeholder="maximum age" min="0" value="<?php if (isset($_GET['max_age']) && $_GET['max_age'])  echo $_GET['max_age'] ?>" />
-              </div>
-              <div class="col-md-3 mt-1">
-                <label for="name" class="form-label">Religion/Name/Profession/Education</label>
-                <input type="text" id="" name="name" class="form-control" value="<?php if (isset($_GET['name']) && $_GET['name'])  echo $_GET['name'] ?>" />
-              </div>
-              <div class="col-md-3 mt-4">
-                <button type="submit" class="btn btn-primary mt-2">Search</button>
-                <a href="{{ url()->current() }}" class="btn btn-warning mt-2 mx-2">Reset</a>
-              </div>
+          <!-- Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="fw-bold mb-0">Profiles</h4>
+              <a href="{{ route('user.profiles') }}" class="btn btn-outline-primary btn-sm">
+                  View All
+              </a>
           </div>
-        </form>
 
-      <div class="row mt-2">
-        <div class="col-md-12">
-          <div class="card mb-4">
-              <!--begin::Container-->
-                  <section class="content">
-                    <!-- Default box -->
-                    <div class="card card-solid">
-                      <div class="card-body pb-0">
-                        <div class="row">
-                          @if(count($profilelist) > 0)
-                          @foreach($profilelist as $profile)
-                            @php
-                                $fullAddress = $profile->current_address . ', ' . $profile->city->name . ', ' . $profile->state->name;
-                                $shortAddress = \Illuminate\Support\Str::limit($fullAddress, 100);
-                            @endphp
-                            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column p-3">
-                              <div class="card bg-light d-flex flex-fill">
-                                <div class="card-body pt-2">
-                                  <div class="row">
-                                    <div class="col-7">
-                                      <a href="{{ route('user.profile',$profile->id) }}"><h2 class="lead"><b>{{ $profile->first_name }} {{ $profile->last_name }}</b></h2></a>
-                                      <p class="text-muted text-sm"><b>Address: </b>
-                                        <span class="short-text">{{ $shortAddress }}</span>
-                                        <span class="full-text d-none">{{ $fullAddress }}</span>
-                                        @if(strlen($fullAddress) > 100)
-                                            <a href="javascript:void(0);" class="read-more text-primary">Read more</a>
-                                        @endif
-                                      </p>
-                                      <ul class="ml-4 mb-0 fa-ul text-muted">
-                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> {{ $profile->caste }}</</li>
-                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {{ str_replace('_' , ' ', $profile->marital_status) }}</li>
-                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> {{ $profile->age }}</</li>
-                                      </ul>
-                                    </div>
-                                    <div class="col-5 text-center">
-                                      @if($profile?->profile_photo?->image)
-                                      <img src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" alt="user-avatar" class="img-circle img-fluid">
-                                      @else
-                                        @if($profile->gender == "Male")
-                                        <img src="{{ asset('/assets/img/man.png') }}" alt="user-avatar" class="img-circle img-fluid">
-                                        @else
-                                        <img src="{{ asset('/assets/img/women.png') }}" alt="user-avatar" class="img-circle img-fluid">
-                                        @endif
-                                      @endif
-                                    </div>
-                                  </div>
-                                </div>
+          <!-- Profiles Grid -->
+          <div class="row g-4">
+
+              @forelse($profilelist as $profile)
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                      <div class="card profile-card h-100 shadow-sm border-0">
+
+                          <!-- Image -->
+                          <div class="position-relative">
+                              @if($profile?->profile_photo?->image)
+                                <img src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" alt="user-avatar" class="img-circle img-fluid card-image-top" style="height:255px;">
+                                @else
+                                  @if($profile->gender == "Male")
+                                  <img src="{{ asset('/assets/img/man.png') }}" alt="user-avatar" class="img-circle img-fluid" style="height:255px;">
+                                  @else
+                                  <img src="{{ asset('/assets/img/women.png') }}" alt="user-avatar" class="img-circle img-fluid" style="height:255px;">
+                                  @endif
+                              @endif
+                          </div>
+
+                          <!-- Content -->
+                          <div class="card-body text-start">
+                              <h6 class="fw-semibold mb-1">
+                                  {{ $profile->first_name }} {{ $profile->last_name }},
+                              </h6>
+                              <p class="text-muted small mb-2">
+                                  Age: {{ $profile->age }} <br> 
+                                  Occupation: {{ $profile->occupation }} <br>
+                                  Address: {{ $profile->current_address }}, {{ $profile->city->name }},{{ $profile->state->name }}
+                              </p>
+                              <div class="mt-2 d-flex gap-2 flex-wrap">
+                                  <a href="{{ route('user.getprofile',$profile->id) }}"
+                                     class="btn btn-success flex-fill">
+                                      View Profile
+                                  </a>
                               </div>
-                            </div>
-                            
-                          <!-- /.card -->
-                          @endforeach
-                          @else
-                            <h2 class="text-center">No Record Found</h2>
+                          </div>
+                          @if($loop->iteration == 4)
+                              @break
                           @endif
-                        </div>
                       </div>
-                      <!-- /.card-body -->
-                    </div>
-                </section>
-
-                <div class="card-footer">
-                    <nav aria-label="Contacts Page Navigation">
-                        <ul class="pagination justify-content-end m-0">
-                            {{ $profilelist->links() }}
-                        </ul>
-                    </nav>
-                </div>
-              <!--end::Container-->
-        </div>
+                  </div>
+              @empty
+                  <p class="text-center">No Record Found.</p>
+              @endforelse
+          </div>
       </div>
-  </div>
+  </section>
+  @include('layouts.user.how_it_works')
+
 @endsection
+
 @section('js')
 <script type="text/javascript">
-document.getElementById('search_profile').addEventListener('submit', function(e) {
-    let minAge = document.getElementById('min_age').value;
-    let maxAge = document.getElementById('max_age').value;
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
 
-    minAge = minAge ? parseInt(minAge) : null;
-    maxAge = maxAge ? parseInt(maxAge) : null;
+        let age = document.getElementById('age_range').value;
+        document.getElementById('min_age').value = '';
+        document.getElementById('max_age').value = '';
+        if (age) {
+            let parts = age.split('-');
 
-    if (minAge !== null && maxAge !== null && minAge > maxAge) {
-        alert('Minimum age cannot be greater than maximum age');
-        e.preventDefault(); // stops GET request
+            document.getElementById('min_age').value = parts[0];
+            document.getElementById('max_age').value = parts[1];
+        }
+    });
+
+    document.getElementById('search_profile').addEventListener('submit', function(e) {
+
+        let minAge = document.getElementById('min_age').value;
+        let maxAge = document.getElementById('max_age').value;
+
+        minAge = minAge ? parseInt(minAge) : null;
+        maxAge = maxAge ? parseInt(maxAge) : null;
+
+        if (minAge !== null && maxAge !== null && minAge > maxAge) {
+            alert('Minimum age cannot be greater than maximum age');
+            e.preventDefault();
+        }
+    });
+
+    function BookmarkFunction(profileId, el) {
+        var loggedIn = {{ auth()->check() ? 'true' : 'false' }};
+        if(loggedIn == true)
+        {
+            fetch(`/user/profile/favourite`, {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    profile_id: profileId
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                if (data.status === 'added') {
+                    el.classList.remove('bi-bookmarks');
+                    el.classList.add('bi-bookmark-fill', 'text-danger');
+                } else {
+                    el.classList.remove('bi-bookmarks-fill', 'text-danger');
+                    el.classList.add('bi-bookmark');
+                }
+
+            });
+        }else{
+            swal.fire({
+              title: "Please Login to add profile",
+            });
+        }
     }
-});
-document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('read-more')) {
-        e.preventDefault();
-
-        const parent = e.target.closest('p');
-
-        const shortText = parent.querySelector('.short-text');
-        const fullText = parent.querySelector('.full-text');
-
-        shortText.classList.toggle('d-none');
-        fullText.classList.toggle('d-none');
-
-        e.target.textContent =
-            e.target.textContent === 'Read more' ? 'Show less' : 'Read more';
-    }
-});
 </script>
-@endsection
 
+@endsection

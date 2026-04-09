@@ -640,7 +640,7 @@
                 class="form-control"
                 id="mosal_name"
                 name="mosal_name"
-                value = "{{ $profile->mosal_name }}"
+                value = "{{ old('mosal_name', $profile->mosal_name ?? '')  }}"
               />
               <span class="help-block"><strong></strong></span>
               @error('location')
@@ -693,15 +693,11 @@
                   <button type="button" data-attr="mosal_{{ $key }} "id="remove_mosal_'{{ $key }}" class="btn btn-danger remove_mosal"> <i class="nav-icon bi bi-file-minus">
                   </i> </button>
                 </div>
+
               </div>
             @endforeach
-            <div class="col-md-2 mt-4">
-              <button type="button" id="add_mosal" class="btn btn-primary add_mosal"> <i class="nav-icon bi bi-plus"></i> </button>
-            </div>
-            
             <input type="hidden" name="mosal_count_value" id="mosal_count_value" value="{{ count($profile->mosals) - 1 }}" />
-            @if(empty($profile->mosals))
-
+            @if($profile->mosals->isEmpty())
              <div class="col-md-5">
 
               <label for="person_name" class="form-label">Person Name</label>
@@ -710,7 +706,7 @@
                 class="form-control"
                 id="person_name"
                 name="mosal[[0]][person_name]"
-                value = "{{ $mosal->person_name }}"
+                value = ""
               />
               <span class="help-block"><strong></strong></span>
               @error('name')
@@ -726,7 +722,7 @@
                 type="text"
                 class="form-control"
                 name="mosal[[0]][contact_number]"
-                value = "{{ $mosal->contact_number }}"
+                value = ""
               />
               <span class="help-block"><strong></strong></span>
               @error('contact_number')
@@ -735,10 +731,10 @@
                 </span>
               @enderror
             </div>
-            <div class="col-md-2 mt-4">
+            @endif
+             <div class="col-md-2 mt-4">
               <button type="button" id="add_mosal" class="btn btn-primary add_mosal"> <i class="nav-icon bi bi-plus"></i> </button>
             </div>
-            @endif
           </div>
 
           <div id="add_more_mosal" class="row"></div>
@@ -835,7 +831,7 @@
               class="form-control"
               id="contact_person_email"
               name="contact_person_email"
-              value = "{{ $profile->email }}"
+              value = "{{ $profile->contact_person_email }}"
             />
             <span class="help-block"><strong></strong></span>            
             @error('email')
@@ -902,17 +898,25 @@
               </span>
             @enderror
             @if($profile?->gallery_photo)
-              <div>
+              <div class="d-flex flex-wrap gap-3">
                 @foreach($profile->gallery_photo as $gallery_photo)
-                    <button 
-                        type="button"
-                        class="gallery_img_del" 
-                        data-attr="{{ $gallery_photo->id }}" 
-                        style="position:absolute;background:cadetblue;">
-                        
-                        <i class="bi bi-x mt-4"></i>
+                  <div style="position: relative; display: inline-block;">
+                    <button
+                      type="button"
+                      class="gallery_img_del"
+                      data-attr="{{ $gallery_photo->id }}"
+                      style="position: absolute;top: 5px;right: 5px;background: red;color: white;border: none;border-radius: 50%;width: 25px;height: 25px;display: flex;align-items: center;
+          justify-content: center;
+                      ">
+                      <i class="bi bi-x"></i>
                     </button>
-                    <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}" class="img-thumbnail w-25"  />
+
+                    <img
+                      src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}"
+                      class="img-thumbnail"
+                      style="width: 150px; height: auto;"
+                    />
+                  </div>
                 @endforeach
               </div>
             @endif
@@ -961,7 +965,6 @@
   var profile_id = {{ $profile->id }};
   $(document).ready(function(){
     loadStates(countryId);
-    // loadMosals(profile_id);
   });
 
   function loadStates(countryId){
@@ -1145,28 +1148,6 @@ $('#profile_form .help-block strong').text('');
 
               });
           }
-                  
-
-              // $.each(response.responseJSON.errors, function (key, value) {
-
-              //     var input = '#profile_form input[name=' + key + ']';
-              //     var input2 = '#profile_form select[name=' + key + ']';
-              //     var input3 = '#profile_form textarea[name=' + key + ']';
-              //     var input4 = '#profile_form file[name=' + key + ']';
-              //     console.log(input4);
-
-              //     $(input + '+span>strong').text(value);
-              //     $(input2 + '+span>strong').text(value);
-              //     $(input3 + '+span>strong').text(value);
-              //     $(input4 + '+span>strong').text(value);
-              //     console.log(value)
-              //     $(input).parent().parent().addClass('has-error');
-              //     $(input2).parent().parent().addClass('has-error');
-              //     $(input3).parent().parent().addClass('has-error');
-              //     $(input4).parent().parent().addClass('has-error');
-
-
-              // });
      });
   });
 

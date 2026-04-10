@@ -8,14 +8,19 @@ Create Profile
 @php
     $mosals = old('mosal') ?? ($profile->mosals ?? []);
 @endphp
+
   <div class="section row mx-2 m-4">
     <div class="col-md-2">
-
     </div>
-    <div class="col-md-10">
+    <div class="col-md-8">
 
       <div class="card card-info card-outline mb-4">
-       
+        <div class="row card-header">
+          <div class="col-sm-6">
+            <h3 class="mb-0 text-secondary">{{ !empty($profile->first_name) ? 'Update Profile' : 'Create Profile' }}</h3>
+          </div>
+          
+        </div>
         <!--begin::Form-->
         @if($profile?->id)
          <form action="{{ route('users.update_profile',$profile->id) }}" method="POST" class="needs-validation" id="profile_form">
@@ -518,23 +523,20 @@ Create Profile
                                 -
                             </button>
                         </div>
-
                     </div>
                   @endforeach
                   @if(empty($mosals))
-                  <div class="row mosal_0">
+                    <div class="row mosal_0">
+                        <div class="col-md-5">
+                          <label for="person_name" class="form-label">Person Name</label>
+                            <input type="text" name="mosal[0][person_name]" class="form-control">
+                        </div>
 
-                      <div class="col-md-5">
-                        <label for="person_name" class="form-label">Person Name</label>
-                          <input type="text" name="mosal[0][person_name]" class="form-control">
-                      </div>
-
-                      <div class="col-md-5">
-                        <label for="contact_number" class="form-label">Contact Number</label>
-                          <input type="text" name="mosal[0][contact_number]" class="form-control">
-                      </div>
-
-                  </div>
+                        <div class="col-md-5">
+                          <label for="contact_number" class="form-label">Contact Number</label>
+                            <input type="text" name="mosal[0][contact_number]" class="form-control">
+                        </div>
+                    </div>
                   @endif
 
                 <div class="col-md-2 mt-4">
@@ -576,7 +578,6 @@ Create Profile
                 <span class="help-block"><strong></strong></span>
               </div>
 
-
               <div class="col-md-6">
                 <label for="mobile_no" class="form-label">Mobile Number<span class="text-danger">*</span></label>
                 <input
@@ -584,11 +585,10 @@ Create Profile
                   class="form-control"
                   id="contact_person_number"
                   name="contact_person_number"
-                  value = "{{ old('contact_person_number', $profile->contact_person_number ?? '') }}"
+                  value = "{{ old('contact_person_number', $profile->contact_person_number ?? Auth::user()->phone_number) }}"
                 />
                 <span class="help-block"><strong></strong></span>
               </div>
-
 
               <div class="col-md-6">
                 <label for="whatsapp_number" class="form-label">Whatsapp Number</label>
@@ -610,7 +610,7 @@ Create Profile
                   class="form-control"
                   id="contact_person_email"
                   name="contact_person_email"
-                  value = "{{ old('contact_person_email', $profile->contact_person_email ?? '') }}"
+                  value = "{{ old('contact_person_email', $profile->contact_person_email ?? Auth::user()->email) }}"
                 />
                 <span class="help-block"><strong></strong></span>            
               </div>
@@ -626,8 +626,7 @@ Create Profile
                        value="1"
                        {{ old('show_contact_publicly', $profile->show_contact_publicly ?? 0) == 1 ? 'checked' : '' }}>
 
-                <label for="show_contact_publicly">Yes</label>     
-
+                <label for="show_contact_publicly">Yes</label>
               </div>
 
               <h3 class="fw-bold">
@@ -649,7 +648,6 @@ Create Profile
                 <span class="help-block"><strong></strong></span>            
               </div>
 
-
               <div class="col-md-6">
                 <label for="upload_gallery_photo" class="form-label">Upload Gallery Photo</label>
                 <input
@@ -660,21 +658,6 @@ Create Profile
                   multiple
                   value = "{{ old('gallery_photo') }}"
                 />
-                {{-- @if($profile?->gallery_photo)
-                  <div>
-                    @foreach($profile->gallery_photo as $gallery_photo)
-                        <button 
-                            type="button"
-                            class="gallery_img_del" 
-                            data-attr="{{ $gallery_photo->id }}" 
-                            style="position:absolute;background:cadetblue;">
-                            
-                            <i class="bi bi-x mt-4"></i>
-                        </button>
-                        <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}" class="img-thumbnail w-25"  />
-                    @endforeach
-                  </div>
-                @endif --}}
 
                  @if($profile?->gallery_photo)
                   <div class="d-flex flex-wrap gap-3">
@@ -685,8 +668,7 @@ Create Profile
                           type="button"
                           class="gallery_img_del"
                           data-attr="{{ $gallery_photo->id }}"
-                          style="position: absolute;top: 5px;right: 5px;background: red;color: white;border: none;border-radius: 50%;width: 25px;height: 25px;display: flex;align-items: center;
-              justify-content: center;
+                          style="position: absolute;top: 5px;right: 5px;background: red;color: white;border: none;border-radius: 50%;width: 25px;height: 25px;display: flex;align-items: center;justify-content: center;
                           ">
                           <i class="bi bi-x"></i>
                         </button>
@@ -703,7 +685,6 @@ Create Profile
                 @endif
                 <span class="help-block"><strong></strong></span>
               </div>
-
 
               <div class="col-md-6 d-none">
                   <label for="account_status" class="form-label">Account Status<span class="text-danger">*</span></label>
@@ -730,6 +711,11 @@ Create Profile
           <!--end::Footer-->
         </form>
       <!--end::Form-->
+    </div>
+
+    <div class="col-md-2">
+
+    </div>
     </div>
   </div>
 @endsection

@@ -4,7 +4,9 @@ namespace App\Services;
 use Auth;
 use DB;
 use App\Models\Profile;
+use App\Models\FavouriteProfile;
 use App\Repositories\ProfileRepositoryInterface;
+use Illuminate\Http\Request;
 
 class ProfileService
 {
@@ -15,6 +17,7 @@ class ProfileService
     {
         $this->profileRepository = $profileRepository;
     }
+
 
     public function getProfileList($request)
     {
@@ -56,6 +59,10 @@ class ProfileService
 
             $validated['birth_time'] = $request->birth_hours.':'.$request->birth_minutes.' '.$request->birth_format;
             unset($validated['birth_hours'], $validated['birth_minutes'], $validated['birth_format']);
+
+            if (Auth::user()->role === 'User') {
+                $data['profile_status'] = 1;
+            }
 
             $profile = $this->profileRepository->create($validated);
 
@@ -135,6 +142,10 @@ class ProfileService
                 $this->profileRepository->replaceMosals($profile, $mosals);
             } else {
                 $profile->mosals()->delete();
+            }
+
+            if (Auth::user()->role === 'User') {
+                $data['profile_status'] = 1;
             }
 
             // Handle images
@@ -264,5 +275,40 @@ class ProfileService
     public function getProfileByUserId($userId)
     {
         return Profile::where('user_id', $userId)->first();
+    }
+
+    // public function getProfileByUserId($userId)
+    // {
+    //     return $this->profileRepository->getProfileByUserId($userId);
+    // }
+
+    public function createFavProfile($request)
+    {
+        return $this->profileRepository->createProfile($request);
+    }
+
+    public function updateFavProfile($request)
+    {
+        return $this->profileRepository->updateProfile($request);
+    }
+
+    // public function deleteGalleryImage($id)
+    // {
+    //     return $this->profileRepository->deleteGalleryImage($id);
+    // }
+
+    public function toggleFavourite($userId, $profileId)
+    {
+        return $this->profileRepository->toggleFavourite($userId, $profileId);
+    }
+
+    public function getFavouriteProfiles($userId, Request $request)
+    {
+        return $this->profileRepository->getFavouriteProfiles($userId, $request);
+    }
+
+    public function getFavouriteCities($userId)
+    {
+        return $this->profileRepository->getFavouriteCities($userId);
     }
 }

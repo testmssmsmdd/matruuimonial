@@ -237,10 +237,11 @@
                                                            class="btn btn-success btn-sm flex-fill">
                                                             View Profile
                                                         </a>
-
-                                                        <button class="btn btn-danger btn-sm flex-fill" onclick="BookmarkFunction({{ $profile->id }},this)">
-                                                              ❤️ Favourite
-                                                        </button>
+                                                        @if(Auth::user()?->role == "User")
+                                                          <button class="btn btn-danger btn-sm flex-fill" onclick="BookmarkFunction({{ $profile->id }},this)">
+                                                                ❤️ Favourited
+                                                          </button>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>

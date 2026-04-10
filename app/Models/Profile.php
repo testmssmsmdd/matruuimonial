@@ -146,4 +146,9 @@ class Profile extends Model
         return $this->hasMany(FavouriteProfile::class, 'profile_id');
     }
 
+    public function admin_details()
+    {
+        return $this->hasOne(User::class,'id','created_by');
+    }
+
 }

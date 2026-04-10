@@ -6,7 +6,9 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
 use App\Models\Gallery_photos;
+use App\Models\FavouriteProfile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 
 class ProfileRepository implements ProfileRepositoryInterface
@@ -170,6 +172,111 @@ class ProfileRepository implements ProfileRepositoryInterface
         $profile->save();
 
         return $profile;
+    }
+
+    public function getProfileByUserId($userId)
+    {
+        return Profile::where('created_by', $userId)->first();
+    }
+
+    public function createProfile($data)
+    {
+        return Profile::create($data->all());
+    }
+
+    public function updateProfile($data)
+    {
+        return Profile::where('id', $data->profile_id)->update($data->all());
+    }
+
+    public function deleteGalleryImage($id)
+    {
+        return DB::table('gallery_photos')->where('id', $id)->delete();
+    }
+
+    public function toggleFavourite($userId, $profileId)
+    {
+        $exists = FavouriteProfile::where('user_id', $userId)
+            ->where('profile_id', $profileId)
+            ->first();
+
+        if ($exists) {
+            $exists->delete();
+            return ['status' => 'removed', 'message' => 'Removed from favourites'];
+        }
+
+        FavouriteProfile::create([
+            'user_id' => $userId,
+            'profile_id' => $profileId
+        ]);
+
+        return ['status' => 'added', 'message' => 'Added to favourites'];
+    }
+
+    public function getFavouriteProfiles($userId, Request $request)
+    {
+        $query = FavouriteProfile::with([
+            'profile.profile_photo',
+            'profile.city',
+            'profile.state'
+        ])->where('favourite_profiles.user_id', $userId);
+
+        // Filters
+        if (!empty($request->gender)) {
+            $query->whereHas('profile', fn($q) => $q->where('gender', $request->gender));
+        }
+
+        if (!empty($request->marital_status)) {
+            $query->whereHas('profile', fn($q) => $q->where('marital_status', $request->marital_status));
+        }
+
+        if (!empty($request->city)) {
+            $query->whereHas('profile', fn($q) => $q->where('city_id', $request->city));
+        }
+
+        if (!empty($request->min_age)) {
+            $query->whereHas('profile', fn($q) => $q->where('age', '>=', $request->min_age));
+        }
+
+        if (!empty($request->max_age)) {
+            $query->whereHas('profile', fn($q) => $q->where('age', '<=', $request->max_age));
+        }
+
+        if (!empty($request->education)) {
+            $query->whereHas('profile', fn($q) =>
+                $q->where('education', 'LIKE', "%{$request->education}%")
+            );
+        }
+
+        if (!empty($request->profession)) {
+            $query->whereHas('profile', fn($q) =>
+                $q->where('occupation', 'LIKE', "%{$request->profession}%")
+            );
+        }
+
+        // Sorting FIXED (important change)
+        if ($request->sort_by == "age") {
+            $query->join('profiles', 'favourite_profiles.profile_id', '=', 'profiles.id')
+                  ->orderBy('profiles.age', 'asc');
+        } elseif ($request->sort_by == "location") {
+            $query->join('profiles', 'favourite_profiles.profile_id', '=', 'profiles.id')
+                  ->orderBy('profiles.current_address', 'asc');
+        } elseif ($request->sort_by == "latest") {
+            $query->latest();
+        }
+
+        return $query->paginate(12)->appends($request->all());
+    }
+
+    public function getFavouriteCities($userId)
+    {
+        return DB::table('favourite_profiles')
+            ->join('profiles', 'favourite_profiles.profile_id', '=', 'profiles.id')
+            ->join('cities', 'profiles.city_id', '=', 'cities.id')
+            ->where('favourite_profiles.user_id', $userId)
+            ->select('cities.id', 'cities.name')
+            ->distinct()
+            ->get();
     }
 }
 

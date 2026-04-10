@@ -343,10 +343,8 @@
 
                                             @foreach($profile->mosals as $mosal)
                                                 <div class="col-md-6 d-flex justify-content-between">
-                                                    <strong>Person Name and contact details:</strong>
-                                                    <span>{{ $mosal->person_name }} , {{ $profile->show_contact_publicly 
-                                                            ? $mosal->contact_number 
-                                                            : Str::mask($mosal->contact_number, '*', 0, -2) }}</span>
+                                                    <strong>Contact Details:</strong>
+                                                    <span>{{ $mosal->person_name }} , {{ $mosal->contact_number }}</span>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -407,9 +405,7 @@
                                                 <strong>Contact:</strong>
                                                 <span>
                                                     {{ $profile->contact_person_name }},
-                                                    {{ $profile->show_contact_publicly 
-                                                        ? $profile->contact_person_number 
-                                                        : Str::mask($profile->contact_person_number, '*', 0, -2) }}
+                                                    {{ $profile->contact_person_number }}
                                                 </span>
                                             </div>
                                         </div>

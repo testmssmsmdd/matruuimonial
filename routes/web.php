@@ -10,6 +10,7 @@ use App\Http\Controllers\User\ProfileController as UserProfileController;
 use App\Http\Middleware\CheckSuperAdmin;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckAdminRole;
+use App\Http\Middleware\CheckUser;
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('/profiles',[HomeController::class, 'profiles'])->name('user.profiles');
@@ -21,7 +22,7 @@ Route::get('/user/{username}',[HomeController::class, 'userlist'])->name('user')
 
 Auth::routes(['verify' => true]);
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth',CheckUser::class,'verified'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
     Route::get('/create_profie', [UserProfileController::class, 'create_profie'])->name('users.create_profile');
     Route::post('/store_profie', [UserProfileController::class, 'store_profile'])->name('users.store_profile');

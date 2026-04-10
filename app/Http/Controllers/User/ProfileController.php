@@ -42,7 +42,7 @@ class ProfileController extends Controller
 
             return redirect()->back()->with('success', 'Profile updated successfully');
         } else {
-            $this->profileservice->createProfile($request);
+            $this->profileservice->createFavProfile($request);
 
             return redirect()->back()->with('success', 'Profile created successfully');
         }
@@ -54,7 +54,7 @@ class ProfileController extends Controller
 
         $profile = $this->profileservice->getProfileByUserId($userId);
         $request->merge(['profile_id' => $profile->id]);
-        $this->profileservice->updateProfile($request);
+        $this->profileservice->updateFavProfile($request);
 
         return redirect()->back()->with('success', 'Profile updated successfully');
     }
@@ -67,140 +67,17 @@ class ProfileController extends Controller
 
     public function favourite_profile(Request $request)
     {
-        $userId = auth()->id();
+        $result = $this->profileservice->toggleFavourite(auth()->id(), $request->profile_id);
 
-        $exists = FavouriteProfile::where('user_id', $userId)
-            ->where('profile_id', $request->profile_id)
-            ->first();
-
-        if ($exists) {
-            $exists->delete();
-
-            return response()->json([
-                'message' => 'Removed from favourites',
-                'status' => 'removed'
-            ]);
-        } else {
-            FavouriteProfile::create([
-                'user_id' => $userId,
-                'profile_id' => $request->profile_id
-            ]);
-
-            return response()->json([
-                'message' => 'Added to favourites',
-                'status' => 'added'
-            ]);
-        }
+        return response()->json($result);
     }
 
-    
     public function favourite_profile_list(Request $request)
     {
         $userId = auth()->id();
 
-        $query = FavouriteProfile::with([
-            'profile.profile_photo',
-            'profile.city',
-            'profile.state'
-        ])->where('user_id', $userId);
-
-        // Gender filter
-        if (!empty($request->gender)) {
-            $query->whereHas('profile', function ($q) use ($request) {
-                $q->where('gender', $request->gender);
-            });
-        }
-
-        // Marital Status
-        if (!empty($request->marital_status)) {
-            $query->whereHas('profile', function ($q) use ($request) {
-                $q->where('marital_status', $request->marital_status);
-            });
-        }
-
-        // City
-        if (!empty($request->city)) {
-            $query->whereHas('profile', function ($q) use ($request) {
-                $q->where('city_id', $request->city);
-            });
-        }
-
-        // Age Range
-        if (!empty($request->min_age)) {
-            $query->whereHas('profile', function ($q) use ($request) {
-                if ($request->min_age) {
-                    $q->where('age', '>=', $request->min_age);
-                }
-            });
-        }
-
-        if (!empty($request->max_age)) {
-            $query->whereHas('profile', function ($q) use ($request) {
-                if ($request->max_age) {
-                    $q->where('age', '<=', $request->max_age);
-                }
-            });
-        }
-
-        // Name / Religion
-        if (!empty($request->name)) {
-            $s = $request->name;
-
-            $query->where(function ($q) use ($s) {
-                $q->where('first_name', 'LIKE', "%$s%")
-                  ->orWhere('last_name', 'LIKE', "%$s%")
-                  ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$s}%"])
-                  ->orWhere('education', 'LIKE', "%$s%")
-                  ->orWhere('caste', 'LIKE', "%$s%")
-                  ->orWhere('occupation', 'LIKE', "%$s%");
-            });
-        }
-
-
-        // Education
-        if (!empty($request->education)) {
-            $query->whereHas('profile', function ($q) use ($request) {
-                $q->where('education', 'LIKE', "%{$request->education}%");
-            });
-        }
-
-        // Profession
-        if (!empty($request->profession)) {
-            $query->whereHas('profile', function ($q) use ($request) {
-                $q->where('occupation', 'LIKE', "%{$request->profession}%");
-            });
-        }
-
-        // Sorting
-        if (!empty($request->sort_by)) {
-            if ($request->sort_by == "age") {
-                $query->whereHas('profile', function ($q) use ($request) {
-                    $q->orderBy('age', 'asc');
-                });
-            }
-
-            elseif ($request->sort_by == "location") {
-                $query->whereHas('profile', function ($q) use ($request) {
-                    $q->orderBy('current_address', 'asc');
-                });
-            }
-
-            elseif ($request->sort_by == "latest") {
-                $query->latest();
-            }
-
-        }
-
-        $profilelist = $query->paginate(12)->appends($request->all());
-
-        // City list
-        $cityList = DB::table('favourite_profiles')
-            ->join('profiles', 'favourite_profiles.profile_id', '=', 'profiles.id')
-            ->join('cities', 'profiles.city_id', '=', 'cities.id')
-            ->where('favourite_profiles.user_id', $userId)
-            ->select('cities.id', 'cities.name')
-            ->distinct()
-            ->get();
+        $profilelist = $this->profileservice->getFavouriteProfiles($userId, $request);
+        $cityList = $this->profileservice->getFavouriteCities($userId);
 
         return view('users.profile.favourite_profile', compact('profilelist', 'cityList'));
     }

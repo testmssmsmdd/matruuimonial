@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'super_admin' => CheckSuperAdmin::class,
             'admin' => CheckAdmin::class,
             'CheckAdminRole' => CheckAdminRole::class,
+            'CheckUser' => CheckUser::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

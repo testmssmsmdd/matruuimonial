@@ -8,271 +8,153 @@ User Detail Page
 
 <div class="container mt-4">
 
-  <!-- TOP PROFILE HEADER -->
-  <div class="card shadow-sm mb-3">
-    <div class="row g-0 align-items-center">
-
-      <!-- Image -->
-      <div class="col-md-3 text-center p-3">
-        @if($profile?->profile_photo?->image)
-            <img class="profile-user-img img-fluid img-circle" src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" alt="User profile picture" style="width:200px;height:200px;">
-        @else
-            @if($profile->gender == "Male")
-              <img src="{{ asset('/assets/img/man.png') }}" alt="user-avatar" class="img-circle img-fluid">
-            @else
-              <img src="{{ asset('/assets/img/women.png') }}" alt="user-avatar" class="img-circle img-fluid">
-            @endif
-        @endif
-      </div>
-
-
-      <!-- Basic Info -->
-      <div class="col-md-6">
-        <div class="card-body" style="background: aliceblue;">
-          <h4 class="mb-1">
-            {{ $profile->first_name }} {{ $profile->last_name }}
-          </h4>
-
-          <p class="text-muted mb-2">
-            {{ $profile->city->name ?? '' }} |
-            {{ $profile->occupation ?? '' }}
-          </p>
-
-          <div class="d-flex flex-wrap gap-2">
-            @if(Auth::user()?->role=="User")
-                @if($is_favourite)
-                    <button class="btn btn-danger" onclick="BookmarkFunction({{ $profile->id }},this)">
-                      ❤️ Favourite
-                    </button>
-                @else
-                    <button class="btn btn-danger" onclick="BookmarkFunction({{ $profile->id }},this)">
-                      ❤️
-                    </button>
-                @endif
-            @endif
-            <a href="{{ route('user.profiles') }}" class="btn btn-sm btn-outline-primary ">
-                <i class="bi bi-arrow-left"></i> Back
-            </a>
+  <!-- Back Button -->
+  <a href="{{ route('user.profiles') }}" class="btn btn-outline-primary mb-3">
+    ← Back
+  </a>
+  <!-- IMAGE -->
+  <div class="card shadow-sm p-3 mb-3">
+      <div class="row align-items-center">
+          <!-- PROFILE IMAGE -->
+          <div class="col-4 col-md-3 text-center mb-2 mb-md-0">
+              <img src="{{ $profile->profile_photo?->image 
+                          ? asset('/profile_photos/'.$profile->profile_photo->image) 
+                          : ($profile->gender == 'Male' ? asset('/assets/img/man.png') : asset('/assets/img/women.png')) }}" 
+                   class="img-fluid rounded-circle" style="width:120px; height:120px; object-fit:cover;">
           </div>
 
-        </div>
-      </div>
+          <!-- NAME & INFO -->
+          <div class="col-8 col-md-9">
+              <h4 class="mb-1">{{ $profile->first_name }} {{ $profile->last_name }}, {{ $profile->age }}</h4>
+              <p class="text-muted mb-2">{{ $profile->city->name ?? '' }} | {{ $profile->occupation ?? '' }}</p>
 
-    </div>
+              <!-- LEFT & RIGHT BUTTONS -->
+              @if(Auth::user()?->role == "User")
+              <div class=" mt-2 gap-2">
+                  @if(!empty($is_favourite))
+                    <button class="btn btn-danger flex-fill me-2" onclick="BookmarkFunction({{ $profile->id }},this)">
+                        ❤️ Favourited
+                    </button>
+                  @else
+                    <button
+                       class="btn btn-danger flex-fill me-2" onclick="BookmarkFunction({{ $profile->id }},this)">
+                        ❤️
+                    </button>
+                  @endif
+              </div>
+              @endif
+          </div>
+      </div>
   </div>
 
-  <!-- DETAILS SECTION -->
-  <div class="row">
-    <!-- LEFT SIDE -->
-    <div class="col-md-8">
 
-      <!-- Personal Info -->
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body" style="background: aliceblue;">
-        <span class="display-6 border-bottom text-black">Personal Information</span><br/>
+  <div class="mt-4">
+    <div class="row">
 
-        <div class="col-md-6 d-flex justify-content-start mt-3"> 
-            <span class="font-monospace">Name:</span>
-            <span class="mx-2 font-monospace">{{ $profile->first_name }} {{ $profile->middle_name }} {{ $profile->last_name }}</span>
-        </div>
+        <!-- LEFT SIDE: Information Card -->
+        <div class="col-12 col-md-8 order-1 order-md-1">
+            <div class="card shadow-sm p-3 mb-3" style="background-color: #ebeeef;">
+                <h5 class="mb-3 border-bottom pb-2">Personal Information</h5>
+                <div class="row">
+                    <div class="col-6 mb-2"><span>Name:</span> {{ $profile->first_name }} {{ $profile->last_name }}</div>
+                    <div class="col-6 mb-2"><span>Gender:</span> {{ $profile->gender }}</div>
+                    <div class="col-6 mb-2"><span>Birth Date:</span> {{ $profile->date_of_birth }}</div>
+                    <div class="col-6 mb-2"><span>Age:</span> {{ $profile->age }}</div>
+                    <div class="col-6 mb-2"><span>Birth Time:</span> {{ $profile->birth_time }}</div>
+                    <div class="col-6 mb-2"><span>Birth Place:</span> {{ $profile->birth_place }}</div>
+                    <div class="col-6 mb-2"><span>Height:</span> {{ str_replace(".", "'", $profile->height) }}</div>
+                    <div class="col-6 mb-2"><span>Weight:</span> {{ $profile->Weight }}</div>
 
-        <div class="col-md-6 d-flex justify-content-start"> 
-            <span class="font-monospace">Gender:</span>
-            <span class="mx-2 font-monospace">{{ $profile->gender }}</span>
-        </div>
-
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Birth Date:</span> 
-            <span class="mx-2 font-monospace">{{ $profile->date_of_birth }}</span>
-        </div>
-
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Age:</span> 
-            <span class="mx-2 font-monospace">{{ $profile->age }} Years</span>
-        </div>
-
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Birth Time:</span>
-            <span class="mx-2 font-monospace">{{ $profile->birth_time }}</span>
-        </div>
-
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Birth Place:</span>
-            <span class="mx-2 font-monospace">{{ $profile->birth_place }}</span> 
-        </div>
-
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Height:</span>
-            <span class="mx-2 font-monospace">{{ str_replace(".","'",$profile->height).'*' }}</span>
-        </div>
-
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Weight:</span>
-            <span class="mx-2 font-monospace">{{ $profile->Weight }}</span> 
-        </div> 
-
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Marital Status:</span> 
-            <span class="mx-2 font-monospace">{{ str_replace('_' , ' ', $profile->marital_status) }}</span> 
-        </div> 
-
-        <div class="col-md-6 d-flex justify-content-start"> 
-            <span class="font-monospace">Mother Tongue:</span> 
-            <span class="mx-2 font-monospace">{{ $profile->mother_tounge }}</span> 
-        </div>
-
-        <div class="col-md-6 d-flex justify-content-start"> 
-            <span class="font-monospace">Rashi:</span> 
-            <span class="mx-2 font-monospace">{{ $profile->rashi }}</span> 
-        </div> 
-
-        <div class="col-md-6 d-flex justify-content-start"> 
-            <span class="font-monospace">Caste:</span> 
-            <span class="mx-2 font-monospace">{{ $profile->caste }}</span> 
-        </div> 
-
-        <div class="col-md-6 d-flex justify-content-start mb-2"> 
-            <span class="font-monospace">Gotra:</span> 
-            <span class="mx-2 font-monospace">{{ $profile->gotra }}</span> 
-        </div>
-
-        <span class="display-6 border-bottom border-top text-black">Location Details</span><br/>
-        <div class="col-md-6 d-flex justify-content-start mt-3"> 
-            <span class="font-monospace">Address:</span> 
-            <span class="mx-2 font-monospace">{{ $profile->current_address }}</span> 
-        </div>
-          
-
-        <div class="col-md-6 d-flex justify-content-start mb-2">
-            <span>City, State, Country:</span>
-            <span class="mx-2">
-                {{ $profile->city->name }},
+                    <div class="col-6 mb-2"><span>Marital Status:</span> {{ str_replace('_' , ' ', $profile->marital_status) }}</div>
+                    <div class="col-6 mb-2"><span>Mother Tongue:</span> {{ $profile->mother_tounge }}</div>
+                    <div class="col-6 mb-2"><span>Rashi:</span> {{ $profile->rashi }}</div>
+                    <div class="col-6 mb-2"><span>Caste:</span> {{ $profile->caste }}</div>
+                    <div class="col-6 mb-2"><span>Gotra:</span> {{ $profile->gotra }}</div>
+                </div>
+                <h5 class="mb-3 mt-3 border-bottom pb-2">Location Details</h5>
+                <div class="row">
+                  <div class="col-6 mb-2"><span>Address:</span> {{ $profile->current_address }},{{ $profile->city->name }},
                 {{ $profile->state->name }},
-                {{ $profile->country->name }}
-            </span>
-        </div>
-          <span class="display-6 border-bottom border-top text-black">Education & Profession</span><br/>
-          <div class="col-md-6 d-flex justify-content-start mt-3">
-                <span class="font-monospace">Education:</span>
-                <span class="mx-2 font-monospace">{{ $profile->education }}</span>
+                {{ $profile->country->name }}</div>
+                </div>
+                <h5 class="mb-3 mt-3 border-bottom pb-2">Education & Profession</h5>
+                <div class="row">
+                    <div class="col-6 mb-2"><span>Education:</span> {{ $profile->education }}</div>
+                    <div class="col-6 mb-2"><span>Occupation:</span> {{ $profile->occupation }}</div>
+                    <div class="col-6 mb-2"><span>Company Name:</span> {{ $profile->company_name ?? '-' }}</div>
+                    <div class="col-6 mb-2"><span>Annual Income:</span> {{ $profile->annual_income ?? '-' }}</div>
+                    <div class="col-6 mb-2"><span>Work Location:</span> {{ $profile->work_location ?? '-' }}</div>
+                </div>
+                <h5 class="mb-3 mt-3 border-bottom pb-2">Family Details</h5>
+                  <div class="row">
+                    <div class="col-6 mb-2"><span>Father Name:</span> {{ $profile->father_name }}</div>
+                    <div class="col-6 mb-2"><span>Father Occupation:</span> {{ $profile->father_occupation }}</div>
+                    <div class="col-6 mb-2"><span>Mother Name:</span> {{ $profile->mother_name }}</div>
+                    <div class="col-6 mb-2"><span>Mother Occupation:</span> {{ $profile->mother_occupation }}</div>
+                    <div class="col-6 mb-2"><span>Number of Brothers:</span> {{ $profile->no_of_brothers }}</div>
+                    <div class="col-6 mb-2"><span>Number of Sisters:</span> {{ $profile->no_of_sisters }}</div>
+                    <div class="col-6 mb-2"><span>Family Type:</span> {{ $profile->family_type }}</div>
+                  </div>
+                <h5 class="mb-3 mt-3 border-bottom pb-2">Mosal Details</h5>
+                  <div class="row">
+                    <div class="col-6 mb-2"><span>Mosal Place:</span> {{ $profile->mosal_name ? $profile->mosal_name : '-' }}</div>
+                    <div class="col-6 mb-2"></div>
+                    @foreach($profile->mosals as $mosal)
+                        <div class="col-6 mb-2">
+                            <span>Contact Details:</span>
+                            {{ $mosal->person_name }} , {{ $profile->show_contact_publicly 
+                                    ? $mosal->contact_number 
+                                    : Str::mask($mosal->contact_number, '*', 0, -2) }}
+                        </div>
+                    @endforeach
+                  </div>
+                <h5 class="mb-3 mt-3 border-bottom pb-2">Lifestyle & Personal Info</h5>
+                <div class="row">
+                  <div class="col-6 mb-2"><span>Hobbies:</span> {{ $profile->hobbies }}</div>
+                  <div class="col-6 mb-2"><span>About Me:</span> {{ $profile->about_me }}</div>
+                </div>
+                <h5 class="mb-3 mt-3 border-bottom pb-2">Contact Details</h5>
+                <div class="row">
+                  <div class="col-6 mb-2"><span>Contact:</span>{{ $profile->contact_person_name }},
+                      {{ $profile->show_contact_publicly 
+                          ? $profile->contact_person_number 
+                          : Str::mask($profile->contact_person_number, '*', 0, -2) }}
+                  </div>
+                <h5 class="mb-3 mt-3 border-bottom pb-2">Other Images</h5>
+                @if(count($profile->gallery_photo) > 0)
+                  @foreach($profile->gallery_photo as $gallery_photo)
+                      <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}"
+                           class="img-thumbnail w-25" />
+                  @endforeach
+                @else
+                   <h5 class="text-center">No other images</h5>
+                @endif
+                </div>
+
             </div>
-            <div class="col-md-6 d-flex justify-content-start">
-                <span class="font-monospace">Occupation:</span>
-                <span class="mb-0 text-break mx-2 font-monospace">{{ $profile->occupation }}</span>
+        </div>
+
+        <!-- RIGHT SIDE: Contact Cards -->
+        <div class="col-12 col-md-4 order-2 order-md-2 d-flex flex-column gap-3">
+            <!-- Contact Admin -->
+            <div class="card shadow-sm p-3 text-center">
+                <h5 class="mb-2">Contact Admin</h5>
+                <p class="mb-1"><strong>Name:</strong> {{ $profile->admin_details->first_name }} {{ $profile->admin_details->last_name }}</p>
+                <p class="mb-2"><strong>Contact:</strong> {{ $profile->admin_details->phone_number }}</p>
+                <button class="btn btn-success w-100">📞 Contact Admin</button>
             </div>
 
-            <div class="col-md-6 d-flex justify-content-start">
-                <span class="font-monospace">Company Name:</span>
-                <span class="mx-2 font-monospace">{{ $profile->company_name }}</span>
+            <!-- Contact User -->
+            <div class="card shadow-sm p-3 text-center">
+                <h5 class="mb-2">Contact User</h5>
+                <p class="mb-1"><strong>Name:</strong> {{ $profile->contact_person_name }}</p>
+                <p class="mb-2"><strong>Contact:</strong> {{ $profile->show_contact_publicly 
+                          ? $profile->contact_person_number 
+                          : Str::mask($profile->contact_person_number, '*', 0, -2) }}</p>
+                <button class="btn btn-success w-100">📞 Contact User</button>
             </div>
-
-            <div class="col-md-6 d-flex justify-content-start">
-                <span class="font-monospace">Annual Income:</span>
-                <span class="mx-2 font-monospace">{{ $profile->annual_income }}</span>
-            </div>
-
-            <div class="col-md-6 d-flex justify-content-start mb-2">
-                <span class="font-monospace">Location:</span>
-                <span class="mx-2 font-monospace">{{ $profile->work_location }}</span>
-            </div>
-          <span class="display-6 border-bottom border-top text-black">Family Details</span><br/>
-
-          <div class="col-md-6 d-flex justify-content-start mt-3">
-            <span class="font-monospace">Father Name:</span>
-            <span class="mx-2 font-monospace">{{ $profile->father_name }}</span>
-        </div>
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Father Occupation:</span>
-            <span class="mx-2 font-monospace">{{ $profile->father_occupation }}</span>
-        </div>
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Mother Name:</span>
-            <span class="mx-2 font-monospace">{{ $profile->mother_name }}</span>
-        </div>
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Mother Occupation:</span>
-            <span class="mx-2 font-monospace">{{ $profile->mother_occupation }}</span>
-        </div>
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Number of Brothers:</span>
-            <span class="mx-2 font-monospace">{{ $profile->no_of_brothers }}</span>
-        </div>
-        <div class="col-md-6 d-flex justify-content-start">
-            <span class="font-monospace">Number of Sisters:</span>
-            <span class="mx-2 font-monospace">{{ $profile->no_of_sisters }}</span>
-        </div>
-        <div class="col-md-6 d-flex justify-content-start mb-2">
-            <span class="font-monospace">Family Type:</span>
-            <span class="mx-2 font-monospace">{{ $profile->family_type }}</span>
-        </div>
-        
-        <span class="display-6 border-bottom border-top text-black">Mosal Details</span><br/>
-
-        <div class="col-md-6 d-flex justify-content-start mt-3">
-            <span class="font-monospace">Mosal Place:</span>
-            <span class="mx-2 font-monospace">{{ $profile->mosal_name ? $profile->mosal_name : '-' }}</span>
         </div>
 
-        @foreach($profile->mosals as $mosal)
-            <div class="col-md-6 d-flex justify-content-start">
-                <span class="font-monospace">Person Name and contact details:</span>
-                <span class="mx-2 font-monospace">{{ $mosal->person_name }} , {{ $profile->show_contact_publicly 
-                        ? $mosal->contact_number 
-                        : Str::mask($mosal->contact_number, '*', 0, -2) }}</span>
-            </div>
-        @endforeach
-          
-        <div class="mb-2"></div>
-        <span class="display-6 border-bottom border-top">Lifestyle & Personal Info</span><br/>
-
-        <div class="col-md-6 d-flex justify-content-start mt-3">
-            <span class="font-monospace">Hobbies:</span>
-            <span class="mb-0 text-break mx-2 font-monospace">{{ $profile->hobbies }}</span>
-        </div>
-        <div class="col-md-6 d-flex justify-content-start mb-2">
-            <span class="font-monospace">About Me:</span>
-            <span class="mb-0 text-break mx-2 font-monospace">{{ $profile->about_me }}</span>
-        </div>
-
-          <span class="display-6 border-bottom border-top text-black">Contact Details</span><br/>
-
-          <span class="font-monospace mt-3">Contact:</span>
-          <div class="col-md-6 d-flex justify-content-start mb-2 font-monospace">
-            <span class="mx-2">
-                {{ $profile->contact_person_name }},
-                {{ $profile->show_contact_publicly 
-                    ? $profile->contact_person_number 
-                    : Str::mask($profile->contact_person_number, '*', 0, -2) }}
-            </span>
-         </div>
-
-          <span class="display-6 border-bottom border-top text-black">Other Images</span><br/>
-          @if(count($profile->gallery_photo) > 0)
-            @foreach($profile->gallery_photo as $gallery_photo)
-                <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}"
-                     class="img-thumbnail w-25" />
-            @endforeach
-          @else
-             <h5 class="text-center">No other images</h5>
-          @endif
-        </div>
-      </div>
-
-    </div>
-
-    <!-- RIGHT SIDE -->
-    <div class="col-md-4">
-
-      <!-- Contact Card -->
-      <div class="card mb-3 shadow-sm text-center" style="background:aliceblue">
-        <div class="card-body">
-          <p class="mb-2 h5"><span><b>Contact Number:</b></span> {{ $profile->contact_person_number }}</p>
-
-          <button class="btn btn-success w-100">
-            📞 Contact Admin
-          </button>
-        </div>
-      </div>
     </div>
 
   </div>
@@ -280,7 +162,6 @@ User Detail Page
 </div>
 
 @endsection
-
 
 @section('js')
 <script>
@@ -303,7 +184,7 @@ function BookmarkFunction(profileId, el) {
 
             if (data.status === 'added') {
                 swal.fire("Good job!", "Pofile Added in Favourite", "success");
-                el.innerText = '❤️ Favourite';
+                el.innerText = '❤️ Favourited';
 
             } else {
                 swal.fire("Good job!", "Pofile Removed from Favourite", "success");
@@ -312,7 +193,6 @@ function BookmarkFunction(profileId, el) {
 
         });
     }else{
-        // window.location.href = "/login";
         swal.fire({
           title: "Please Login to add profile!",
         });

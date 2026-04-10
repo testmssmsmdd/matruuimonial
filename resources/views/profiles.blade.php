@@ -66,9 +66,9 @@ Profile List
             <div class="card-body">
               <h5 class="mb-3">Filters</h5>
               <button class="btn btn-outline-primary d-block d-md-none" type="button" id="filterToggleBtn">
-                <i class="bi bi-chevron-compact-up"></i>
+                <i class="bi bi-chevron-compact-down"></i>
               </button>
-              <div class="accordion show" id="filterAccordion_full">
+              <div id="filterAccordion_full" class="accordion collapse d-md-block">
                 <form method="get" name="filter_form" id="filter_form" action="{{ route('user.profiles') }}">
                   <div class="accordion" id="filterAccordion">
                     <!-- Gender -->
@@ -261,7 +261,7 @@ Profile List
                                            class="btn btn-success btn-sm flex-fill">
                                             View Profile
                                         </a>
-                                        @if(Auth::user()?->role=="User")
+                                        @if(Auth::user()?->role != "Admin" && Auth::user()?->role != "Super_Admin")
                                           @if($profile->is_favourite  == 0)
                                             <button class="btn btn-danger btn-sm flex-fill" onclick="BookmarkFunction({{ $profile->id }},this)">
                                                 ❤️
@@ -269,7 +269,7 @@ Profile List
                                           @else
                                             <button
                                                class="btn btn-danger btn-sm flex-fill" onclick="BookmarkFunction({{ $profile->id }},this)">
-                                                ❤️ Favourite
+                                                ❤️ Favourited
                                             </button>
                                           @endif
                                         @endif
@@ -331,7 +331,7 @@ function BookmarkFunction(profileId, el) {
       .then(data => {
           if (data.status === 'added') {
               swal.fire("Good job!", "Pofile Added in Favourite", "success");
-              el.innerText = '❤️ Favourite';
+              el.innerText = '❤️ Favourited';
 
           } else {
               swal.fire("Good job!", "Pofile Removed from Favourite", "success");
@@ -365,9 +365,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const filterToggleBtn = document.getElementById('filterToggleBtn');
   const icon = filterToggleBtn.querySelector('i');
 
+  const isDesktop = window.innerWidth >= 768;
+
   const bsCollapse = new bootstrap.Collapse(filterAccordion, {
-    toggle: false
+    toggle: !isDesktop
   });
+
+  if (isDesktop) {
+    filterAccordion.classList.add('show');
+  } else {
+    filterAccordion.classList.remove('show');
+  }
 
   filterToggleBtn.addEventListener('click', function () {
     if (filterAccordion.classList.contains('show')) {
@@ -386,6 +394,16 @@ document.addEventListener("DOMContentLoaded", function () {
     icon.classList.remove('bi-chevron-compact-up');
     icon.classList.add('bi-chevron-compact-down');
   });
+});
+
+window.addEventListener('resize', function () {
+  const filterAccordion = document.getElementById('filterAccordion_full');
+
+  if (window.innerWidth >= 768) {
+    filterAccordion.classList.add('show');
+  } else {
+    filterAccordion.classList.remove('show');
+  }
 });
 </script>
 

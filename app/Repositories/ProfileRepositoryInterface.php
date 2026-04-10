@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repositories;
+use Illuminate\Http\Request;
 
 interface ProfileRepositoryInterface
 {
@@ -47,5 +48,14 @@ interface ProfileRepositoryInterface
     public function findGalleryById($id);
 
     public function deleteGallery($image);
+
+    public function getProfileByUserId($userId);
+    public function createProfile($data);
+    public function updateProfile($data);
+    public function deleteGalleryImage($id);
+
+    public function toggleFavourite($userId, $profileId);
+    public function getFavouriteProfiles($userId, Request $request);
+    public function getFavouriteCities($userId);
 
 }

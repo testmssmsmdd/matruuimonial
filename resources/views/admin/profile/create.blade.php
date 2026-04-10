@@ -35,7 +35,7 @@
           </h3>
 
           <div class="col-md-6">
-            <label for="first_name" class="form-label">First name<span class="text-danger">*</span></label>
+            <label for="first_name" class="form-label">First Name<span class="text-danger">*</span></label>
             <input
               type="text"
               class="form-control"
@@ -54,7 +54,7 @@
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-md-6">
-            <label for="middle_name" class="form-label">Middle name</label>
+            <label for="middle_name" class="form-label">Middle Name</label>
             <input
               type="text"
               class="form-control"
@@ -72,7 +72,7 @@
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-md-6">
-            <label for="last_name" class="form-label">Last name<span class="text-danger">*</span></label>
+            <label for="last_name" class="form-label">Last Name<span class="text-danger">*</span></label>
             <input
               type="text"
               class="form-control"
@@ -138,7 +138,7 @@
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-md-6 row me-2 mt-3">
-            <label for="birth_time" class="form-label">Birth time<span class="text-danger">*</span></label>
+            <label for="birth_time" class="form-label">Birth Time<span class="text-danger">*</span></label>
             <div class="col-md-3">
               <select class="form-select" id="birth_hours" name="birth_hours">
                   <option selected disabled value="">Hours...</option>
@@ -166,13 +166,6 @@
                 </select>
                 <span class="help-block"><strong></strong></span>
             </div>
-            {{-- <input type="text" class="form-control" id="birth_time" name="birth_time" >
-            <span class="help-block"><strong></strong></span>
-            @error('birth_time')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror --}}
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -227,6 +220,7 @@
             <input
               type="number"
               class="form-control"
+              min="0"
               id="weight"
               name="Weight"
               value = "{{ old('weight') }}"
@@ -259,7 +253,7 @@
           </div>
 
           <div class="col-md-6">
-            <label for="mother_tounge" class="form-label">Mother tounge<span class="text-danger">*</span></label>
+            <label for="mother_tounge" class="form-label">Mother Tounge<span class="text-danger">*</span></label>
             <input
               type="text"
               class="form-control"
@@ -461,7 +455,7 @@
           </div>
 
           <div class="col-md-6">
-            <label for="Annual_income" class="form-label">Annual income</label>
+            <label for="Annual_income" class="form-label">Annual Income</label>
             <input
               type="text"
               class="form-control"
@@ -570,7 +564,7 @@
 
 
           <div class="col-md-6">
-            <label for="no_of_brothers" class="form-label">Number of brother<span class="text-danger">*</span></label>
+            <label for="no_of_brothers" class="form-label">Number Of Brother<span class="text-danger">*</span></label>
             <input
               type="number"
               class="form-control"
@@ -588,7 +582,7 @@
           </div>
 
           <div class="col-md-6">
-            <label for="no_of_sisters" class="form-label">Number of sister<span class="text-danger">*</span></label>
+            <label for="no_of_sisters" class="form-label">Number Of Sister<span class="text-danger">*</span></label>
             <input
               type="number"
               class="form-control"

@@ -112,7 +112,8 @@ class HomeRepository implements HomeRepositoryInterface
             'mosals',
             'profile_photo',
             'gallery_photo',
-            'city'
+            'city',
+            'admin_details'
         ])->findOrFail($id);
     }
 

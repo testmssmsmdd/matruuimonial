@@ -4,6 +4,10 @@
 Create Profile
 @endsection
 
+@section('style')
+  <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
 @section('content')
 @php
     $mosals = old('mosal') ?? ($profile->mosals ?? []);
@@ -100,11 +104,10 @@ Create Profile
                 <label for="age" class="form-label">Age(years)<span class="text-danger">*</span></label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control bg-age"
                   id="age"
                   name="age"
                   value = "{{ old('age', $profile->age ?? '') }}"
-                  style="pointer-events:none;background:aquamarine;"
                 />
                 <span class="help-block"><strong></strong></span>
               </div>
@@ -662,21 +665,19 @@ Create Profile
                  @if($profile?->gallery_photo)
                   <div class="d-flex flex-wrap gap-3">
                     @foreach($profile->gallery_photo as $gallery_photo)
-                      <div style="position: relative; display: inline-block;">
+                      <div class="img-block">
                         
                         <button 
                           type="button"
-                          class="gallery_img_del"
+                          class="gallery_img_del img-cross"
                           data-attr="{{ $gallery_photo->id }}"
-                          style="position: absolute;top: 5px;right: 5px;background: red;color: white;border: none;border-radius: 50%;width: 25px;height: 25px;display: flex;align-items: center;justify-content: center;
-                          ">
+                          >
                           <i class="bi bi-x"></i>
                         </button>
 
                         <img 
                           src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}" 
-                          class="img-thumbnail" 
-                          style="width: 150px; height: auto;"
+                          class="img-thumbnail w-150"
                         />
 
                       </div>
@@ -735,7 +736,7 @@ Create Profile
   function loadStates(countryId){
     if(countryId){
       $.ajax({
-        url : "{{ route('admin.profile.states') }}",
+        url : "/states/" + id,
         data:{'id':countryId},
         success: function(result){
           $('#state_id').empty();

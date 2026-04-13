@@ -141,11 +141,6 @@
       <!--end::Footer-->
     </form>
   <!--end::Form-->
-
 </div>
-
-
-
-
 
 @endsection

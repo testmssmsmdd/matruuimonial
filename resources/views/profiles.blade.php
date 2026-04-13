@@ -6,55 +6,7 @@ Profile List
 @endsection
 
 @section('style')
-<style>
-  .profile-card {
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      transition: 0.3s;
-      background: #fff;
-  }
-
-  .profile-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-  }
-
-  .profile-img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-  }
-
-  .btn-success {
-      background-color: #3f7d6b;
-      border: none;
-  }
-
-  .btn-danger {
-      background-color: #d85c6c;
-      border: none;
-  }
-  .page-item{
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  .page-item.active .page-link{
-    background: #3f7d6b !important;
-    border:  none;
-  }
-
-  /* Mobile toggle button */
-  #filterToggleBtn {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  #filterToggleBtn i {
-    font-size: 20px;
-  }
-</style>
+<link rel="stylesheet" href="{{ asset('css/profiles.css') }}" />
 @endsection
 
 @section('content')
@@ -190,9 +142,9 @@ Profile List
                   </div>
 
                   <!-- Buttons -->
-                  <div class="d-flex flex-column align-items-start gap-2 mt-3">
+                  <div class="gap-2 mt-3">
                     <button class="btn btn-success">Apply Filters</button>
-                    <a href="{{ url()->current() }}" class="btn btn-outline-secondary">Reset Filters</a>
+                    <a href="{{ url()->current() }}" class="btn btn-outline-secondary mx-2">Reset Filters</a>
                   </div>
                   <input type="hidden" name="sort_by" id="sort_by" value="" />
                 </form>
@@ -203,7 +155,7 @@ Profile List
 
         <!-- RIGHT: FILTERS -->
         <div class="col-md-9">
-            @if(count($profilelist) > 0)
+            @if($profilelist->isNotEmpty())
                <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0">Profiles</h5>
 
@@ -216,7 +168,7 @@ Profile List
                     </select>
                 </form>
               </div>
-            <div class="row">
+            <div class="row" id="profile_list">
                 @foreach($profilelist as $profile)
                   @php
                       $fullAddress = $profile->current_address . ', ' . $profile->city->name . ', ' . $profile->state->name;
@@ -284,7 +236,7 @@ Profile List
             </div>
             <nav class="mt-3">
                 <ul class="pagination justify-content-center">
-                  {{ $profilelist->links() }}
+                  {{-- {{ $profilelist->links() }} --}}
                 </ul>
           </nav>
             @else
@@ -297,114 +249,6 @@ Profile List
 
 
 @section('js')
-
-<script>
-$(document).ready(function () {
-
-    // Submit on filter button click
-    $('#filterForm').on('submit', function (e) {
-        e.preventDefault();
-        fetchProfiles();
-    });
-
-    $('select[name="sorting"]').on('change', function () {
-        $('#sort_by').val($('#sorting').val());
-        $('#filter_form').submit();
-    });
-});
-
-function BookmarkFunction(profileId, el) {
-  var loggedIn = {{ auth()->check() ? 'true' : 'false' }};
-    if(loggedIn == true)
-    {
-      fetch(`/user/profile/favourite`, {
-          method: "POST",
-          headers: {
-              "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-              profile_id: profileId
-          })
-      })
-      .then(res => res.json())
-      .then(data => {
-          if (data.status === 'added') {
-              swal.fire("Good job!", "Pofile Added in Favourite", "success");
-              el.innerText = '❤️ Favourited';
-
-          } else {
-              swal.fire("Good job!", "Pofile Removed from Favourite", "success");
-              el.innerText = '❤️';
-          }
-
-      });
-    }else{
-        // window.location.href = "/login";
-        swal.fire({
-          title: "Please Login to add profile!",
-        });
-    }
-}
-
-document.getElementById('filter_form').addEventListener('submit', function(e) {
-
-    let minAge = document.getElementById('min_age').value;
-    let maxAge = document.getElementById('max_age').value;
-
-    minAge = minAge ? parseInt(minAge) : null;
-    maxAge = maxAge ? parseInt(maxAge) : null;
-
-    if (minAge !== null && maxAge !== null && minAge > maxAge) {
-        alert('Minimum age cannot be greater than maximum age');
-        e.preventDefault();
-    }
-});
-document.addEventListener("DOMContentLoaded", function () {
-  const filterAccordion = document.getElementById('filterAccordion_full');
-  const filterToggleBtn = document.getElementById('filterToggleBtn');
-  const icon = filterToggleBtn.querySelector('i');
-
-  const isDesktop = window.innerWidth >= 768;
-
-  const bsCollapse = new bootstrap.Collapse(filterAccordion, {
-    toggle: !isDesktop
-  });
-
-  if (isDesktop) {
-    filterAccordion.classList.add('show');
-  } else {
-    filterAccordion.classList.remove('show');
-  }
-
-  filterToggleBtn.addEventListener('click', function () {
-    if (filterAccordion.classList.contains('show')) {
-      bsCollapse.hide();
-    } else {
-      bsCollapse.show();
-    }
-  });
-
-  filterAccordion.addEventListener('shown.bs.collapse', function () {
-    icon.classList.remove('bi-chevron-compact-down');
-    icon.classList.add('bi-chevron-compact-up');
-  });
-
-  filterAccordion.addEventListener('hidden.bs.collapse', function () {
-    icon.classList.remove('bi-chevron-compact-up');
-    icon.classList.add('bi-chevron-compact-down');
-  });
-});
-
-window.addEventListener('resize', function () {
-  const filterAccordion = document.getElementById('filterAccordion_full');
-
-  if (window.innerWidth >= 768) {
-    filterAccordion.classList.add('show');
-  } else {
-    filterAccordion.classList.remove('show');
-  }
-});
-</script>
-
+window.loggedIn = {{ auth()->check() ? 'true' : 'false' }};
+<script type="text/javascript" src="{{ asset('js/profile/profiles.js') }}"></script>
 @endsection

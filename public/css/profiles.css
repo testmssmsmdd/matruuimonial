@@ -1,0 +1,47 @@
+.profile-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+    background: #fff;
+}
+
+.profile-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+.profile-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.btn-success {
+    background-color: #3f7d6b;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #d85c6c;
+    border: none;
+}
+.page-item{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.page-item.active .page-link{
+  background: #3f7d6b !important;
+  border:  none;
+}
+
+/* Mobile toggle button */
+#filterToggleBtn {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#filterToggleBtn i {
+  font-size: 20px;
+}

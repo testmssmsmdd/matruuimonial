@@ -1,5 +1,9 @@
 @extends('layouts.common_content')
 
+@section('css')
+  <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
 @section('page_title')
 <div class="row">
   <div class="col-sm-6">
@@ -43,12 +47,7 @@
               name="first_name"
               value = "{{ old('first_name') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('first_name')
-              <span class="first_name text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
           
           <!--end::Col-->
@@ -62,12 +61,7 @@
               name="middle_name"
               value = "{{ old('middle_name') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('middle_name')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -81,12 +75,7 @@
               value = "{{ old('last_name') }}"
 
             />
-            <span class="help-block"><strong></strong></span>
-            @error('last_name')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -97,24 +86,14 @@
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-              <span class="help-block"><strong></strong></span>
-            @error('gender')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-md-6">
               <label for="gender" class="form-label">Birth Date<span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="birth_date" name="date_of_birth" placeholder="Select a date">
-              <span class="help-block"><strong></strong></span>
-            @error('birth_date')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -122,18 +101,12 @@
             <label for="age" class="form-label">Age(years)<span class="text-danger">*</span></label>
             <input
               type="text"
-              class="form-control"
+              class="form-control bg-age"
               id="age"
               name="age"
               value = "{{ old('age') }}"
-              style="pointer-events:none;background:aquamarine;"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('age')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
           <!--end::Col-->
           <!--begin::Col-->
@@ -146,7 +119,7 @@
                     <option  value="{{ $i }}">{{ $i }}</option>
                   @endfor
               </select>
-              <span class="help-block"><strong></strong></span>
+              <span class="help-block"><span></span></span>
             </div>
             <div class="col-md-3">
               <select class="form-select" id="birth_minutes" name="birth_minutes">
@@ -156,7 +129,7 @@
                       <option  value="{{ $i }}">{{ $i }}</option>
                     @endfor
                 </select>
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
             </div>
             <div class="col-md-3">
               <select class="form-select" id="birth_format" name="birth_format">
@@ -164,7 +137,7 @@
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
                 </select>
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
             </div>
           </div>
           <!--end::Col-->
@@ -178,12 +151,7 @@
               name="birth_place"
               value = "{{ old('birth_place') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('birth_place')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
           <!--end::Col-->
 
@@ -196,7 +164,7 @@
                     <option  value="{{ $i }}">{{ $i }}</option>
                   @endfor
               </select>
-              <span class="help-block"><strong></strong></span>
+              <span class="help-block"><span></span></span>
             </div>
             <div class="col-md-3">
               <select class="form-select" id="height_in" name="height_in">
@@ -205,14 +173,9 @@
                     <option  value="{{ $i }}">{{ $i }}</option>
                   @endfor
               </select>
-              <span class="help-block"><strong></strong></span>
+              <span class="help-block"><span></span></span>
             </div>
-            <span class="help-block"><strong></strong></span>
-            @error('height')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -226,12 +189,8 @@
               value = "{{ old('weight') }}"
 
             />
-            <span class="help-block"><strong></strong></span>
-            @error('weight')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
+
           </div>
 
           <div class="col-md-6">
@@ -244,12 +203,7 @@
                 <option value="Mithi_Jibh_Cancel">Mithi Jibh Cancel</option>
                 <option value="Broken_Engagement">Broken Engagement</option>
               </select>
-              <span class="help-block"><strong></strong></span>
-            @error('marital_status')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -262,12 +216,7 @@
               value = "{{ old('mother_tounge') }}"
 
             />
-            <span class="help-block"><strong></strong></span>
-            @error('mother_tounge')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -279,12 +228,7 @@
               name="rashi"
               value = "{{ old('rashi') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('rashi')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -296,12 +240,7 @@
               name="caste"
               value = "{{ old('caste') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('caste')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -313,12 +252,7 @@
               name="gotra"
               value = "{{ old('gotra') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('gotra')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -330,12 +264,7 @@
                 <option value="no">No</option>
                 <option value="don't know">Don't know</option>
               </select>
-              <span class="help-block"><strong></strong></span>
-            @error('manglik')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
           <h3 class="fw-bold">
@@ -350,12 +279,7 @@
                   <option value="{{ $val['id'] }}">{{ $val['name'] }}</option>
                 @endforeach
               </select>
-              <span class="help-block"><strong></strong></span>
-            @error('country')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
 
@@ -364,12 +288,7 @@
               <select class="form-select" id="state_id" name="state_id">
                 <option selected disabled value="">Choose...</option>
               </select>
-              <span class="help-block"><strong></strong></span>
-            @error('state')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -377,23 +296,13 @@
               <select class="form-select" id="city_id" name="city_id">
                 <option selected disabled value="">Choose...</option>
               </select>
-              <span class="help-block"><strong></strong></span>
-            @error('city')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
               <label for="current_location" class="form-label">Address<span class="text-danger">*</span></label>
               <textarea class="form-control" aria-label="With textarea" name="current_address"></textarea>
-              <span class="help-block"><strong></strong></span>
-            @error('current_location')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
 
@@ -410,12 +319,7 @@
               name="education"
               value = "{{ old('education') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('education')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -428,12 +332,7 @@
               name="occupation"
               value = "{{ old('occupation') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('occupation')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -446,12 +345,7 @@
               name="company_name"
               value = "{{ old('company_name') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('company_name')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -463,12 +357,7 @@
               name="annual_income"
               value = "{{ old('Annual_income') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('Annual_income')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -481,12 +370,7 @@
               name="work_location"
               value = "{{ old('work_location') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('work_location')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <h3 class="fw-bold">
@@ -502,12 +386,7 @@
               name="father_name"
               value = "{{ old('father_name') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('father_name')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -519,12 +398,7 @@
               name="father_occupation"
               value = "{{ old('father_occupation') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('father_occupation')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -537,12 +411,7 @@
               name="mother_name"
               value = "{{ old('mother_name') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('mother_name')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -554,12 +423,7 @@
               name="mother_occupation"
               value = "{{ old('mother_occupation') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('mother_occupation')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -573,12 +437,7 @@
               min = 0
               value = "{{ old('no_of_brothers') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('no_of_brothers')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -591,12 +450,7 @@
               min = 0
               value = "{{ old('no_of_sisters') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('no_of_sister')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -606,12 +460,7 @@
                 <option value="joint">Joint</option>
                 <option value="nuclear">Nuclear</option>
               </select>
-              <span class="help-block"><strong></strong></span>
-            @error('family_type')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -632,12 +481,7 @@
                 name="mosal_name"
                 value = "{{ old('mosal_name') }}"
               />
-              <span class="help-block"><strong></strong></span>
-              @error('location')
-                <span class="text-danger" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-              @enderror
+              <span class="help-block"><span></span></span>
             </div>
             <div class= "col-md-6">
 
@@ -652,12 +496,7 @@
                 name="mosal[0][person_name]"
                 value = "{{ old('mosal[$i][person_name]') }}"
               />
-              <span class="help-block"><strong></strong></span>
-              @error('name')
-                <span class="text-danger" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-              @enderror
+              <span class="help-block"><span></span></span>
             </div>
 
             <div class="col-md-5" >
@@ -668,7 +507,7 @@
                 name="mosal[0][contact_number]"
                 value="{{ old('mosal.0.contact_number') }}"
               />
-              <span class="help-block"><strong></strong></span>
+              <span class="help-block"><span></span></span>
               
             </div>
 
@@ -686,24 +525,13 @@
           <div class="col-md-6">
               <label for="hobbies" class="form-label">Hobbies<span class="text-danger">*</span></label>
               <textarea class="form-control" aria-label="With textarea" name="hobbies"></textarea>
-              <span class="help-block"><strong></strong></span>
-
-            @error('hobbies')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
               <label for="about_me" class="form-label">About Me<span class="text-danger">*</span></label>
               <textarea class="form-control" aria-label="With textarea" name="about_me"></textarea>
-              <span class="help-block"><strong></strong></span>
-            @error('about_me')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+              <span class="help-block"><span></span></span>
           </div>
 
           <h3 class="fw-bold">
@@ -720,12 +548,7 @@
               value = "{{ old('contact_person_name') }}"
 
             />
-            <span class="help-block"><strong></strong></span>
-            @error('contact_person_name')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -738,12 +561,7 @@
               name="contact_person_number"
               value = "{{ old('contact_person_number') }}"
             />
-            <span class="help-block"><strong></strong></span>
-            @error('contact_person_number')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -756,12 +574,7 @@
               name="contact_person_wp_number"
               value = "{{ old('contact_person_wp_number') }}"
             />
-            <span class="help-block"><strong></strong></span>            
-            @error('contact_person_wp_number')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <!--begin::Col-->
@@ -774,12 +587,7 @@
               name="contact_person_email"
               value = "{{ old('email') }}"
             />
-            <span class="help-block"><strong></strong></span>            
-            @error('email')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
           <!--end::Col-->
 
@@ -803,12 +611,7 @@
               name="profile_photo"
               value = "{{ old('profile_photo') }}"
             />
-            <span class="help-block"><strong></strong></span>            
-            @error('upload_profile_photo')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
 
@@ -822,12 +625,7 @@
               multiple
               value = "{{ old('gallery_photo') }}"
             />
-            <span class="help-block"><strong></strong></span>            
-            @error('gallery_photo')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
 
           <div class="col-md-6">
@@ -837,12 +635,7 @@
                 <option value="1">Active</option>
                 <option value="0">Inactive</option>
               </select>
-            <span class="help-block"><strong></strong></span>            
-            @error('account_status')
-              <span class="text-danger" role="alert">
-                  <strong>{{ $message }}</strong>
-              </span>
-            @enderror
+            <span class="help-block"><span></span></span>
           </div>
           <!--end::Col-->
         </div>
@@ -864,182 +657,6 @@
 </div>
 @endsection
 
-
 @section('js')
-<script type="text/javascript">
-
-  $("#country_id").on("click change", function(){
-      $('#state_id').empty();
-      let id = $(this).val();
-      $.ajax({
-        url : "{{ route('admin.profile.states') }}",
-        data:{'id':id},
-        success: function(result){
-          $('#state_id').empty();
-          $('#state_id').append('<option value="">Select Option</select>');
-          $.each(result.states,function(index, data){
-            $('#state_id').append($('<option>',{
-                value:data.id
-              }).text(data.name)
-            );
-          })
-        }
-      });
-  });
-
-  $("#state_id").on("change", function(){
-     $('#city_id').empty();
-      let id = $(this).val();
-      $.ajax({
-        url : "{{ route('admin.profile.cities') }}",
-        data:{'id':id},
-        success: function(result){
-          $('#city_id').empty();
-          $('#city_id').append('<option value="">Select Option</select>');
-          $.each(result.cities,function(index, data){
-            console.log(data.id);
-            $('#city_id').append($('<option>',{
-                value:data.id
-              }).text(data.name)
-            );
-          })
-        }
-      });
-  });
-
-  var i = 0;
-  $("#add_mosal").on("click",function(){
-    ++i;
-    var html = '<div class="mosal_details row mosal_'+i+'" data-attr="mosal_'+i+'">';
-
-    html += '<div class="col-md-5">';
-    html += '<label class="form-label">Person Name</label>';
-    html += '<input type="text" class="form-control" name="mosal['+i+'][person_name]" />';
-    html += '<span class="help-block"><strong></strong></span>';
-    html += '</div>';
-
-    html += '<div class="col-md-5">';
-    html += '<label class="form-label">Contact Number</label>';
-    html += '<input type="text" class="form-control" name="mosal['+i+'][contact_number]" />';
-    html += '<span class="help-block"><strong></strong></span>';
-    html += '</div>';
-
-    html += '<div class="col-md-2 mt-4">';
-    html += '<button type="button" data-attr="mosal_'+i+'" class="btn btn-danger remove_mosal">';
-    html += '<i class="nav-icon bi bi-file-minus"></i></button>';
-    html += '</div>';
-
-    html += '</div>';
-
-    $("#mosal_details").append(html);
-  });
-
-  $(document).on('click','.remove_mosal',function () {
-      var mosal_attr = $(this).data('attr');
-      $("."+mosal_attr).remove();
-  });
-
-
-  $('#profile_form').submit(function(e){
-    e.preventDefault();
-
-  $('#profile_form .is-invalid').removeClass('is-invalid');
-
-  // Clear all error messages
-  $('#profile_form .help-block strong').text('');
-
-    var url = $(this).attr("action");
-    let formData = new FormData(this);
-
-    $.ajax({
-          type:'POST',
-          url: url,
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: (response) => {
-              window.location.href = '/admin/profile';                      
-          },
-          error: function(response){
-              $.each(response.responseJSON.errors, function (key, value) {
-
-                let errorText = value[0];
-                let input;
-
-                if (key.startsWith('gallery_photo')) {
-
-                    input = $('#profile_form').find('[name="gallery_photo[]"]');
-
-                    input.addClass('is-invalid');
-                    input.closest('[class*="col-md"]')
-                         .find('.help-block strong')
-                         .text(errorText);
-
-                    return;
-                }
-
-                let parts = key.split('.');
-                let inputName = parts[0];
-
-                for (let i = 1; i < parts.length; i++) {
-                    inputName += `[${parts[i]}]`;
-                }
-
-                input = $('#profile_form').find('[name="' + inputName + '"]');
-
-                if (!input.length) {
-                    console.warn("Not found:", inputName);
-                }
-
-                if (input.length) {
-                    input.addClass('is-invalid');
-
-                    input.closest('[class*="col-md"]')
-                         .find('.help-block strong')
-                         .text(errorText);
-                }
-
-            });
-          }
-     });
-  })
-
-  function calculateAge(dateString) {
-      var currentDate = new Date();
-      var selectedDate = new Date(dateString);
-
-      if (isNaN(selectedDate)) return; // invalid date safety
-
-      var age = currentDate.getFullYear() - selectedDate.getFullYear();
-      var m = currentDate.getMonth() - selectedDate.getMonth();
-
-      if (m < 0 || (m === 0 && currentDate.getDate() < selectedDate.getDate())) {
-          age--;
-      }
-
-      $('#age').val(age);
-  }
-
-  $('#birth_date').datepicker({
-      format: 'yyyy-mm-dd',
-      autoclose: true,
-      todayHighlight: true,
-      endDate: "today",
-  }).on('changeDate', function(e) {
-       calculateAge(e.format('yyyy-mm-dd'));
-  });
-
-  $('#birth_date').on('input change', function () {
-    calculateAge($(this).val());
-  });
-
-  $(document).on('change','#show_contact_publicly',function(){
-    if($(this).is(':checked')){
-       $('#show_contact_publicly').val(1);
-    }else{
-       $('#show_contact_publicly').val(0);
-    }
-});
-
-</script>
+<script type="text/javascript" src="{{ asset('js/profile/create.js') }}"></script>
 @endsection

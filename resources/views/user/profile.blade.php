@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('style')
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
 @section('content')
 <section class="content">
       <div class="container-fluid">
@@ -11,7 +15,7 @@
               <div class="card-body box-profile">
                 <div class="text-center">
                     @if($profile?->profile_photo?->image)
-                      <img class="profile-user-img img-fluid img-circle" src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" alt="User profile picture" style="width:200px;height:200px;">
+                      <img class="profile-user-img img-fluid img-circle hw-200" src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" alt="User profile picture">
                     @else
                         @if($profile->gender == "Male")
                           <img src="{{ asset('/assets/img/man.png') }}" alt="user-avatar" class="img-circle img-fluid">

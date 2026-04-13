@@ -1,4 +1,4 @@
-<section class="py-5" style="background: #dceeee;">
+<section class="py-5 how_works">
     <div class="container text-center">
 
         <h4 class="fw-bold mb-4">How It Works</h4>

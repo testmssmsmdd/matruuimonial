@@ -4,6 +4,10 @@
 User Detail Page
 @endsection
 
+@section('style')
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
 @section('content')
 
 <div class="container mt-4">
@@ -20,7 +24,7 @@ User Detail Page
               <img src="{{ $profile->profile_photo?->image 
                           ? asset('/profile_photos/'.$profile->profile_photo->image) 
                           : ($profile->gender == 'Male' ? asset('/assets/img/man.png') : asset('/assets/img/women.png')) }}" 
-                   class="img-fluid rounded-circle" style="width:120px; height:120px; object-fit:cover;">
+                   class="img-fluid rounded-circle profile_img">
           </div>
 
           <!-- NAME & INFO -->
@@ -53,8 +57,8 @@ User Detail Page
 
         <!-- LEFT SIDE: Information Card -->
         <div class="col-12 col-md-8 order-1 order-md-1">
-            <div class="card shadow-sm p-3 mb-3" style="background-color: #ebeeef;">
-                <h5 class="mb-3 border-bottom pb-2" style="color: cadetblue;">Personal Information</h5>
+            <div class="card shadow-sm p-3 mb-3 profile_bg">
+                <h5 class="mb-3 border-bottom pb-2 profile_header_bg">Personal Information</h5>
                 <div class="row">
                     <div class="col-6 mb-2"><span>Name:</span> {{ $profile->first_name }} {{ $profile->last_name }}</div>
                     <div class="col-6 mb-2"><span>Gender:</span> {{ $profile->gender }}</div>
@@ -71,13 +75,13 @@ User Detail Page
                     <div class="col-6 mb-2"><span>Caste:</span> {{ $profile->caste }}</div>
                     <div class="col-6 mb-2"><span>Gotra:</span> {{ $profile->gotra }}</div>
                 </div>
-                <h5 class="mb-3 mt-3 border-bottom pb-2" style="color: cadetblue;">Location Details</h5>
+                <h5 class="mb-3 mt-3 border-bottom pb-2 profile_header_bg">Location Details</h5>
                 <div class="row">
                   <div class="col-6 mb-2"><span>Address:</span> {{ $profile->current_address }},{{ $profile->city->name }},
                 {{ $profile->state->name }},
                 {{ $profile->country->name }}</div>
                 </div>
-                <h5 class="mb-3 mt-3 border-bottom pb-2" style="color: cadetblue;">Education & Profession</h5>
+                <h5 class="mb-3 mt-3 border-bottom pb-2 profile_header_bg">Education & Profession</h5>
                 <div class="row">
                     <div class="col-6 mb-2"><span>Education:</span> {{ $profile->education }}</div>
                     <div class="col-6 mb-2"><span>Occupation:</span> {{ $profile->occupation }}</div>
@@ -85,7 +89,7 @@ User Detail Page
                     <div class="col-6 mb-2"><span>Annual Income:</span> {{ $profile->annual_income ?? '-' }}</div>
                     <div class="col-6 mb-2"><span>Work Location:</span> {{ $profile->work_location ?? '-' }}</div>
                 </div>
-                <h5 class="mb-3 mt-3 border-bottom pb-2" style="color: cadetblue;">Family Details</h5>
+                <h5 class="mb-3 mt-3 border-bottom pb-2 profile_header_bg">Family Details</h5>
                   <div class="row">
                     <div class="col-6 mb-2"><span>Father Name:</span> {{ $profile->father_name }}</div>
                     <div class="col-6 mb-2"><span>Father Occupation:</span> {{ $profile->father_occupation }}</div>
@@ -95,7 +99,7 @@ User Detail Page
                     <div class="col-6 mb-2"><span>Number of Sisters:</span> {{ $profile->no_of_sisters }}</div>
                     <div class="col-6 mb-2"><span>Family Type:</span> {{ $profile->family_type }}</div>
                   </div>
-                <h5 class="mb-3 mt-3 border-bottom pb-2" style="color: cadetblue;">Mosal Details</h5>
+                <h5 class="mb-3 mt-3 border-bottom pb-2 profile_header_bg">Mosal Details</h5>
                   <div class="row">
                     <div class="col-6 mb-2"><span>Mosal Place:</span> {{ $profile->mosal_name ? $profile->mosal_name : '-' }}</div>
                     <div class="col-6 mb-2"></div>
@@ -108,19 +112,19 @@ User Detail Page
                         </div>
                     @endforeach
                   </div>
-                <h5 class="mb-3 mt-3 border-bottom pb-2" style="color: cadetblue;">Lifestyle & Personal Info</h5>
+                <h5 class="mb-3 mt-3 border-bottom pb-2 profile_header_bg">Lifestyle & Personal Info</h5>
                 <div class="row">
                   <div class="col-6 mb-2"><span>Hobbies:</span> {{ $profile->hobbies }}</div>
                   <div class="col-6 mb-2"><span>About Me:</span> {{ $profile->about_me }}</div>
                 </div>
-                <h5 class="mb-3 mt-3 border-bottom pb-2" style="color: cadetblue;">Contact Details</h5>
+                <h5 class="mb-3 mt-3 border-bottom pb-2 profile_header_bg">Contact Details</h5>
                 <div class="row">
                   <div class="col-6 mb-2"><span>Contact:</span>{{ $profile->contact_person_name }},
                       {{ $profile->show_contact_publicly 
                           ? $profile->contact_person_number 
                           : Str::mask($profile->contact_person_number, '*', 0, -2) }}
                   </div>
-                <h5 class="mb-3 mt-3 border-bottom pb-2" style="color: cadetblue;">Other Images</h5>
+                <h5 class="mb-3 mt-3 border-bottom pb-2 profile_header_bg">Other Images</h5>
                 @if(count($profile->gallery_photo) > 0)
                   @foreach($profile->gallery_photo as $gallery_photo)
                       <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}"
@@ -164,39 +168,6 @@ User Detail Page
 @endsection
 
 @section('js')
-<script>
-function BookmarkFunction(profileId, el) {
-    var loggedIn = {{ auth()->check() ? 'true' : 'false' }};
-    if(loggedIn == true)
-    {
-        fetch(`/user/profile/favourite`, {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                profile_id: profileId
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-
-            if (data.status === 'added') {
-                swal.fire("Good job!", "Pofile Added in Favourite", "success");
-                el.innerText = '❤️ Favourited';
-
-            } else {
-                swal.fire("Good job!", "Pofile Removed from Favourite", "success");
-                el.innerText = '❤️';
-            }
-
-        });
-    }else{
-        swal.fire({
-          title: "Please Login to add profile!",
-        });
-    }
-}
-</script>
+window.loggedIn = {{ auth()->check() ? 'true' : 'false' }};
+<script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
 @endsection

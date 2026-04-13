@@ -4,6 +4,10 @@
 Home Page
 @endsection
 
+@section('style')
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
 @section('content')
   @include('layouts.user.search')
 
@@ -28,12 +32,12 @@ Home Page
                           <!-- Image -->
                           <div class="position-relative">
                               @if($profile?->profile_photo?->image)
-                                <img src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" alt="user-avatar" class="img-circle img-fluid card-image-top" style="height:255px;">
+                                <img src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" alt="user-avatar" class="img-circle img-fluid card-image-top h-255">
                                 @else
                                   @if($profile->gender == "Male")
-                                  <img src="{{ asset('/assets/img/man.png') }}" alt="user-avatar" class="img-circle img-fluid" style="height:255px;">
+                                  <img src="{{ asset('/assets/img/man.png') }}" alt="user-avatar" class="img-circle img-fluid h-255">
                                   @else
-                                  <img src="{{ asset('/assets/img/women.png') }}" alt="user-avatar" class="img-circle img-fluid" style="height:255px;">
+                                  <img src="{{ asset('/assets/img/women.png') }}" alt="user-avatar" class="img-circle img-fluid h-255">
                                   @endif
                               @endif
                           </div>
@@ -71,66 +75,6 @@ Home Page
 @endsection
 
 @section('js')
-<script type="text/javascript">
-    document.getElementById('searchForm').addEventListener('submit', function(e) {
-
-        let age = document.getElementById('age_range').value;
-        document.getElementById('min_age').value = '';
-        document.getElementById('max_age').value = '';
-        if (age) {
-            let parts = age.split('-');
-
-            document.getElementById('min_age').value = parts[0];
-            document.getElementById('max_age').value = parts[1];
-        }
-    });
-
-    document.getElementById('search_profile').addEventListener('submit', function(e) {
-
-        let minAge = document.getElementById('min_age').value;
-        let maxAge = document.getElementById('max_age').value;
-
-        minAge = minAge ? parseInt(minAge) : null;
-        maxAge = maxAge ? parseInt(maxAge) : null;
-
-        if (minAge !== null && maxAge !== null && minAge > maxAge) {
-            alert('Minimum age cannot be greater than maximum age');
-            e.preventDefault();
-        }
-    });
-
-    function BookmarkFunction(profileId, el) {
-        var loggedIn = {{ auth()->check() ? 'true' : 'false' }};
-        if(loggedIn == true)
-        {
-            fetch(`/user/profile/favourite`, {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    profile_id: profileId
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-
-                if (data.status === 'added') {
-                    el.classList.remove('bi-bookmarks');
-                    el.classList.add('bi-bookmark-fill', 'text-danger');
-                } else {
-                    el.classList.remove('bi-bookmarks-fill', 'text-danger');
-                    el.classList.add('bi-bookmark');
-                }
-
-            });
-        }else{
-            swal.fire({
-              title: "Please Login to add profile",
-            });
-        }
-    }
-</script>
-
+window.loggedIn = {{ auth()->check() ? 'true' : 'false' }};
+<script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
 @endsection

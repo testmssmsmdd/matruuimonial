@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('style')
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
 @section('content')
   <!--begin::Container-->
   <div class="container-fluid">
@@ -39,8 +43,8 @@
               </div>
               <div class="col-md-3 row">
                 <label for="name" class="form-label">Age range</label>
-                <input type="number" id="min_age" name="min_age" class="form-control" style="width: 150px;" placeholder="minimum age" min="0" value="<?php if (isset($_GET['min_age']) && $_GET['min_age'])  echo $_GET['min_age'] ?>" />
-                <input type="number" id="max_age" name="max_age" class="form-control mx-2" style="width: 150px;" placeholder="maximum age" min="0" value="<?php if (isset($_GET['max_age']) && $_GET['max_age'])  echo $_GET['max_age'] ?>" />
+                <input type="number" id="min_age" name="min_age" class="form-control w-150" placeholder="minimum age" min="0" value="<?php if (isset($_GET['min_age']) && $_GET['min_age'])  echo $_GET['min_age'] ?>" />
+                <input type="number" id="max_age" name="max_age" class="form-control mx-2 w-150" placeholder="maximum age" min="0" value="<?php if (isset($_GET['max_age']) && $_GET['max_age'])  echo $_GET['max_age'] ?>" />
               </div>
               <div class="col-md-3 mt-1">
                 <label for="name" class="form-label">Religion/Name/Profession/Education</label>
@@ -119,19 +123,6 @@
 
 
 @section('js')
-<script type="text/javascript">
-document.getElementById('search_profile').addEventListener('submit', function(e) {
-    let minAge = document.getElementById('min_age').value;
-    let maxAge = document.getElementById('max_age').value;
-
-    minAge = minAge ? parseInt(minAge) : null;
-    maxAge = maxAge ? parseInt(maxAge) : null;
-
-    if (minAge !== null && maxAge !== null && minAge > maxAge) {
-        alert('Minimum age cannot be greater than maximum age');
-        e.preventDefault(); // stops GET request
-    }
-});
-</script>
+  <script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
 @endsection
 

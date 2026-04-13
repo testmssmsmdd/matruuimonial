@@ -14,9 +14,9 @@
     <!-- Skip links will be dynamically added by accessibility.js -->
 
     <link rel="preload" href="{{ asset('css/adminlte.css') }}" as="style" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link href="{{ asset('css/datepicker.min.css') }}" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="{{ asset('css/timepicker.min.css') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.24/dist/sweetalert2.min.css" rel="stylesheet">
     <!--end::Accessibility Features-->
@@ -52,20 +52,8 @@
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
 
-
-    <!-- jsvectormap -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
-      integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
-      crossorigin="anonymous"
-    />
-
-    <style>
-      .help-block{
-        color: red;
-      }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}" />
+    @yield('css')
   </head>
   <!--end::Head-->
   <!--begin::Body-->
@@ -120,10 +108,7 @@
       crossorigin="anonymous"
     ></script>
     <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="{{ asset('js/bootstrap5_3_7.min.js') }}" crossorigin="anonymous"></script>
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
     <script src="{{ asset('js/adminlte.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -161,11 +146,7 @@
 
     <!-- OPTIONAL SCRIPTS -->
 
-    <!-- sortablejs -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
-      crossorigin="anonymous"
-    ></script>
+
 
     <!-- sortablejs -->
     <script>
@@ -180,51 +161,11 @@
       });
     </script>
 
-    <!-- jsvectormap -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"
-      integrity="sha256-/t1nN2956BT869E6H4V1dnt0X5pAQHPytli+1nTZm2Y="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"
-      integrity="sha256-XPpPaZlU8S/HWf7FZLAncLg2SAkP8ScUTII89x9D3lY="
-      crossorigin="anonymous"
-    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.js"></script>
 
-    <script>
-
-        document.addEventListener('DOMContentLoaded', function () {
-
-        document.querySelectorAll('.logout-btn').forEach(function(button) {
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-
-                Swal.fire({
-                    title: 'Are you sure you want to logout?',
-                    text: "",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, logout!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById('logout-form').submit();
-                    }
-                });
-            });
-        });
-
-    });
-
-    </script>
-
-
-
+    <script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
     <!-- jsvectormap -->
       @yield('js')
     <!--end::Script-->

@@ -36,6 +36,17 @@ class HomeController extends Controller
 
     public function profiles(Request $request){
         $data = $this->homeService->getHomeData($request);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('profile_data', [
+                    'profilelist' => $data['profilelist']
+                ])->render(),
+                'next_page' => $data['profilelist']->currentPage() + 1,
+                'has_more' => $data['profilelist']->hasMorePages()
+            ]);
+        }
+
         return view('profiles', $data);
     }
 

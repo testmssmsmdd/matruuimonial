@@ -30,7 +30,7 @@
             </li>
           @endif
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('user.profiles') }}">View Profiles</a>
+              <a class="nav-link" href="{{ route('/') }}">Home</a>
             </li>
           @if(Auth::user()?->role=="User")
             <li class="nav-item">

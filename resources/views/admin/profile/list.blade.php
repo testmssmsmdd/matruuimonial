@@ -1,5 +1,9 @@
 @extends('layouts.common_content')
 
+@section('css')
+  <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
 @section('page_title')
 <div class="row">
   <div class="col-sm-6">
@@ -108,13 +112,13 @@
                                     <a href="{{ route('admin.profile.edit',$profile->id) }}" class="btn btn-secondary"> <i class="nav-icon bi bi-pencil-square"></i> 
                                     </a>
                                     
-                                    <form method="POST" action="{{ route('admin.profile.delete_profile', $profile->id) }}" class="btn btn-danger" style="background:none;border:none;">
+                                    <form method="POST" action="{{ route('admin.profile.delete_profile', $profile->id) }}" class="btn btn-danger bg-border-none">
                                       @csrf
                                       @method('DELETE')
                                       <button type="submit" class="btn btn-danger btn-delete"><i class="nav-icon bi bi-trash"></i></button>
                                     </form>
 
-                                    <form method="POST" action="{{ route('admin.profile.change_status', $profile->id) }}" class="btn btn-danger" style="background:none;border:none;">
+                                    <form method="POST" action="{{ route('admin.profile.change_status', $profile->id) }}" class="btn btn-danger bg-border-none">
                                       @csrf
                                       <button class="btn btn-secondary btn-status">{{ $profile->profile_status ? 'Inactive':'active' }}</button>
                                     </form>
@@ -149,53 +153,5 @@
 @endsection
 
 @section('js')
-<script type="text/javascript">
-
-   $(".btn-delete").click(function(e){
-    e.preventDefault();
-    var form = $(this).parents("form");
-
-    Swal.fire({
-      title: "Are you sure you want to delete",
-      text: "",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        form.submit();
-      }
-    });
-  });
-
-    $(".btn-status").click(function(e){
-      e.preventDefault();
-      var form = $(this).parents("form");
-
-      Swal.fire({
-        title: "Are you sure you want to change profile Staus",
-        text: "",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          form.submit();
-        }
-      });
-    });
-
-    $('.read-more').click(function (e) {
-      e.preventDefault();
-      let parent = $(this).closest('p');
-      parent.find('.short-text').toggleClass('d-none');
-      parent.find('.full-text').toggleClass('d-none');
-
-      $(this).text($(this).text() === 'Read more' ? 'Show less' : 'Read more');
-    });
-</script>
+<script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
 @endsection

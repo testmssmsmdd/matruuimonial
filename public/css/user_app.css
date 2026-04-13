@@ -1,0 +1,50 @@
+.help-block{
+    color: red;
+  }
+
+  /* Common button style */
+.btn-profile,
+.btn-interest {
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* View Profile (Primary action) */
+.btn-profile {
+    background: #2f855a;
+    color: #fff;
+    border: none;
+}
+
+.btn-profile:hover {
+    background: #276749;
+}
+
+/* Interested (Secondary action) */
+.btn-interest {
+    background: #f8d7da;
+    color: #c53030;
+    border: none;
+}
+
+.btn-interest:hover {
+    background: #f1b0b7;
+    color: #9b2c2c;
+}
+
+/* Desktop alignment */
+@media (min-width: 768px) {
+    .col-md-3 .d-grid {
+        display: flex !important;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .btn-profile,
+    .btn-interest {
+        width: 140px;
+    }
+}

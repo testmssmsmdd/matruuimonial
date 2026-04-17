@@ -46,6 +46,8 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
       crossorigin="anonymous"
     />
+
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!--end::Third Party Plugin(Bootstrap Icons)-->
 
     <!--begin::Required Plugin(AdminLTE)-->
@@ -141,17 +143,8 @@
     </script>
     <!--end::OverlayScrollbars Configure-->
 
-    <!-- OPTIONAL SCRIPTS -->
-
-
-
     <!-- sortablejs -->
     <script>
-      new Sortable(document.querySelector('.connectedSortable'), {
-        group: 'shared',
-        handle: '.card-header',
-      });
-
       const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
       cardHeaders.forEach((cardHeader) => {
         cardHeader.style.cursor = 'move';
@@ -162,7 +155,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.3/jquery.timepicker.min.js"></script>
 
-    <script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
     <!-- jsvectormap -->
       @yield('js')
     <!--end::Script-->

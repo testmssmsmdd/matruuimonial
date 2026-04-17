@@ -5,9 +5,6 @@ Home Page
 @endsection
 
 @section('style')
-<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-<link rel="stylesheet" href="{{ asset('css/user_how_it_works_section.css') }}">
-<link rel="stylesheet" href="{{ asset('css/user_search_section.css') }}">
 <link rel="stylesheet" href="{{ asset('css/user_welcome.css') }}">
 @endsection
 
@@ -30,9 +27,9 @@ Home Page
 
           <div class="row g-4">
 
-              @forelse($profilelist as $profile)
+              @forelse($randomProfiles as $profile)
                   <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                      <div class="card profile-card clickable-profile-card h-100 border-0" data-profile-url="{{ route('user.getprofile',$profile->id) }}">
+                      <div class="card profile-card clickable-profile-card h-100 border-0" data-profile-url="{{ route('user.getprofile',$profile->slug) }}">
                           <div class="profile-image-wrap">
                               @if($profile?->profile_photo?->image)
                                 <img src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" alt="user-avatar" class="profile-image">
@@ -64,15 +61,12 @@ Home Page
                                   </div>
                               </div>
                               <div class="mt-2 d-flex gap-2 flex-wrap">
-                                  <a href="{{ route('user.getprofile',$profile->id) }}"
+                                  <a href="{{ route('user.getprofile',$profile->slug) }}"
                                      class="btn btn-theme view-profile-btn flex-fill">
                                       <i class="bi bi-person-lines-fill me-1"></i> View Profile
                                   </a>
                               </div>
                           </div>
-                          @if($loop->iteration == 4)
-                              @break
-                          @endif
                       </div>
                   </div>
               @empty
@@ -102,6 +96,17 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+});
+
+document.getElementById('searchForm').addEventListener('submit', function(e) {
+    let age = document.getElementById('age_range').value;
+    document.getElementById('min_age').value = '';
+    document.getElementById('max_age').value = '';
+    if (age) {
+        let parts = age.split('-');
+        document.getElementById('min_age').value = parts[0];
+        document.getElementById('max_age').value = parts[1];
+    }
 });
 
 $('#marital_status').select2({

@@ -150,8 +150,11 @@
                         </div>
                             @foreach($profilelist as $fav)
                                 @php 
-                                  $profile = $fav->profile; 
-                                  $fullAddress = $profile->current_address . ', ' . $profile->city->name . ', ' . $profile->state->name;
+                                  $profile = $fav->profile;
+                                  if (!$profile) {
+                                      continue;
+                                  }
+                                  $fullAddress = $profile?->current_address . ', ' . $profile?->city?->name . ', ' . $profile?->state?->name;
                                   $shortAddress = \Illuminate\Support\Str::limit($fullAddress, 100);
                                 @endphp
 
@@ -178,9 +181,11 @@
                                             <!-- Content -->
                                             <div class="col-12 col-sm-8">
                                                 <div class="card-body profile-card-body">
-                                                    <h6 class="profile-name mb-2">
-                                                        {{ $profile->first_name }} {{ $profile->last_name }}
-                                                    </h6>
+                                                  <a href="{{ route('user.getprofile',$profile->slug) }}" style="text-decoration: none; color: inherit;">
+                                                      <h6 class="profile-name mb-2">
+                                                          {{ $profile->first_name }} {{ $profile->last_name }}
+                                                      </h6>
+                                                    </a>
 
                                                     <small class="profile-summary d-block">
                                                         <strong>Occupation:</strong> {{ $profile->occupation ?? 'N/A' }}<br/>
@@ -192,7 +197,7 @@
                                                    
                                                     <!-- Buttons -->
                                                     <div class="mt-2 d-flex gap-2 flex-wrap">
-                                                        <a href="{{ route('user.getprofile',$profile->id) }}"
+                                                        <a href="{{ route('user.getprofile',$profile->slug) }}"
                                                            class="btn btn-theme btn-sm flex-fill">
                                                             View Profile
                                                         </a>

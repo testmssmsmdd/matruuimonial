@@ -178,7 +178,7 @@ Profile List
                             <!-- Content -->
                             <div class="col-12 col-sm-8">
                                 <div class="card-body profile-card-body">
-                                    <a href="{{ route('user.getprofile',$profile->id) }}" style="text-decoration: none; color: inherit;">
+                                    <a href="{{ route('user.getprofile',$profile->slug) }}" style="text-decoration: none; color: inherit;">
                                         <h6 class="profile-name mb-2">
                                             {{ $profile->first_name }} {{ $profile->last_name }}
                                         </h6>
@@ -194,7 +194,7 @@ Profile List
                                    
                                     <!-- Buttons -->
                                     <div class="mt-2 d-flex gap-2 flex-wrap">
-                                        <a href="{{ route('user.getprofile',$profile->id) }}"
+                                        <a href="{{ route('user.getprofile',$profile->slug) }}"
                                            class="btn btn-theme btn-sm flex-fill">
                                             View Profile
                                         </a>

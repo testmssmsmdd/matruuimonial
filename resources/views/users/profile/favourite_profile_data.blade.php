@@ -1,6 +1,9 @@
 @foreach($profilelist as $fav)
     @php 
         $profile = $fav->profile; 
+        if (!$profile) {
+            continue;
+        }
         $fullAddress = $profile->current_address . ', ' . $profile->city->name . ', ' . $profile->state->name;
         $shortAddress = \Illuminate\Support\Str::limit($fullAddress, 100);
     @endphp

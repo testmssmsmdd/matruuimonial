@@ -32,7 +32,6 @@
       <script src="{{ asset('js/sweetalert.js') }}"></script>
 
       <script src="{{ asset('js/datepicker.min.js') }}"></script>
-      <script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
 
       @yield('js')
   </body>

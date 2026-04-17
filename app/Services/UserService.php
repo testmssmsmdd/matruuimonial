@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
+use Str;
 
 class UserService
 {
@@ -24,7 +25,15 @@ class UserService
     public function createUser($data)
     {
         $data['password'] = Hash::make($data['password']);
-        $data['username'] = $data['first_name'].rand(1,9);
+
+        $baseUsername = Str::slug($data['first_name']);
+        $username = $baseUsername;
+        $i = 1;
+        while (\App\Models\User::where('username', $username)->exists()) {
+            $username = $baseUsername . $i;
+            $i++;
+        }
+        $data['username'] = $username;
 
         return $this->userRepository->store($data);
     }
@@ -36,10 +45,28 @@ class UserService
 
     public function updateUser($id, $data)
     {
+        $user = User::findOrFail($id);
+
         if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
+        }
+
+        if (!empty($data['first_name']) && $data['first_name'] !== $user->first_name) {
+            $baseUsername = Str::slug($data['first_name']);
+            $username = $baseUsername;
+            $i = 1;
+
+            while (
+                User::where('username', $username)
+                    ->where('id', '!=', $id)
+                    ->exists()
+            ) {
+                $username = $baseUsername . $i;
+                $i++;
+            }
+            $data['username'] = $username;
         }
 
         return $this->userRepository->update($id, $data);

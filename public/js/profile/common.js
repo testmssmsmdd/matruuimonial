@@ -1,26 +1,15 @@
-document.getElementById('searchForm').addEventListener('submit', function(e) {
-    let age = document.getElementById('age_range').value;
-    document.getElementById('min_age').value = '';
-    document.getElementById('max_age').value = '';
-    if (age) {
-        let parts = age.split('-');
-        document.getElementById('min_age').value = parts[0];
-        document.getElementById('max_age').value = parts[1];
-    }
-});
+// document.getElementById('search_profile').addEventListener('submit', function(e) {
+//     let minAge = document.getElementById('min_age').value;
+//     let maxAge = document.getElementById('max_age').value;
 
-document.getElementById('search_profile').addEventListener('submit', function(e) {
-    let minAge = document.getElementById('min_age').value;
-    let maxAge = document.getElementById('max_age').value;
+//     minAge = minAge ? parseInt(minAge) : null;
+//     maxAge = maxAge ? parseInt(maxAge) : null;
 
-    minAge = minAge ? parseInt(minAge) : null;
-    maxAge = maxAge ? parseInt(maxAge) : null;
-
-    if (minAge !== null && maxAge !== null && minAge > maxAge) {
-        alert('Minimum age cannot be greater than maximum age');
-        e.preventDefault();
-    }
-});
+//     if (minAge !== null && maxAge !== null && minAge > maxAge) {
+//         alert('Minimum age cannot be greater than maximum age');
+//         e.preventDefault();
+//     }
+// });
 
 
 function BookmarkFunction(profileId, el) {
@@ -156,7 +145,7 @@ $(".btn-delete").click(function(e){
     var form = $(this).parents("form");
 
     Swal.fire({
-      title: "Are you sure you want to delete",
+      title: "Are you sure you want to delete?",
       text: "",
       icon: "warning",
       showCancelButton: true,
@@ -175,13 +164,13 @@ $(".btn-status").click(function(e){
   var form = $(this).parents("form");
 
   Swal.fire({
-    title: "Are you sure you want to change profile Staus",
+    title: "Are you sure you want to change profile Status?",
     text: "",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!"
+    confirmButtonText: "Yes!"
   }).then((result) => {
     if (result.isConfirmed) {
       form.submit();

@@ -143,8 +143,10 @@
                     </div>
                     <div class="col-12 col-sm-8">
                       <div class="card-body profile-card-body">
-                        <h6 class="profile-name mb-2">{{ $profile->first_name }} {{ $profile->last_name }}
-                        </h6>
+                        <a href="{{ route('user.getprofile',$profile->slug) }}" style="text-decoration: none; color: inherit;">
+                          <h6 class="profile-name mb-2">{{ $profile->first_name }} {{ $profile->last_name }}
+                          </h6>
+                        </a>
 
                         <small class="profile-summary d-block">
                           <strong>Occupation:</strong> {{ $profile->occupation ?? 'N/A' }}<br/>
@@ -152,7 +154,7 @@
                           <strong>Address:</strong> {{ $shortAddress }}
                         </small>
 
-                        <a href="{{ route('user.getprofile',$profile->id) }}" class="btn btn-theme btn-sm w-100">
+                        <a href="{{ route('user.getprofile',$profile->slug) }}" class="btn btn-theme btn-sm w-100">
                           View Profile
                         </a>
                       </div>

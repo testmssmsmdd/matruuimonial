@@ -15,7 +15,7 @@ use App\Http\Middleware\CheckUser;
 
 Route::get('/', [HomeController::class, 'index'])->name('/');
 Route::get('/profiles',[HomeController::class, 'profiles'])->name('user.profiles');
-Route::get('/profiles/{id}',[HomeController::class, 'getProfile'])->name('user.getprofile');
+Route::get('/profiles/{slug}',[HomeController::class, 'getProfile'])->name('user.getprofile');
 Route::get('/profile/{id}',[HomeController::class, 'profile'])->name('user.profile');
 Route::get('/user/favourite-profile', [UserProfileController::class, 'favourite_profile_list'])->name('user.favourite_profile')->middleware('auth');
 
@@ -45,8 +45,12 @@ Route::middleware(['auth',CheckUser::class,'verified'])->group(function () {
     Route::post('/user/profile/favourite', [UserProfileController::class, 'favourite_profile'])->name('user.profile.favourite');
 });
 
-Route::get('/change-password', [ChangePasswordController::class, 'changePassword'])->name('change-password')->middleware('auth');
-Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('update-password')->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    Route::get('my-account', [DashboardController::class, 'my_account'])->name('my-account');
+    Route::put('update-admin-account/{id}', [DashboardController::class, 'update_admin_account'])->name('update-admin-account');
+    Route::get('/change-password', [ChangePasswordController::class, 'changePassword'])->name('change-password');
+    Route::post('/change-password', [ChangePasswordController::class, 'updatePassword'])->name('update-password');
+});
 Route::get('/admin/dashboard',[DashboardController::class, 'index'])->name('admin.dashboard.index')->middleware([CheckAdminRole::class,'auth']);
 
 Route::middleware(['auth', CheckSuperAdmin::class])->prefix('admin')->name('admin.')->group(function () {

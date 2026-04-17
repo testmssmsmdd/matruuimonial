@@ -38,26 +38,7 @@ Matrimonial| Reset Password
                                 <input type="hidden" name="token" value="{{ $token }}">
 
                                 <div class="mb-3">
-                                    <div class="input-group login-input-group">
-                                        <input id="email" type="email"
-                                            class="form-control @error('email') is-invalid @enderror"
-                                            name="email"
-                                            value="{{ $email ?? old('email') }}"
-                                            required
-                                            autocomplete="email"
-                                            autofocus
-                                            placeholder="{{ __('Email Address') }}">
-
-                                        <span class="input-group-text">
-                                            <i class="bi bi-envelope"></i>
-                                        </span>
-                                    </div>
-
-                                    @error('email')
-                                        <div class="invalid-feedback d-block">
-                                            <strong>{{ $message }}</strong>
-                                        </div>
-                                    @enderror
+                                    <span class="input-group-text">{{ $email }}</span>
                                 </div>
 
                                 <div class="mb-3">

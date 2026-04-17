@@ -13,7 +13,7 @@ User Detail Page
 
 <div class="container mt-4 mb-4">
   <div class="profile-page">
-    <a href="{{ route('user.profiles') }}" class="btn btn-theme-outline mb-3">
+    <a href="{{ url()->previous() ?? route('user.profiles') }}" class="btn btn-theme-outline mb-3">
       ← Back
     </a>
 

@@ -18,7 +18,7 @@ class UserRepository implements UserRepositoryInterface
                         ->orWhere('phone_number', 'LIKE', "%$s%");
                 });
             })
-            ->where('is_active',1)->orderBy('id','Desc')->paginate(10);
+            ->orderBy('id','Desc')->paginate(10);
     }
 
 

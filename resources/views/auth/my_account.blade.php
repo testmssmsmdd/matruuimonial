@@ -3,12 +3,12 @@
 @section('page_title')
 <div class="row">
   <div class="col-sm-6">
-    <h3 class="mb-0">Edit Admin</h3>
+    <h3 class="mb-0">My Account</h3>
   </div>
   <div class="col-sm-6">
     <ol class="breadcrumb float-sm-end">
-      <li class="breadcrumb-item"><a href="#">Admin</a></li>
-      <li class="breadcrumb-item active" aria-current="page">edit</li>
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">account</li>
     </ol>
   </div>
 </div>
@@ -22,14 +22,20 @@
 </div>
 <div class="col-md-8">
 
-  <div class="card card-info card-outline mb-4">
+  <div class="card card-primary card-outline mb-4">
     <!--begin::Header-->
     <div class="card-header">
-      <div class="card-title">Edit Admin</div>
+      <div class="card-title">My Account</div>
     </div>
     <!--end::Header-->
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <!--begin::Form-->
-    <form action="{{ route('admin.update', $user->id) }}" class="needs-validation" method="POST">
+    <form action="{{ route('update-admin-account', $user->id) }}" class="needs-validation" method="POST">
       @csrf
       @method('PUT')
       <!--begin::Body-->
@@ -125,7 +131,13 @@
           <!--end::Col-->
           <!--begin::Col-->
           <div class="col-md-6">
-            
+              <label for="phone_number" class="form-label">Public Url</label>
+              <input
+              type="text"
+              class="form-control"
+              value="{{ config('app.url') }}/user/{{ $user->username }}"
+              disabled
+            />
           </div>
           <!--end::Col-->
          
@@ -135,8 +147,7 @@
       <!--end::Body-->
       <!--begin::Footer-->
       <div class="card-footer">
-        <button class="btn btn-info" type="submit">Submit</button>
-        <a href="{{ route('admin.list') }}" class="btn btn-info" type="back" >Back</a>
+        <button class="btn btn-primary" type="submit">Save</button>
       </div>
       <!--end::Footer-->
     </form>

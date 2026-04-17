@@ -137,7 +137,7 @@ Profile
                   name="first_name"
                   value = "{{ old('first_name', $profile->first_name ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
               <input type="hidden" name="user_id" value="{{ auth()->user()->id }}" />
               <!--end::Col-->
@@ -151,7 +151,7 @@ Profile
                   name="middle_name"
                   value = "{{ old('middle_name', $profile->middle_name ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
@@ -165,7 +165,7 @@ Profile
                   value = "{{ old('last_name', $profile->last_name ?? '') }}"
 
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
@@ -176,14 +176,14 @@ Profile
                     <option value="Male" {{ ($profile->gender ?? '') == 'Male' ? 'selected' : '' }}>Male</option>
                     <option value="Female" {{ ($profile->gender ?? '') == 'Female' ? 'selected' : '' }}>Female</option>
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
               <div class="col-md-6">
                   <label for="gender" class="form-label">Birth Date<span class="text-danger">*</span></label>
                   <input type="text" class="form-control" id="birth_date" name="date_of_birth" placeholder="Select a date" value="{{ old('$profile->date_of_birth', $profile->date_of_birth  ?? '') }}">
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
@@ -196,7 +196,7 @@ Profile
                   name="age"
                   value = "{{ old('age', $profile->age ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
               <!--end::Col-->
               <!--begin::Col-->
@@ -209,7 +209,7 @@ Profile
                         <option  value="{{ $i }}" {{ ($profile->birth_time_parts['hours'] ?? '') == $i ? 'selected' : '' }}>{{ $i }}</option>
                       @endfor
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
                 </div>
                 <div class="col-md-3">
                   <select class="form-select" id="birth_minutes" name="birth_minutes">
@@ -219,7 +219,7 @@ Profile
                           <option value="{{ $i }}" {{ ($profile->birth_time_parts['minutes'] ?? '') == $i ? 'selected' : '' }}>{{ $i }}</option>
                         @endfor
                     </select>
-                    <span class="help-block"><strong></strong></span>
+                    <span class="help-block"><span></span></span>
                 </div>
                 <div class="col-md-3">
                   <select class="form-select" id="birth_format" name="birth_format">
@@ -227,7 +227,7 @@ Profile
                         <option value="AM" {{ ($profile->birth_time_parts['format'] ?? '') == 'AM' ? 'selected' : '' }}>AM</option>
                         <option value="PM" {{ ($profile->birth_time_parts['format'] ?? '') == 'PM' ? 'selected' : '' }}>PM</option>
                     </select>
-                    <span class="help-block"><strong></strong></span>
+                    <span class="help-block"><span></span></span>
                 </div>
               </div>
               <!--end::Col-->
@@ -241,7 +241,7 @@ Profile
                   name="birth_place"
                   value = "{{ old('birth_place', $profile->birth_place ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
               <!--end::Col-->
 
@@ -257,7 +257,7 @@ Profile
                       </option>
                       @endfor
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
                 </div>
                 <div class="col-md-3">
                   <select class="form-select" id="height_in" name="height_in">
@@ -266,9 +266,9 @@ Profile
                         <option  value="{{ $i }}" {{ old('height_in',$profile->height_in ?? '') == $i ? 'selected' : '' }}>{{ $i }}</option>
                       @endfor
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
                 </div>
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -281,7 +281,7 @@ Profile
                   value = "{{ old('Weight', $profile->Weight ?? '') }}"
 
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -294,7 +294,7 @@ Profile
                     <option value="Mithi_Jibh_Cancel" {{ old('marital_status', $profile->marital_status ?? '') == 'Mithi_Jibh_Cancel' ? 'selected' : '' }}>Mithi Jibh Cancel</option>
                     <option value="Broken_Engagement" {{ old('marital_status', $profile->marital_status ?? '') == 'Broken_Engagement' ? 'selected' : '' }}>Broken Engagement</option>
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -307,7 +307,7 @@ Profile
                   value = "{{ old('mother_tounge', $profile->mother_tounge ?? '') }}"
 
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -319,7 +319,7 @@ Profile
                   name="rashi"
                   value = "{{ old('rashi', $profile->rashi ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -331,7 +331,7 @@ Profile
                   name="caste"
                   value = "{{ old('caste', $profile->caste ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -343,7 +343,7 @@ Profile
                   name="gotra"
                   value = "{{ old('gotra', $profile->gotra ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
 
@@ -353,9 +353,9 @@ Profile
                     <option selected disabled value="">Choose...</option>
                     <option value="Yes" {{ old('manglik', $profile->manglik ?? '') == 'Yes' ? 'selected' : '' }}>Yes</option>
                     <option value="No" {{ old('manglik', $profile->manglik ?? '') == 'No' ? 'selected' : '' }}>No</option>
-                    <option value="Don\'t Know" {{ old('manglik', $profile->manglik ?? '') == 'Don\'t Know' ? 'selected' : '' }}>Don't know</option>
+                    <option value="Don't Know" {{ old('manglik', $profile->manglik ?? '') == 'Don\'t Know' ? 'selected' : '' }}>Don't know</option>
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
               <h5 class="form-section-title">
@@ -370,7 +370,7 @@ Profile
                       <option   value="{{ $val['id'] }}" {{ old('country_id', $profile->country_id ?? '') == $val['id'] ? 'selected' : '' }} value="{{ $val['id'] }}">{{ $val['name'] }}</option>
                     @endforeach
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
 
@@ -379,7 +379,7 @@ Profile
                   <select class="form-select" id="state_id" name="state_id">
                     <option selected disabled value="">Choose...</option>
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -387,13 +387,13 @@ Profile
                   <select class="form-select" id="city_id" name="city_id">
                     <option selected disabled value="">Choose...</option>
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
                   <label for="current_location" class="form-label">Address<span class="text-danger">*</span></label>
                   <textarea class="form-control" aria-label="With textarea" name="current_address">{{ old('current_address', $profile->current_address ?? '') }}</textarea>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
 
@@ -410,7 +410,7 @@ Profile
                   name="education"
                   value = "{{ old('education', $profile->education ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
 
@@ -423,7 +423,7 @@ Profile
                   name="occupation"
                   value = "{{ old('occupation', $profile->occupation ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
 
@@ -436,7 +436,7 @@ Profile
                   name="company_name"
                   value = "{{ old('company_name', $profile->company_name ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -448,7 +448,7 @@ Profile
                   name="annual_income"
                   value = "{{ old('annual_income', $profile->annual_income ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
 
@@ -461,7 +461,7 @@ Profile
                   name="work_location"
                   value = "{{ old('work_location', $profile->work_location ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <h5 class="form-section-title">
@@ -477,7 +477,7 @@ Profile
                   name="father_name"
                   value = "{{ old('father_name', $profile->father_name ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -489,7 +489,7 @@ Profile
                   name="father_occupation"
                   value = "{{ old('father_occupation', $profile->father_occupation ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
 
@@ -502,7 +502,7 @@ Profile
                   name="mother_name"
                   value = "{{ old('mother_name', $profile->mother_name ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -514,7 +514,7 @@ Profile
                   name="mother_occupation"
                   value = "{{ old('mother_occupation', $profile->mother_occupation ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -527,7 +527,7 @@ Profile
                   min = 0
                   value = "{{ old('no_of_brothers', $profile->no_of_brothers ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -540,7 +540,7 @@ Profile
                   min = 0
                   value = "{{ old('no_of_sisters', $profile->no_of_sisters ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -550,7 +550,7 @@ Profile
                     <option value="joint" {{ old('family_type', $profile->family_type ?? '') == 'Joint' ? 'selected' : '' }}>Joint</option>
                     <option value="nuclear" {{ old('family_type', $profile->family_type ?? '') == 'Nuclear' ? 'selected' : '' }}>Nuclear</option>
                   </select>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -571,7 +571,7 @@ Profile
                     name="mosal_name"
                     value = "{{ old('mosal_name', $profile->mosal_name ?? '') }}"
                   />
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
                 </div>
                 <div class= "col-md-6">
 
@@ -587,7 +587,7 @@ Profile
                                 name="mosal[{{ $key }}][person_name]"
                                 value="{{ is_array($mosal) ? $mosal['person_name'] ?? '' : $mosal->person_name }}"
                             >
-                            <span class="help-block"><strong></strong></span>
+                            <span class="help-block"><span></span></span>
 
                             @error("mosal.$key.person_name")
                                 <span class="text-danger">{{ $message }}</span>
@@ -601,7 +601,7 @@ Profile
                                 name="mosal[{{ $key }}][contact_number]"
                                 value="{{ is_array($mosal) ? $mosal['contact_number'] ?? '' : $mosal->contact_number }}"
                             >
-                            <span class="help-block"><strong></strong></span>
+                            <span class="help-block"><span></span></span>
 
                             @error("mosal.$key.contact_number")
                                 <span class="text-danger">{{ $message }}</span>
@@ -622,13 +622,13 @@ Profile
                         <div class="col-md-5">
                           <label for="person_name" class="form-label">Person Name</label>
                             <input type="text" name="mosal[0][person_name]" class="form-control">
-                            <span class="help-block"><strong></strong></span>
+                            <span class="help-block"><span></span></span>
                         </div>
 
                         <div class="col-md-5">
                           <label for="contact_number" class="form-label">Contact Number</label>
                             <input type="text" name="mosal[0][contact_number]" class="form-control">
-                            <span class="help-block"><strong></strong></span>
+                            <span class="help-block"><span></span></span>
                         </div>
                     </div>
                   @endif
@@ -646,13 +646,13 @@ Profile
               <div class="col-md-6">
                   <label for="hobbies" class="form-label">Hobbies<span class="text-danger">*</span></label>
                   <textarea class="form-control" aria-label="With textarea" name="hobbies">{{ old('hobbies', $profile->hobbies ?? '') }}</textarea>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
                   <label for="about_me" class="form-label">About Me<span class="text-danger">*</span></label>
                   <textarea class="form-control" aria-label="With textarea" name="about_me">{{ old('about_me', $profile->about_me ?? '') }}</textarea>
-                  <span class="help-block"><strong></strong></span>
+                  <span class="help-block"><span></span></span>
               </div>
 
               <h5 class="form-section-title">
@@ -669,7 +669,7 @@ Profile
                   value = "{{ old('contact_person_name', $profile->contact_person_name ?? '') }}"
 
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -681,7 +681,7 @@ Profile
                   name="contact_person_number"
                   value = "{{ old('contact_person_number', $profile->contact_person_number ?? Auth::user()->phone_number) }}"
                 />
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -693,7 +693,7 @@ Profile
                   name="contact_person_wp_number"
                   value = "{{ old('contact_person_wp_number', $profile->contact_person_wp_number ?? '') }}"
                 />
-                <span class="help-block"><strong></strong></span>            
+                <span class="help-block"><span></span></span>
               </div>
 
               <!--begin::Col-->
@@ -706,7 +706,7 @@ Profile
                   name="contact_person_email"
                   value = "{{ old('contact_person_email', $profile->contact_person_email ?? Auth::user()->email) }}"
                 />
-                <span class="help-block"><strong></strong></span>            
+                <span class="help-block"><span></span></span>
               </div>
               <!--end::Col-->
 
@@ -739,7 +739,7 @@ Profile
                 @if($profile?->profile_photo?->image)
                   <img src="{{ asset('/profile_photos/'.$profile->profile_photo->image) }}" class="img-thumbnail w-25" />
                 @endif
-                <span class="help-block"><strong></strong></span>            
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6">
@@ -775,7 +775,7 @@ Profile
                     @endforeach
                   </div>
                 @endif
-                <span class="help-block"><strong></strong></span>
+                <span class="help-block"><span></span></span>
               </div>
 
               <div class="col-md-6 d-none">
@@ -785,7 +785,7 @@ Profile
                     <option value="1" {{ old('profile_status', $profile->profile_status ?? '') == '1' ? 'selected' : '' }}>Active</option>
                     <option value="0" {{ old('profile_status', $profile->profile_status ?? '') == '0' ? 'selected' : '' }}>Inactive</option>
                   </select>
-                <span class="help-block"><strong></strong></span>            
+                <span class="help-block"><span></span></span>
               </div>
               <!--end::Col-->
             </div>
@@ -960,13 +960,13 @@ Profile
     html += '<div class="col-md-5">';
     html += '<label class="form-label">Person Name</label>';
     html += '<input type="text" class="form-control" name="mosal['+i+'][person_name]" />';
-    html += '<span class="help-block"><strong></strong></span>';
+    html += '<span class="help-block"><span></span></span>';
     html += '</div>';
 
     html += '<div class="col-md-5">';
     html += '<label class="form-label">Contact Number</label>';
     html += '<input type="text" class="form-control" name="mosal['+i+'][contact_number]" />';
-    html += '<span class="help-block"><strong></strong></span>';
+    html += '<span class="help-block"><span></span></span>';
     html += '</div>';
 
     html += '<div class="col-md-2 mt-4">';
@@ -991,7 +991,7 @@ Profile
     $('#profile_form .is-invalid').removeClass('is-invalid');
 
     // Clear all error messages
-    $('#profile_form .help-block strong').text('');
+    $('#profile_form .help-block span').text('');
 
     var url = $(this).attr("action");
     let formData = new FormData(this);
@@ -1007,6 +1007,8 @@ Profile
                   Swal.fire({
                     title: response.message,
                     icon: "success",
+                }).then(() => {
+                    location.reload();
                 });
               }
           },
@@ -1020,7 +1022,7 @@ Profile
                   input = $('#profile_form').find('[name="gallery_photo[]"]');
                   input.addClass('is-invalid');
                   input.closest('[class*="col-md"]')
-                       .find('.help-block strong')
+                       .find('.help-block span')
                        .text(errorText);
 
                   return;
@@ -1044,7 +1046,7 @@ Profile
                   input.addClass('is-invalid');
 
                   input.closest('[class*="col-md"]')
-                       .find('.help-block strong')
+                       .find('.help-block span')
                        .text(errorText);
               }
 

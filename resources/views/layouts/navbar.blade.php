@@ -26,7 +26,7 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-
+                        <a class="dropdown-item" href="{{ route('my-account') }}">{{ __('My Account') }}</a>
                         <a class="dropdown-item" href="{{ route('change-password') }}">{{ __('Change Password') }}</a>
 
                         <a class="dropdown-item" href="{{ route('logout') }}"

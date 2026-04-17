@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Profile extends Model
 {
@@ -151,4 +152,40 @@ class Profile extends Model
         return $this->hasOne(User::class,'id','created_by');
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($profile) {
+
+            $baseSlug = Str::slug($profile->first_name . ' ' . $profile->last_name);
+            $slug = $baseSlug;
+            $count = 1;
+
+            while (self::where('slug', $slug)->exists()) {
+                $slug = $baseSlug . '-' . $count;
+                $count++;
+            }
+
+            $profile->slug = $slug;
+        });
+
+        static::updating(function ($profile) {
+            if ($profile->isDirty('first_name') || $profile->isDirty('last_name')) {
+                $baseSlug = Str::slug($profile->first_name . ' ' . $profile->last_name);
+                $slug = $baseSlug;
+                $count = 1;
+
+                while (self::where('slug', $slug)
+                    ->where('id', '!=', $profile->id)
+                    ->exists()) {
+
+                    $slug = $baseSlug . '-' . $count;
+                    $count++;
+                }
+
+                $profile->slug = $slug;
+            }
+        });
+    }
 }

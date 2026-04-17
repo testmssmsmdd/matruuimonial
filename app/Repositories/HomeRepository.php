@@ -76,10 +76,10 @@ class HomeRepository implements HomeRepositoryInterface
         }
 
         return $query->where('profile_status',1)
-            // ->where(function ($q) use ($userId) {
-            //     $q->where('user_id', '!=', $userId)
-            //       ->orWhereNull('user_id');
-            // })
+            ->where(function ($q) use ($userId) {
+                $q->whereNull('user_id')
+                  ->orWhere('user_id', '!=', $userId);
+            })
             ->orderBy('id', 'desc')
             ->paginate(10);
     }
@@ -105,7 +105,7 @@ class HomeRepository implements HomeRepositoryInterface
             ->get();
     }
 
-    public function findProfileById($id)
+    public function findProfileById($slug)
     {
         return Profile::with([
             'mosals',
@@ -113,7 +113,9 @@ class HomeRepository implements HomeRepositoryInterface
             'gallery_photo',
             'city',
             'admin_details'
-        ])->findOrFail($id);
+        ])->where('profile_status',1)
+        ->where('slug', $slug)
+        ->firstOrFail();
     }
 
     public function findUserByUsername($username)

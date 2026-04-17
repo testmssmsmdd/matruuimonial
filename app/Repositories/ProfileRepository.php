@@ -219,7 +219,8 @@ class ProfileRepository implements ProfileRepositoryInterface
             'profile.profile_photo',
             'profile.city',
             'profile.state'
-        ])->where('favourite_profiles.user_id', $userId);
+        ])->where('favourite_profiles.user_id', $userId)
+          ->whereHas('profile');
 
         // Filters
         if (!empty($request->gender)) {
@@ -227,11 +228,16 @@ class ProfileRepository implements ProfileRepositoryInterface
         }
 
         if (!empty($request->marital_status)) {
-            $query->whereHas('profile', fn($q) => $q->where('marital_status', $request->marital_status));
+            $maritalStatuses = is_array($request->marital_status)
+                ? $request->marital_status
+                : [$request->marital_status];
+
+            $query->whereHas('profile', fn($q) => $q->whereIn('marital_status', $maritalStatuses));
         }
 
         if (!empty($request->city)) {
-            $query->whereHas('profile', fn($q) => $q->where('city_id', $request->city));
+            $cities = is_array($request->city) ? $request->city : [$request->city];
+            $query->whereHas('profile', fn($q) => $q->whereIn('city_id', $cities));
         }
 
         if (!empty($request->name)) {
@@ -266,14 +272,13 @@ class ProfileRepository implements ProfileRepositoryInterface
             );
         }
 
-        // Sorting FIXED (important change)
         if ($request->sort_by == "age") {
             $query->join('profiles', 'favourite_profiles.profile_id', '=', 'profiles.id')
                   ->orderBy('profiles.age', 'asc');
         } elseif ($request->sort_by == "location") {
             $query->join('profiles', 'favourite_profiles.profile_id', '=', 'profiles.id')
                   ->orderBy('profiles.current_address', 'asc');
-        } elseif ($request->sort_by == "latest") {
+        } else {
             $query->latest();
         }
 
@@ -293,7 +298,60 @@ class ProfileRepository implements ProfileRepositoryInterface
 
     public function getFavouriteProfilesCount($userId, Request $request)
     {
-        return FavouriteProfile::where('user_id', $userId)->count();
+        $query = FavouriteProfile::where('user_id', $userId)
+            ->whereHas('profile', function ($q) {
+                $q->where('profile_status', 1);
+            });
+
+        if (!empty($request->gender)) {
+            $query->whereHas('profile', fn($q) => $q->where('gender', $request->gender));
+        }
+
+        if (!empty($request->marital_status)) {
+            $maritalStatuses = is_array($request->marital_status)
+                ? $request->marital_status
+                : [$request->marital_status];
+
+            $query->whereHas('profile', fn($q) => $q->whereIn('marital_status', $maritalStatuses));
+        }
+
+        if (!empty($request->city)) {
+            $cities = is_array($request->city) ? $request->city : [$request->city];
+            $query->whereHas('profile', fn($q) => $q->whereIn('city_id', $cities));
+        }
+
+        if (!empty($request->name)) {
+            $s = $request->name;
+            $query->whereHas('profile', function ($q) use ($s) {
+                $q->where('first_name', 'LIKE', "%$s%")
+                    ->orWhere('last_name', 'LIKE', "%$s%")
+                    ->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$s}%"])
+                    ->orWhere('education', 'LIKE', "%{$s}%")
+                    ->orWhere('occupation', 'LIKE', "%{$s}%");
+            });
+        }
+
+        if (!empty($request->min_age)) {
+            $query->whereHas('profile', fn($q) => $q->where('age', '>=', $request->min_age));
+        }
+
+        if (!empty($request->max_age)) {
+            $query->whereHas('profile', fn($q) => $q->where('age', '<=', $request->max_age));
+        }
+
+        if (!empty($request->education)) {
+            $query->whereHas('profile', fn($q) =>
+                $q->where('education', 'LIKE', "%{$request->education}%")
+            );
+        }
+
+        if (!empty($request->profession)) {
+            $query->whereHas('profile', fn($q) =>
+                $q->where('occupation', 'LIKE', "%{$request->profession}%")
+            );
+        }
+
+        return $query->count();
     }
 }
 

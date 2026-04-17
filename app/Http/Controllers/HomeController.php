@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\HomeService;
+use App\Models\Profile;
 use App\Models\FavouriteProfile;
 use Auth;
+use Str;
 
 class HomeController extends Controller
 {
@@ -18,7 +20,8 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $data = $this->homeService->getHomeData($request);
-
+        $data['randomProfiles'] = Profile::where('profile_status', 1)
+            ->inRandomOrder()->take(4)->get();
         return view('welcome', $data);
     }
 
@@ -60,11 +63,11 @@ class HomeController extends Controller
         return view('profiles', $data);
     }
 
-    public function getProfile($id)
+    public function getProfile($slug)
     {
-        $profile = $this->homeService->getProfileDetails($id);
+        $profile = $this->homeService->getProfileDetails($slug);
 
-        $is_favourite = FavouriteProfile::where('user_id',Auth::user()?->id)->where('profile_id',$id)->first();
+        $is_favourite = FavouriteProfile::where('user_id',Auth::user()?->id)->where('profile_id',$profile->id)->first();
         return view('user_profile', compact('profile','is_favourite'));
     }
 

@@ -296,6 +296,28 @@ class ProfileRepository implements ProfileRepositoryInterface
             ->get();
     }
 
+    public function findUserOwnedProfileWithRelations($profileId, $userId)
+    {
+        return Profile::with(['mosals', 'profile_photo', 'gallery_photo'])
+            ->where('id', $profileId)
+            ->where('user_id', $userId)
+            ->first();
+    }
+
+    public function hardDeleteProfile($profile)
+    {
+        $profile->mosals()->forceDelete();
+        $profile->profile_photo()->delete();
+        $profile->gallery_photo()->delete();
+
+        return $profile->forceDelete();
+    }
+
+    public function deleteProfileFavourites($profileId)
+    {
+        return FavouriteProfile::where('profile_id', $profileId)->delete();
+    }
+
     public function getFavouriteProfilesCount($userId, Request $request)
     {
         $query = FavouriteProfile::where('user_id', $userId)

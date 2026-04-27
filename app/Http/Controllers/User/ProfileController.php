@@ -101,5 +101,16 @@ class ProfileController extends Controller
 
     }
 
+    public function delete_profile($id)
+    {
+        $this->profileservice->hardDeleteUserProfile($id, auth()->id());
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Profile deleted successfully',
+            'redirect' => route('users.create_profile')
+        ]);
+    }
+
         
 }

@@ -7,6 +7,7 @@ use App\Models\Profile;
 use App\Models\FavouriteProfile;
 use App\Repositories\ProfileRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ProfileService
 {
@@ -292,11 +293,6 @@ class ProfileService
         return $this->profileRepository->updateProfile($request);
     }
 
-    // public function deleteGalleryImage($id)
-    // {
-    //     return $this->profileRepository->deleteGalleryImage($id);
-    // }
-
     public function toggleFavourite($userId, $profileId)
     {
         return $this->profileRepository->toggleFavourite($userId, $profileId);
@@ -318,5 +314,25 @@ class ProfileService
         $cityList = $this->profileRepository->getFavouriteCities($userId);
         $favouriteProfilesCount = $this->profileRepository->getFavouriteProfilesCount($userId, $request);
         return compact('profilelist', 'cityList', 'favouriteProfilesCount');
+    }
+
+    public function hardDeleteUserProfile($profileId, $userId)
+    {
+        return DB::transaction(function () use ($profileId, $userId) {
+            $profile = $this->profileRepository->findUserOwnedProfileWithRelations($profileId, $userId);
+
+            if (!$profile) {
+                throw ValidationException::withMessages([
+                    'id' => ['Profile not found or unauthorized action.'],
+                ]);
+            }
+
+            $this->deleteProfileImage($profile);
+            $this->deleteGalleryImages($profile);
+            $this->profileRepository->deleteProfileFavourites($profile->id);
+            $this->profileRepository->hardDeleteProfile($profile);
+
+            return true;
+        });
     }
 }

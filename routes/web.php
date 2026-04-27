@@ -43,6 +43,7 @@ Route::middleware(['auth',CheckUser::class,'verified'])->group(function () {
     Route::post('/update_profile/{id}', [UserProfileController::class, 'update_profile'])->name('users.update_profile');
     Route::delete('user/profile/delete_gallery_img/{id}',[UserProfileController::class, 'deleteGalleryImg'])->name('user.profile.delete_gallery_img');
     Route::post('/user/profile/favourite', [UserProfileController::class, 'favourite_profile'])->name('user.profile.favourite');
+    Route::delete('/user/profile/delete/{id}', [UserProfileController::class, 'delete_profile'])->name('user.profile.delete_profile');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -79,4 +80,3 @@ Route::middleware(['auth', CheckAdmin::class])->prefix('admin/profile')->name('a
 
 Route::get('/states', [AdminProfileController::class, 'states'])->name('admin.profile.states');
 Route::get('/cities', [AdminProfileController::class, 'city'])->name('admin.profile.cities');
-Route::get('/admin/profile/mosals',[AdminProfileController::class, 'mosals'])->name('admin.profile.mosals');

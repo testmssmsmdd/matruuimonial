@@ -1,7 +1,7 @@
 @extends('layouts.user.app')
 
 @section('title')
-Home Page
+Matrimonial
 @endsection
 
 @section('style')
@@ -84,43 +84,7 @@ Home Page
 @section('js')
 <script>
 window.loggedIn = {{ auth()->check() ? 'true' : 'false' }};
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.clickable-profile-card').forEach(function (card) {
-    card.addEventListener('click', function (e) {
-      if (e.target.closest('a, button, input, select, textarea, label')) {
-        return;
-      }
-      const url = card.getAttribute('data-profile-url');
-      if (url) {
-        window.location.href = url;
-      }
-    });
-  });
-});
 
-document.getElementById('searchForm').addEventListener('submit', function(e) {
-    let age = document.getElementById('age_range').value;
-    document.getElementById('min_age').value = '';
-    document.getElementById('max_age').value = '';
-    if (age) {
-        let parts = age.split('-');
-        document.getElementById('min_age').value = parts[0];
-        document.getElementById('max_age').value = parts[1];
-    }
-});
-
-$('#marital_status').select2({
-  placeholder: "Select a marital status",
-  allowClear: true,
-  width: '100%',
-  dropdownCssClass: 'search-select2-dropdown'
-});
-$('#city').select2({
-  placeholder: "Select a city",
-  allowClear: true,
-  width: '100%',
-  dropdownCssClass: 'search-select2-dropdown'
-});
 </script>
 <script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
 @endsection

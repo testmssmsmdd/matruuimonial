@@ -1,16 +1,49 @@
-// document.getElementById('search_profile').addEventListener('submit', function(e) {
-//     let minAge = document.getElementById('min_age').value;
-//     let maxAge = document.getElementById('max_age').value;
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.clickable-profile-card').forEach(function (card) {
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('a, button, input, select, textarea, label')) {
+        return;
+      }
+      const url = card.getAttribute('data-profile-url');
+      if (url) {
+        window.location.href = url;
+      }
+    });
+  });
+});
 
-//     minAge = minAge ? parseInt(minAge) : null;
-//     maxAge = maxAge ? parseInt(maxAge) : null;
+var searchForm = document.getElementById('searchForm');
 
-//     if (minAge !== null && maxAge !== null && minAge > maxAge) {
-//         alert('Minimum age cannot be greater than maximum age');
-//         e.preventDefault();
-//     }
-// });
+if (searchForm) {
+    searchForm.addEventListener('submit', function (e) {
+        let age = document.getElementById('age_range').value;
+        document.getElementById('min_age').value = '';
+        document.getElementById('max_age').value = '';
 
+        if (age) {
+            let parts = age.split('-');
+            document.getElementById('min_age').value = parts[0];
+            document.getElementById('max_age').value = parts[1];
+        }
+    });
+}
+
+
+var filterForm = document.getElementById('filter_form');
+if(filterForm){
+    filterForm.addEventListener('submit', function(e) {
+        let minAge = document.getElementById('min_age').value;
+        let maxAge = document.getElementById('max_age').value;
+
+        minAge = minAge ? parseInt(minAge) : null;
+        maxAge = maxAge ? parseInt(maxAge) : null;
+
+        if (minAge !== null && maxAge !== null && minAge > maxAge) {
+            alert('Minimum age cannot be greater than maximum age');
+            e.preventDefault();
+        }
+    });
+}
 
 function BookmarkFunction(profileId, el) {
     if(window.loggedIn == true)
@@ -56,7 +89,7 @@ function BookmarkFunction(profileId, el) {
                 el.setAttribute('aria-label', 'Remove from favourites');
                 el.setAttribute('title', 'Remove from favourites');
                 Swal.fire({
-                  title: 'Good job!',
+                  // title: 'Good job!',
                   text: 'Pofile Added in Favourite',
                   icon: 'success',
                   confirmButtonText: 'OK',
@@ -71,7 +104,7 @@ function BookmarkFunction(profileId, el) {
                 el.setAttribute('aria-label', 'Add to favourites');
                 el.setAttribute('title', 'Add to favourites');
                 Swal.fire({
-                  title: 'Good job!',
+                  // title: 'Good job!',
                   text: 'Pofile Removed from Favourite',
                   icon: 'success',
                   confirmButtonText: 'OK',
@@ -106,7 +139,7 @@ function BookmarkFunction(profileId, el) {
         Swal.fire({
           title: "<strong>Login Required</strong>",
           icon: "info",
-          text: "Login required to add favourites.",
+          text: "Login required to add favourites.23",
           showCloseButton: true,
           focusConfirm: false,
           confirmButtonText: 'Login',
@@ -185,4 +218,121 @@ $('.read-more').click(function (e) {
   parent.find('.full-text').toggleClass('d-none');
 
   $(this).text($(this).text() === 'Read more' ? 'Show less' : 'Read more');
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const previewImages = Array.from(document.querySelectorAll('[data-previewable-image="true"][data-preview-group="gallery"]'));
+  const lightbox = document.getElementById('imageLightbox');
+  const lightboxImage = document.getElementById('imageLightboxImage');
+  const lightboxCaption = document.getElementById('imageLightboxCaption');
+  const closeBtn = document.getElementById('imageLightboxClose');
+  const prevBtn = document.getElementById('imageLightboxPrev');
+  const nextBtn = document.getElementById('imageLightboxNext');
+
+  if (!previewImages.length || !lightbox || !lightboxImage || !closeBtn) {
+    return;
+  }
+
+  const gallerySources = previewImages.map((img, index) => ({
+    src: img.getAttribute('src'),
+    alt: img.getAttribute('alt') || `Gallery photo ${index + 1}`,
+  }));
+
+  let activeIndex = 0;
+
+  const setNavVisibility = () => {
+    if (!prevBtn || !nextBtn) return;
+
+    if (gallerySources.length <= 1) {
+      prevBtn.classList.add('is-hidden');
+      nextBtn.classList.add('is-hidden');
+    } else {
+      prevBtn.classList.remove('is-hidden');
+      nextBtn.classList.remove('is-hidden');
+    }
+  };
+
+  const renderActiveImage = () => {
+    const image = gallerySources[activeIndex];
+    if (!image) return;
+
+    lightboxImage.src = image.src;
+    lightboxImage.alt = image.alt;
+    lightboxCaption.textContent = `${activeIndex + 1} / ${gallerySources.length}`;
+  };
+
+  const openLightbox = (index) => {
+    activeIndex = index;
+    renderActiveImage();
+    setNavVisibility();
+    lightbox.classList.add('is-open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightboxImage.src = '';
+    document.body.style.overflow = '';
+  };
+
+  const moveSlide = (step) => {
+    if (!gallerySources.length) return;
+    activeIndex = (activeIndex + step + gallerySources.length) % gallerySources.length;
+    renderActiveImage();
+  };
+
+  previewImages.forEach((imageEl, index) => {
+    imageEl.addEventListener('click', () => openLightbox(index));
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      moveSlide(-1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      moveSlide(1);
+    });
+  }
+
+  lightbox.addEventListener('click', (event) => {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (!lightbox.classList.contains('is-open')) return;
+
+    if (event.key === 'Escape') closeLightbox();
+    if (event.key === 'ArrowLeft') moveSlide(-1);
+    if (event.key === 'ArrowRight') moveSlide(1);
+  });
+});
+$('#marital_status').select2({
+  placeholder: "Select a marital status",
+  allowClear: true,
+  width: '100%',
+  dropdownCssClass: 'search-select2-dropdown'
+});
+
+$('#city').select2({
+  placeholder: "Select a city",
+  allowClear: true,
+  width: '100%',
+  dropdownCssClass: 'search-select2-dropdown'
+});
+
+$('select[name="sorting"]').on('change', function () {
+    $('#sort_by').val($('#sorting').val());
+    $('#filter_form').submit();
 });

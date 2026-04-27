@@ -197,6 +197,37 @@
   background: rgba(255, 255, 255, 0.34);
 }
 
+.image-lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.image-lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.image-lightbox-nav.prev {
+  left: 12px;
+}
+
+.image-lightbox-nav.next {
+  right: 12px;
+}
+
+.image-lightbox-nav.is-hidden {
+  display: none;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

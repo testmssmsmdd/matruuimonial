@@ -4,70 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Verify Email</title>
-    <style>
-        body, table, td, a {
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-        }
-
-        table {
-            border-collapse: collapse !important;
-        }
-
-        img {
-            border: 0;
-            height: auto;
-            line-height: 100%;
-            outline: none;
-            text-decoration: none;
-        }
-
-        @media screen and (max-width: 600px) {
-            .wrapper {
-                padding: 16px 10px !important;
-            }
-
-            .container {
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-
-            .header-cell {
-                padding: 14px 18px !important;
-            }
-
-            .px {
-                padding-left: 16px !important;
-                padding-right: 16px !important;
-            }
-
-            .py {
-                padding-top: 20px !important;
-                padding-bottom: 20px !important;
-            }
-
-            .title {
-                font-size: 22px !important;
-                line-height: 28px !important;
-            }
-
-            .text {
-                font-size: 15px !important;
-                line-height: 22px !important;
-            }
-
-            .button-wrap {
-                width: 100% !important;
-            }
-
-            .btn {
-                display: block !important;
-                width: 100% !important;
-                min-width: 0 !important;
-                box-sizing: border-box !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/verify_email.css') }}">
 </head>
 <body style="margin:0; padding:0; background:#fff6f8; font-family: Arial, Helvetica, sans-serif; color:#2f2430;">
 

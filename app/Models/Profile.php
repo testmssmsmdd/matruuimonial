@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class Profile extends Model
 {
@@ -187,5 +188,18 @@ class Profile extends Model
                 $profile->slug = $slug;
             }
         });
+    }
+
+    //change Date of Birth format
+    public function getDateOfBirthAttribute($value)
+    {
+        return $value ? Carbon::parse($value)->format('d-m-Y') : null;
+    }
+
+    public function setDateOfBirthAttribute($value)
+    {
+        $this->attributes['date_of_birth'] = $value
+            ? Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d')
+            : null;
     }
 }

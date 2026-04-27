@@ -22,8 +22,7 @@ User Detail Page
         <div class="col-12 col-md-3 text-center">
           <img src="{{ $profile->profile_photo?->image ? asset('/profile_photos/'.$profile->profile_photo->image) : ($profile->gender == 'Male' ? asset('/assets/img/man.png') : asset('/assets/img/women.png')) }}"
             alt="{{ $profile->first_name }} profile image"
-            class="rounded-circle profile-avatar previewable-image"
-            data-previewable-image="true">
+            class="rounded-circle profile-avatar">
         </div>
         <div class="col-12 col-md-9">
           <h3 class="mb-1 fw-bold">{{ $profile->first_name }} {{ $profile->middle_name }} {{ $profile->last_name }}</h3>
@@ -46,19 +45,96 @@ User Detail Page
         <div class="card section-card p-3 p-md-4">
           <h5 class="section-title">Personal Information</h5>
           <div class="row g-3 mb-3">
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Name</span><span class="info-value">{{ $profile->first_name }} {{ $profile->last_name }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Gender</span><span class="info-value">{{ $profile->gender ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Birth Date</span><span class="info-value">{{ $profile->date_of_birth ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Age</span><span class="info-value">{{ $profile->age ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Birth Time</span><span class="info-value">{{ $profile->birth_time ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Birth Place</span><span class="info-value">{{ $profile->birth_place ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Height</span><span class="info-value">{{ $profile->height ? str_replace(".", "'", $profile->height) : '-' }}*</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Weight</span><span class="info-value">{{ $profile->Weight ?? '-' }} kg</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Marital Status</span><span class="info-value">{{ $profile->marital_status ? str_replace('_' , ' ', $profile->marital_status) : '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Mother Tongue</span><span class="info-value">{{ $profile->mother_tounge ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Rashi</span><span class="info-value">{{ $profile->rashi ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Caste</span><span class="info-value">{{ $profile->caste ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Gotra</span><span class="info-value">{{ $profile->gotra ?? '-' }}</span></div></div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Name</span>
+                <span class="info-value">{{ $profile->first_name }} {{ $profile->last_name }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Gender</span>
+                <span class="info-value">{{ $profile->gender ?? '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Birth Date</span>
+                <span class="info-value">{{ $profile->date_of_birth ?? '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Age</span>
+                <span class="info-value">{{ $profile->age ?? '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Birth Time</span>
+                <span class="info-value">{{ $profile->birth_time ?? '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Birth Place</span>
+                <span class="info-value">{{ $profile->birth_place ?? '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Height</span>
+                <span class="info-value">{{ !empty($profile->height) ? str_replace(".", "'", $profile->height) . '*' : '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Weight</span>
+                <span class="info-value">{{ !empty($profile->Weight) ? $profile->Weight . ' kg' : '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Marital Status</span>
+                <span class="info-value">{{ $profile->marital_status ? str_replace('_' , ' ', $profile->marital_status) : '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Mother Tongue</span>
+                <span class="info-value">{{ $profile->mother_tounge ?? '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Rashi</span>
+                <span class="info-value">{{ $profile->rashi ?? '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Caste</span>
+                <span class="info-value">{{ $profile->caste ?? '-' }}</span>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Gotra</span>
+                <span class="info-value">{{ $profile->gotra ?? '-' }}</span>
+              </div>
+            </div>
           </div>
 
           <h5 class="section-title">Location Details</h5>
@@ -73,22 +149,86 @@ User Detail Page
 
           <h5 class="section-title">Education & Profession</h5>
           <div class="row g-3 mb-3">
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Education</span><span class="info-value">{{ $profile->education ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Occupation</span><span class="info-value">{{ $profile->occupation ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Company Name</span><span class="info-value">{{ $profile->company_name ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Annual Income</span><span class="info-value">{{ $profile->annual_income ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Work Location</span><span class="info-value">{{ $profile->work_location ?? '-' }}</span></div></div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Education</span>
+                <span class="info-value">{{ $profile->education ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Occupation</span>
+                <span class="info-value">{{ $profile->occupation ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Company Name</span>
+                <span class="info-value">{{ $profile->company_name ?? '-' }}</span>
+              </div>
+
+            </div>
+            <div
+             class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Annual Income</span>
+                <span class="info-value">{{ $profile->annual_income ?? '-' }}</span>
+              </div>
+
+            </div>
+            <div
+             class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Work Location</span>
+                <span class="info-value">{{ $profile->work_location ?? '-' }}</span>
+              </div>
+            </div>
           </div>
 
           <h5 class="section-title">Family Details</h5>
           <div class="row g-3 mb-3">
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Father Name</span><span class="info-value">{{ $profile->father_name ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Father Occupation</span><span class="info-value">{{ $profile->father_occupation ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Mother Name</span><span class="info-value">{{ $profile->mother_name ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Mother Occupation</span><span class="info-value">{{ $profile->mother_occupation ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">No. of Brothers</span><span class="info-value">{{ $profile->no_of_brothers ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">No. of Sisters</span><span class="info-value">{{ $profile->no_of_sisters ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Family Type</span><span class="info-value">{{ $profile->family_type ?? '-' }}</span></div></div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Father Name</span>
+                <span class="info-value">{{ $profile->father_name ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Father Occupation</span>
+                <span class="info-value">{{ $profile->father_occupation ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Mother Name</span>
+                <span class="info-value">{{ $profile->mother_name ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Mother Occupation</span>
+                <span class="info-value">{{ $profile->mother_occupation ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">No. of Brothers</span>
+                <span class="info-value">{{ $profile->no_of_brothers ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">No. of Sisters</span>
+                <span class="info-value">{{ $profile->no_of_sisters ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Family Type</span>
+                <span class="info-value">{{ $profile->family_type ?? '-' }}</span>
+              </div>
+            </div>
           </div>
 
           <h5 class="section-title">Mosal Details</h5>
@@ -99,7 +239,8 @@ User Detail Page
                 <span class="info-value">{{ $profile->mosal_name ?: '-' }}</span>
               </div>
             </div>
-            @foreach($profile->mosals as $mosal)
+            @foreach($profile
+              ->mosals as $mosal)
               <div class="col-12 col-md-6">
                 <div class="info-item">
                   <span class="info-label">Contact Details</span>
@@ -111,8 +252,18 @@ User Detail Page
 
           <h5 class="section-title">Lifestyle & Personal Info</h5>
           <div class="row g-3 mb-3">
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">Hobbies</span><span class="info-value">{{ $profile->hobbies ?? '-' }}</span></div></div>
-            <div class="col-12 col-md-6"><div class="info-item"><span class="info-label">About Me</span><span class="info-value">{{ $profile->about_me ?? '-' }}</span></div></div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">Hobbies</span>
+                <span class="info-value">{{ $profile->hobbies ?? '-' }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="info-item">
+                <span class="info-label">About Me</span>
+                <span class="info-value">{{ $profile->about_me ?? '-' }}</span>
+              </div>
+            </div>
           </div>
 
           <h5 class="section-title">Contact Details</h5>
@@ -130,7 +281,7 @@ User Detail Page
             @if(count($profile->gallery_photo) > 0)
               <div class="gallery-grid">
                 @foreach($profile->gallery_photo as $gallery_photo)
-                  <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}" alt="Gallery photo" class="gallery-thumb previewable-image" data-previewable-image="true">
+                  <img src="{{ asset('/gallery_photo/'.$gallery_photo->image) }}" alt="Gallery photo" class="gallery-thumb previewable-image" data-previewable-image="true" data-preview-group="gallery">
                 @endforeach
               </div>
             @else
@@ -162,7 +313,9 @@ User Detail Page
 <div class="image-lightbox-overlay" id="imageLightbox" aria-hidden="true">
   <div class="image-lightbox-content" role="dialog" aria-modal="true" aria-label="Image preview dialog">
     <button type="button" class="image-lightbox-close" id="imageLightboxClose" aria-label="Close image preview">&times;</button>
+    <button type="button" class="image-lightbox-nav prev" id="imageLightboxPrev" aria-label="Previous image">&#10094;</button>
     <img src="" alt="Preview image" class="image-lightbox-image" id="imageLightboxImage">
+    <button type="button" class="image-lightbox-nav next" id="imageLightboxNext" aria-label="Next image">&#10095;</button>
     <div class="image-lightbox-caption" id="imageLightboxCaption"></div>
   </div>
 </div>
@@ -171,53 +324,7 @@ User Detail Page
 
 @section('js')
 <script>
-window.loggedIn = {{ auth()->check() ? 'true' : 'false' }};
-
-(() => {
-  const previewImages = document.querySelectorAll('[data-previewable-image="true"]');
-  const lightbox = document.getElementById('imageLightbox');
-  const lightboxImage = document.getElementById('imageLightboxImage');
-  const lightboxCaption = document.getElementById('imageLightboxCaption');
-  const closeBtn = document.getElementById('imageLightboxClose');
-
-  if (!previewImages.length || !lightbox || !lightboxImage || !closeBtn) {
-    return;
-  }
-
-  const openLightbox = (src, altText) => {
-    lightboxImage.src = src;
-    lightboxImage.alt = altText || 'Image preview';
-    lightboxCaption.textContent = altText || 'Photo Preview';
-    lightbox.classList.add('is-open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeLightbox = () => {
-    lightbox.classList.remove('is-open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    lightboxImage.src = '';
-    document.body.style.overflow = '';
-  };
-
-  previewImages.forEach((imageEl) => {
-    imageEl.addEventListener('click', () => openLightbox(imageEl.src, imageEl.alt));
-  });
-
-  closeBtn.addEventListener('click', closeLightbox);
-
-  lightbox.addEventListener('click', (event) => {
-    if (event.target === lightbox) {
-      closeLightbox();
-    }
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
-      closeLightbox();
-    }
-  });
-})();
+  window.loggedIn = {{ auth()->check() ? 'true' : 'false' }};
 </script>
 <script type="text/javascript" src="{{ asset('js/profile/common.js') }}"></script>
 @endsection

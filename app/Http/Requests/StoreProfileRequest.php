@@ -96,28 +96,6 @@ class StoreProfileRequest extends FormRequest
             ],
         ];
     }
-
-    // public function messages(): array
-    // {
-    //     return [
-    //         'first_name.required' => 'First Name is required.',
-    //         'first_name.min' => 'First Name is required minimum 2 characters',
-    //         'last_name.required' => 'Last Name is required.',
-    //         'last_name.min' => 'Last Name is required minimum 2 characters',
-    //         'contact_person_name.required' => 'Contact person name is required.',
-
-    //         'contact_person_number.required' => 'Contact number is required.',
-    //         'contact_person_number.digits' => 'Contact number must be exactly 10 digits.',
-
-    //         'contact_person_wp_number.digits' => 'WhatsApp number must be exactly 10 digits.',
-
-    //         'contact_person_email.email' => 'Please enter a valid email address.',
-    //         'gallery_photo.*.image' => 'Please upload valid image files (jpg, jpeg, png).',
-    //         'gallery_photo.*.max' => 'Each gallery photo must not be larger than 2MB.',
-    //         'mosal.*.contact_number.digits' => 'Contact number must be exactly 10 digits.',
-    //         'mosal.*.person_name.max' => 'Person name must be less then 100 words',
-    //     ];
-    //  
     
     public function messages(): array
     {

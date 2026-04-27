@@ -78,13 +78,6 @@ class ProfileController extends Controller
        return response()->json(['cities' => $cities]);
     }
 
-    public function mosals(Request $request)
-    {
-       $mosals = $this->profileservice->getMosals($request->id);
-       return response()->json(['mosals' => $mosals]);
-    }
-
-
     public function deleteGalleryImg(Request $request)
     {
         $this->profileservice->deleteGalleryImage($request->id);

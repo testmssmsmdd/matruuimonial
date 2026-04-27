@@ -6,84 +6,7 @@ Profile
 
 @section('style')
   <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
-  <style>
-    .create-profile-page {
-      max-width: 1100px;
-    }
-    .profile-form-hero {
-      background: linear-gradient(135deg, #fff5f8 0%, #ffffff 70%);
-      border: 1px solid #f3dde5;
-      border-radius: 1rem;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 8px 20px rgba(56, 28, 42, 0.08);
-    }
-    .profile-form-hero h2 {
-      color: #2f2430;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-    .profile-form-hero p {
-      margin-bottom: 0;
-      color: #755f68;
-    }
-    .modern-profile-card {
-      border: 0;
-      border-radius: 1rem;
-      overflow: hidden;
-      box-shadow: 0 10px 24px rgba(56, 28, 42, 0.1);
-    }
-    .modern-profile-card .card-header {
-      background: #fffafb;
-      border-bottom: 1px solid #f2dee4;
-      padding: 1rem 1.25rem;
-    }
-    .modern-profile-card .card-body {
-      padding: 1.25rem;
-    }
-    .form-section-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #8b1e3f;
-      border-left: 4px solid #8b1e3f;
-      background: #fff6f8;
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.5rem;
-      margin-top: 0.5rem;
-      margin-bottom: 0.25rem;
-    }
-    .modern-profile-card .form-label {
-      font-weight: 600;
-      color: #4a3942;
-    }
-    .modern-profile-card .form-control,
-    .modern-profile-card .form-select,
-    .modern-profile-card textarea {
-      border-radius: 0.6rem;
-      border-color: #e8d8de;
-    }
-    .modern-profile-card .form-control:focus,
-    .modern-profile-card .form-select:focus,
-    .modern-profile-card textarea:focus {
-      border-color: #cf8fa5;
-      box-shadow: 0 0 0 0.2rem rgba(139, 30, 63, 0.12);
-    }
-    .modern-profile-card .card-footer {
-      background: #fffafb;
-      border-top: 1px solid #f2dee4;
-      padding: 1rem 1.25rem;
-    }
-    @media (max-width: 767px) {
-      .profile-form-hero {
-        padding: 1rem;
-      }
-      .modern-profile-card .card-body,
-      .modern-profile-card .card-header,
-      .modern-profile-card .card-footer {
-        padding: 1rem;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="{{ asset('css/create_profile.css') }}">
 @endsection
 
 @section('content')
@@ -600,6 +523,10 @@ Profile
                                 class="form-control"
                                 name="mosal[{{ $key }}][contact_number]"
                                 value="{{ is_array($mosal) ? $mosal['contact_number'] ?? '' : $mosal->contact_number }}"
+                                maxlength="10"
+                                inputmode="numeric"
+                                pattern="[0-9]{10}"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10);"
                             >
                             <span class="help-block"><span></span></span>
 
@@ -627,7 +554,7 @@ Profile
 
                         <div class="col-md-5">
                           <label for="contact_number" class="form-label">Contact Number</label>
-                            <input type="text" name="mosal[0][contact_number]" class="form-control">
+                            <input type="text" name="mosal[0][contact_number]" class="form-control"  maxlength="10" inputmode="numeric" pattern="[0-9]{10}" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10);">
                             <span class="help-block"><span></span></span>
                         </div>
                     </div>
@@ -680,6 +607,10 @@ Profile
                   id="contact_person_number"
                   name="contact_person_number"
                   value = "{{ old('contact_person_number', $profile->contact_person_number ?? Auth::user()->phone_number) }}"
+                  maxlength="10"
+                  inputmode="numeric"
+                  pattern="[0-9]{10}"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10);"
                 />
                 <span class="help-block"><span></span></span>
               </div>
@@ -692,6 +623,10 @@ Profile
                   id="contact_person_wp_number"
                   name="contact_person_wp_number"
                   value = "{{ old('contact_person_wp_number', $profile->contact_person_wp_number ?? '') }}"
+                  maxlength="10"
+                  inputmode="numeric"
+                  pattern="[0-9]{10}"
+                  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,10);"
                 />
                 <span class="help-block"><span></span></span>
               </div>
@@ -794,11 +729,23 @@ Profile
           <input type="hidden" name="created_by" value="{{ Auth::user()->id }}"
           <!--end::Body-->
           <!--begin::Footer-->
-          <div class="card-footer">
-            <button class="btn btn-theme mx-2" type="submit">Save</button>
-            <a href="{{ url()->previous() }}" class="btn btn-outline-primary">
-                Cancel
-            </a>
+          <div class="card-footer d-flex align-items-center">
+    
+              <div>
+                  <button class="btn btn-theme mx-2" type="submit" id="submitBtn" disabled>
+                      {{ $profile?->id ? 'Update Profile' : 'Create Profile' }}
+                  </button>
+
+                  <a href="{{ url()->previous() }}" class="btn btn-outline-primary">
+                      Cancel
+                  </a>
+              </div>
+              @if($profile?->id)
+                <input type="hidden" name="profile_id" id="profile_id" value="{{ $profile?->id }}" />
+                <button class="btn btn-danger delete-profile ms-auto" type="button">
+                    Delete Profile
+                </button>
+              @endif
           </div>
           <!--end::Footer-->
         </form>
@@ -817,13 +764,60 @@ Profile
   var city_id = "{{ old('city_id', $profile->city_id ?? '') }}";
   var profile_id = "{{ $profile->id ?? '' }}";
 
-  $(document).ready(function(){
-    loadStates(countryId);
-    // loadMosals(profile_id);
+  $(document).ready(function () {
+      loadStates(countryId);
+
+      let form = $('#profile_form');
+      let submitBtn = $('#submitBtn');
+
+      const getFormSignature = () => {
+          // Serialize normal fields (files not included)
+          const serialized = form.serialize();
+
+          // Include file inputs state
+          const profileFileCount = $('#profile_photo')[0]?.files?.length || 0;
+          const galleryFileCount = $('#gallery_photo')[0]?.files?.length || 0;
+
+          // Include dynamic mosal rows/inputs count
+          const mosalInputsCount = form.find('input[name^="mosal["]').length;
+
+          return [
+              serialized,
+              `profileFileCount=${profileFileCount}`,
+              `galleryFileCount=${galleryFileCount}`,
+              `mosalInputsCount=${mosalInputsCount}`,
+          ].join('|');
+      };
+
+      // Store original form values AFTER initial async state/city loads settle
+      let initialSignature = null;
+      const captureInitialSignature = () => {
+          initialSignature = getFormSignature();
+          submitBtn.prop('disabled', true);
+      };
+
+      // initial capture now, then again after dependent dropdowns are populated
+      captureInitialSignature();
+      setTimeout(captureInitialSignature, 2500);
+
+      const checkDirty = () => {
+          if (!initialSignature) return;
+          const currentSignature = getFormSignature();
+          submitBtn.prop('disabled', currentSignature === initialSignature);
+      };
+
+      // Detect any change (including files and dynamically added inputs)
+      form.on('input change', 'input, select, textarea', checkDirty);
+      form.on('click', '.add_mosal, .remove_mosal, .gallery_img_del', function () {
+          // DOM changes (add/remove rows or delete image button click)
+          setTimeout(checkDirty, 0);
+      });
+
   });
 
   function loadStates(countryId){
     if(countryId){
+
       $.ajax({
         url : "/states",
         data:{'id':countryId},
@@ -965,7 +959,7 @@ Profile
 
     html += '<div class="col-md-5">';
     html += '<label class="form-label">Contact Number</label>';
-    html += '<input type="text" class="form-control" name="mosal['+i+'][contact_number]" />';
+    html += '<input type="text" class="form-control" name="mosal['+i+'][contact_number]" maxlength="10" inputmode="numeric" pattern="[0-9]{10}" oninput="this.value = this.value.replace(/[^0-9]/g, ``).slice(0,10);"/>';
     html += '<span class="help-block"><span></span></span>';
     html += '</div>';
 
@@ -1072,7 +1066,7 @@ Profile
   }
 
   $('#birth_date').datepicker({
-      format: 'yyyy-mm-dd',
+      format: 'dd-mm-yyyy',
       autoclose: true,
       todayHighlight: true,
       endDate: "today",
@@ -1090,6 +1084,46 @@ Profile
     }else{
        $('#show_contact_publicly').val(0);
     }
+  });
+
+  $('.delete-profile').on("click",function(e){
+    e.preventDefault();
+    var form = $(this).parents("form");
+    let profile_id = $('#profile_id').val();
+    Swal.fire({
+        title: "Are you sure you want to delete?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes"
+    }).then(function (result) {
+
+        if (result.isConfirmed) {
+
+            $.ajax({
+                type: 'POST',
+                url: "/user/profile/delete/" + profile_id,
+                data: {
+                    _method: 'DELETE',
+                    id: profile_id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Accept': 'application/json'
+                },
+                success: function (results) {
+                    if (results.status == "success") {
+                        Swal.fire("Deleted!", results.message, "success");
+                        location.reload();
+
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+    });
+
   });
 
 </script>

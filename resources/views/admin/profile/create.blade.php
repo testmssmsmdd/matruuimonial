@@ -506,6 +506,9 @@
                 class="form-control"
                 name="mosal[0][contact_number]"
                 value="{{ old('mosal.0.contact_number') }}"
+                maxlength="10"
+                pattern="\d{10}"
+                inputmode="numeric"
               />
               <span class="help-block"><span></span></span>
               
@@ -560,6 +563,9 @@
               id="contact_person_number"
               name="contact_person_number"
               value = "{{ old('contact_person_number') }}"
+              maxlength="10"
+              pattern="\d{10}"
+              inputmode="numeric"
             />
             <span class="help-block"><span></span></span>
           </div>

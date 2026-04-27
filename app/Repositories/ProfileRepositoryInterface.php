@@ -57,5 +57,8 @@ interface ProfileRepositoryInterface
     public function toggleFavourite($userId, $profileId);
     public function getFavouriteProfiles($userId, Request $request);
     public function getFavouriteCities($userId);
+    public function findUserOwnedProfileWithRelations($profileId, $userId);
+    public function hardDeleteProfile($profile);
+    public function deleteProfileFavourites($profileId);
 
 }

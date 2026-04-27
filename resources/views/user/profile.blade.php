@@ -109,12 +109,12 @@
 
                                             <div class="col-md-6 d-flex justify-content-between"> 
                                                 <strong>Height:</strong>
-                                                <span>{{ $profile->height }}</span>
+                                                <span>{{ !empty($profile->height) ? str_replace(".", "'", $profile->height) . '*' : '-' }}</span>
                                             </div> 
 
                                             <div class="col-md-6 d-flex justify-content-between">
                                                 <strong>Weight:</strong>
-                                                <span>{{ $profile->Weight }}</span> 
+                                                <span>{{ !empty($profile->Weight) ? $profile->Weight . ' kg' : '-' }}</span>
                                             </div> 
 
                                             <div class="col-md-6 d-flex justify-content-between"> 

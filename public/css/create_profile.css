@@ -1,0 +1,76 @@
+.create-profile-page {
+  max-width: 1100px;
+}
+.profile-form-hero {
+  background: linear-gradient(135deg, #fff5f8 0%, #ffffff 70%);
+  border: 1px solid #f3dde5;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 20px rgba(56, 28, 42, 0.08);
+}
+.profile-form-hero h2 {
+  color: #2f2430;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+.profile-form-hero p {
+  margin-bottom: 0;
+  color: #755f68;
+}
+.modern-profile-card {
+  border: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(56, 28, 42, 0.1);
+}
+.modern-profile-card .card-header {
+  background: #fffafb;
+  border-bottom: 1px solid #f2dee4;
+  padding: 1rem 1.25rem;
+}
+.modern-profile-card .card-body {
+  padding: 1.25rem;
+}
+.form-section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #8b1e3f;
+  border-left: 4px solid #8b1e3f;
+  background: #fff6f8;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+.modern-profile-card .form-label {
+  font-weight: 600;
+  color: #4a3942;
+}
+.modern-profile-card .form-control,
+.modern-profile-card .form-select,
+.modern-profile-card textarea {
+  border-radius: 0.6rem;
+  border-color: #e8d8de;
+}
+.modern-profile-card .form-control:focus,
+.modern-profile-card .form-select:focus,
+.modern-profile-card textarea:focus {
+  border-color: #cf8fa5;
+  box-shadow: 0 0 0 0.2rem rgba(139, 30, 63, 0.12);
+}
+.modern-profile-card .card-footer {
+  background: #fffafb;
+  border-top: 1px solid #f2dee4;
+  padding: 1rem 1.25rem;
+}
+@media (max-width: 767px) {
+  .profile-form-hero {
+    padding: 1rem;
+  }
+  .modern-profile-card .card-body,
+  .modern-profile-card .card-header,
+  .modern-profile-card .card-footer {
+    padding: 1rem;
+  }
+}

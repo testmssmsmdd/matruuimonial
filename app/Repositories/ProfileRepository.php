@@ -176,7 +176,7 @@ class ProfileRepository implements ProfileRepositoryInterface
 
     public function getProfileByUserId($userId)
     {
-        return Profile::where('created_by', $userId)->first();
+        return Profile::where('user_id', $userId)->first();
     }
 
     public function createProfile($data)

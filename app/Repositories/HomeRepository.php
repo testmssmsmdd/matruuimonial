@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Models\Profile;
 use App\Models\User;
+use App\Models\City;
 use App\Models\FavouriteProfile;
 use Illuminate\Support\Facades\DB;
 use Auth;
@@ -86,23 +87,21 @@ class HomeRepository implements HomeRepositoryInterface
 
     public function getCityList()
     {
-        return DB::table('cities')
-            ->join('profiles', 'cities.id', '=', 'profiles.city_id')
-            ->select('cities.name', 'cities.id')
-            ->where('profiles.profile_status',1)
-            ->groupBy('profiles.city_id', 'cities.name', 'cities.id')
-            ->get();
+        return City::join('profiles', 'cities.id', '=', 'profiles.city_id')
+                ->select('cities.name', 'cities.id')
+                ->where('profiles.profile_status', 1)
+                ->groupBy('profiles.city_id', 'cities.name', 'cities.id')
+                ->get();
     }
 
     public function getCityListByUsername($username)
     {
-        return DB::table('cities')
-            ->join('profiles', 'cities.id', '=', 'profiles.city_id')
-            ->join('users','profiles.created_by', '=', 'users.id')
-            ->select('cities.name', 'cities.id')
-            ->where('users.username','=',$username)
-            ->groupBy('profiles.city_id', 'cities.name', 'cities.id')
-            ->get();
+        return City::join('profiles', 'cities.id', '=', 'profiles.city_id')
+                ->join('users', 'profiles.created_by', '=', 'users.id')
+                ->select('cities.name', 'cities.id')
+                ->where('users.username', $username)
+                ->groupBy('profiles.city_id', 'cities.name', 'cities.id')
+                ->get();
     }
 
     public function findProfileById($slug)

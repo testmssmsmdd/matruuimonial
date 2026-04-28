@@ -275,13 +275,8 @@ class ProfileService
 
     public function getProfileByUserId($userId)
     {
-        return Profile::where('user_id', $userId)->first();
+        return $this->profileRepository->getProfileByUserId($userId);
     }
-
-    // public function getProfileByUserId($userId)
-    // {
-    //     return $this->profileRepository->getProfileByUserId($userId);
-    // }
 
     public function createFavProfile($request)
     {

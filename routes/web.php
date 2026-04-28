@@ -37,7 +37,7 @@ Route::post('/resend-verification-custom', function (Request $request) {
 Auth::routes(['verify' => true]);
 
 Route::middleware(['auth',CheckUser::class,'verified'])->group(function () {
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
+    Route::get('/home', [HomeController::class, 'home'])->name('home');
     Route::get('/create_profile', [UserProfileController::class, 'create_profile'])->name('users.create_profile');
     Route::post('/store_profie', [UserProfileController::class, 'store_profile'])->name('users.store_profile');
     Route::post('/update_profile/{id}', [UserProfileController::class, 'update_profile'])->name('users.update_profile');
